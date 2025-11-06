@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
     <i>🚀 <a href="https://keycloakify.dev">Keycloakify</a> v11 starter 🚀</i>
     <br/>
@@ -56,3 +57,7 @@ To release a new version **just update the `package.json` version and push**.
 
 To enable the workflow go to your fork of this repository on GitHub then navigate to:
 `Settings` > `Actions` > `Workflow permissions`, select `Read and write permissions`.
+=======
+# Keycloak_Guardians
+Keycloak_test
+>>>>>>> 8b84b8c2deb95f16ca1fa60ad05908edc84817eb

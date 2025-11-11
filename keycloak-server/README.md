@@ -39,11 +39,11 @@
 ## 典型接口
 - `GET /api/users/me`：返回当前登录用户的基本信息和角色
 - `GET /api/user/stats`：返回所有用户的统计信息
-- `POST /api/users/me`：创建一个用户
+- `POST /api/admin/users`：创建一个用户
   - Header：
     - `Authorization: Bearer <access_token>`
-    - `Contene-Type: application/json****
-  - Body(例)：
+    - `Contene-Type: application/json
+  - Body选择raw输入(例)：
   {
   "username": "testuser",
   "email": "test@example.com",

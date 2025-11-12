@@ -26,7 +26,7 @@
    - 服务默认监听端口：`8081`
 
 3. **获取 Token（Postman 示例）**
-   - 请求 URL：`http://localhost:8180/realms/guardians/protocol/openid-connect/token`
+   - 请求 URL：`http://localhost:8080/realms/guardians/protocol/openid-connect/token`
    - Body 类型：`x-www-form-urlencoded`
      - grant_type: password
      - client_id: backend-service
@@ -38,6 +38,20 @@
 
 ## 典型接口
 - `GET /api/users/me`：返回当前登录用户的基本信息和角色
+- `GET /api/user/stats`：返回所有用户的统计信息
+- `POST /api/admin/users`：创建一个用户
+  - Header：
+    - `Authorization: Bearer <access_token>`
+    - `Contene-Type: application/json
+  - Body选择raw输入(例)：
+  {
+  "username": "testuser",
+  "email": "test@example.com",
+  "firstName": "Test",
+  "lastName": "User",
+  "enabled": true,
+  "roles": ["user"]
+  }
 
 ## 常见问题
 - 若 roles 字段为空，请检查 Keycloak realm 的 protocol mappers 配置，确保 access_token 中包含角色信息

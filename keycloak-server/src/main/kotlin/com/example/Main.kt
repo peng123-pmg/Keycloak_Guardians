@@ -10,4 +10,3 @@ object Main {
         Quarkus.run(*args)
     }
 }
-

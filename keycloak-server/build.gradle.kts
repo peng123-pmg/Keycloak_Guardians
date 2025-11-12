@@ -5,6 +5,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -13,8 +14,14 @@ dependencies {
     implementation("io.quarkus:quarkus-oidc")
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-smallrye-jwt")
+    implementation("io.quarkus:quarkus-resteasy-reactive-jackson") // 确保这个存在
+    implementation("io.quarkus:quarkus-resteasy-reactive-qute") // 添加表单支持
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
+    testImplementation("io.quarkus:quarkus-test-security-jwt")
+    implementation("io.quarkus:quarkus-smallrye-openapi")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.quarkus:quarkus-arc")
 }
 
 java {

@@ -213,3 +213,28 @@ body {
     font-size: 14px;
   }
 }
+
+/* 表单验证错误样式 */
+.form-group input.error {
+  border-color: #f44336;
+  background-color: #ffebee;
+}
+
+.form-group input.error:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 13px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.error-message::before {
+  content: "⚠";
+  font-size: 14px;
+}

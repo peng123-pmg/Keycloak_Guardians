@@ -9,4 +9,8 @@ export default defineConfig({
       accountThemeImplementation: 'none',
     })
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
 });

@@ -32,19 +32,106 @@ export default function Login(props: {
 
     const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(false);
     const [isRememberMe, setIsRememberMe] = useState(false);
+    const [username, setUsername] = useState(login.username ?? "");
+    const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
     useEffect(() => {
         document.title = "欢迎登录我们的系统";
     }, []);
 
+    // Mock 账号数据（测试用）
+    const mockUsers = [
+        { username: "admin", password: "123456", role: "管理员" },
+        { username: "user", password: "123456", role: "普通用户" },
+        { username: "test", password: "test123", role: "测试用户" }
+    ];
+
+    // 验证表单
+    const validateForm = (): boolean => {
+        const newErrors: { username?: string; password?: string } = {};
+
+        // 验证用户名
+        if (!username.trim()) {
+            newErrors.username = "请输入用户名";
+        } else if (username.length < 3) {
+            newErrors.username = "用户名至少3个字符";
+        }
+
+        // 验证密码
+        if (!password.trim()) {
+            newErrors.password = "请输入密码";
+        } else if (password.length < 6) {
+            newErrors.password = "密码至少6个字符";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // 验证用户凭据
+    const authenticateUser = (username: string, password: string): boolean => {
+        const user = mockUsers.find(
+            u => u.username === username && u.password === password
+        );
+        
+        if (user) {
+            console.log(`✅ 验证成功: ${user.username} (${user.role})`);
+            // 可以将用户信息存储到 localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: user.username,
+                role: user.role,
+                loginTime: new Date().toISOString()
+            }));
+            return true;
+        }
+        
+        console.log('❌ 验证失败: 用户名或密码错误');
+        return false;
+    };
+
     const handleLoginClick = () => {
         console.log('=== 登录按钮被点击 ===');
         
-        if (onLoginSuccess) {
-            console.log('调用 onLoginSuccess');
-            onLoginSuccess();
+        // 清除之前的错误
+        setErrors({});
+        
+        // 表单验证
+        if (!validateForm()) {
+            console.log('❌ 表单验证失败');
+            return;
+        }
+
+        // 禁用登录按钮
+        setIsLoginButtonDisabled(true);
+
+        // 用户凭据验证
+        const isAuthenticated = authenticateUser(username, password);
+        
+        if (isAuthenticated) {
+            console.log('✅ 登录成功，准备跳转...');
+            
+            // 触发自定义登录事件（用于开发模式跳转）
+            window.dispatchEvent(new CustomEvent('keycloak-login'));
+            
+            // 如果有回调函数也调用它
+            if (onLoginSuccess) {
+                onLoginSuccess();
+            }
         } else {
-            console.error('onLoginSuccess 不存在！');
+            // 验证失败
+            setErrors({
+                password: "用户名或密码错误，请重试"
+            });
+            setIsLoginButtonDisabled(false);
+            console.log('❌ 登录失败');
+        }
+    };
+
+    // 处理 Enter 键登录
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !isLoginButtonDisabled) {
+            handleLoginClick();
         }
     };
 
@@ -77,14 +164,24 @@ export default function Login(props: {
                             <input
                                 tabIndex={2}
                                 id="username"
-                                className={kcClsx("kcInputClass")}
+                                className={`${kcClsx("kcInputClass")} ${errors.username ? 'error' : ''}`}
                                 name="username"
-                                defaultValue={login.username ?? ""}
+                                value={username}
+                                onChange={(e) => {
+                                    setUsername(e.target.value);
+                                    if (errors.username) {
+                                        setErrors({ ...errors, username: undefined });
+                                    }
+                                }}
+                                onKeyPress={handleKeyPress}
                                 type="text"
                                 autoFocus
                                 autoComplete="username"
-                                aria-invalid={messagesPerField.existsError("username", "password")}
+                                aria-invalid={!!errors.username}
                             />
+                            {errors.username && (
+                                <div className="error-message">{errors.username}</div>
+                            )}
                         </div>
                     )}
 
@@ -93,12 +190,23 @@ export default function Login(props: {
                         <input
                             tabIndex={3}
                             id="password"
-                            className={kcClsx("kcInputClass")}
+                            className={`${kcClsx("kcInputClass")} ${errors.password ? 'error' : ''}`}
                             name="password"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                if (errors.password) {
+                                    setErrors({ ...errors, password: undefined });
+                                }
+                            }}
+                            onKeyPress={handleKeyPress}
                             type="password"
                             autoComplete="current-password"
-                            aria-invalid={messagesPerField.existsError("username", "password")}
+                            aria-invalid={!!errors.password}
                         />
+                        {errors.password && (
+                            <div className="error-message">{errors.password}</div>
+                        )}
                     </div>
 
                     <div className="form-options">

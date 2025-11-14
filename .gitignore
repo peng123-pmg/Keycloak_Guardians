@@ -9,8 +9,7 @@ node_modules
 # Production
 /build
 /dist
-# Keep dist_keycloak for JAR deployment packages
-# /dist_keycloak
+/dist_keycloak
 
 # Misc
 .DS_Store
@@ -30,23 +29,5 @@ yarn-error.log*
 *.swo
 *~
 
-# Keycloak
-# Allow JAR packages in dist_keycloak
-# *.jar
-!dist_keycloak/*.jar
-
-# Documentation and Screenshots (不提交到GitHub)
-*.md
-!README.md
-screenshots/
-*.png
-*.jpg
-*.jpeg
-*.gif
-
-# Deployment Scripts and Configs (不提交)
-*.bat
-*.ps1
-docker-compose.yml
-text2.txt
-Keycloak_Guardians-main/
+# Build artifacts
+*.jar

@@ -1,7 +1,7 @@
 /* 整体容器 - 扩展总宽度 */
 .dashboardContainer {
-  width: 1480px;
-  height: 1024px;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--bg-light);
   display: flex;
   overflow: hidden;
@@ -10,12 +10,13 @@
 
 /* 主内容区 - 扩展宽度以容纳两个色块 */
 .mainContent {
-  width: 1105px;
-  height: 1024px;
+  flex: 1;
+  height: 100%;
   padding: 0;
   overflow: visible;
   position: relative;
   z-index: 1;
+  background: linear-gradient(90deg, #B2D2ED 0%, #FAFBFC 100%);
 }
 
 /* 右上角信息区 */
@@ -44,13 +45,7 @@
   text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
 }
 
-/* 底部装饰区块 - 290px高度 */
+/* 底部装饰区块 - 已移除 */
 .bottomDecoration {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 705px;
-  height: 290px;
-  background: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 100%);
-  z-index: 0;
+  display: none;
 }

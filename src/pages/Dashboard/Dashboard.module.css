@@ -1,0 +1,56 @@
+/* 整体容器 - 扩展总宽度 */
+.dashboardContainer {
+  width: 1480px;
+  height: 1024px;
+  background-color: var(--bg-light);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 主内容区 - 扩展宽度以容纳两个色块 */
+.mainContent {
+  width: 1105px;
+  height: 1024px;
+  padding: 0;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+/* 右上角信息区 */
+.topInfo {
+  position: absolute;
+  top: 30px;
+  right: 60px;
+  font-family: '宋体', SimSun;
+  z-index: 10;
+}
+
+.topInfoLine1 {
+  font-size: 72px;
+  color: #000000;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+}
+
+.topInfoLine2 {
+  font-size: 26px;
+  color: #880AD2;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: -1px -1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000, 1px 1px 0 #000000;
+}
+
+/* 底部装饰区块 - 290px高度 */
+.bottomDecoration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 705px;
+  height: 290px;
+  background: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 100%);
+  z-index: 0;
+}

@@ -1,0 +1,52 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production
+/build
+/dist
+# Keep dist_keycloak for JAR deployment packages
+# /dist_keycloak
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Keycloak
+# Allow JAR packages in dist_keycloak
+# *.jar
+!dist_keycloak/*.jar
+
+# Documentation and Screenshots (不提交到GitHub)
+*.md
+!README.md
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Deployment Scripts and Configs (不提交)
+*.bat
+*.ps1
+docker-compose.yml
+text2.txt
+Keycloak_Guardians-main/

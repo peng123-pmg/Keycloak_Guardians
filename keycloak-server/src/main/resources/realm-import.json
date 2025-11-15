@@ -13,7 +13,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "admin",
+          "value": "123456",
           "temporary": false
         }
       ],
@@ -23,36 +23,36 @@
       }
     },
     {
-      "username": "alice",
-      "email": "alice@example.com",
-      "firstName": "Alice",
-      "lastName": "Smith",
+      "username": "user",
+      "email": "user@example.com",
+      "firstName": "User",
+      "lastName": "Normal",
       "enabled": true,
       "emailVerified": true,
       "credentials": [
         {
           "type": "password",
-          "value": "alice",
+          "value": "123456",
           "temporary": false
         }
       ],
       "realmRoles": ["user"]
     },
     {
-      "username": "jdoe",
-      "email": "jdoe@example.com",
-      "firstName": "John",
-      "lastName": "Doe",
+      "username": "test",
+      "email": "test@example.com",
+      "firstName": "Test",
+      "lastName": "User",
       "enabled": true,
       "emailVerified": true,
       "credentials": [
         {
           "type": "password",
-          "value": "jdoe",
+          "value": "test123",
           "temporary": false
         }
       ],
-      "realmRoles": ["user", "user_premium"]
+      "realmRoles": ["user"]
     }
   ],
 

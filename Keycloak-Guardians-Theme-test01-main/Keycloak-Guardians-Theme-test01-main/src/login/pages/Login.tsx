@@ -40,13 +40,6 @@ export default function Login(props: {
         document.title = "欢迎登录我们的系统";
     }, []);
 
-    // Mock 账号数据（测试用）
-    const mockUsers = [
-        { username: "admin", password: "123456", role: "管理员" },
-        { username: "user", password: "123456", role: "普通用户" },
-        { username: "test", password: "test123", role: "测试用户" }
-    ];
-
     // 验证表单
     const validateForm = (): boolean => {
         const newErrors: { username?: string; password?: string } = {};
@@ -69,28 +62,62 @@ export default function Login(props: {
         return Object.keys(newErrors).length === 0;
     };
 
-    // 验证用户凭据
-    const authenticateUser = (username: string, password: string): boolean => {
-        const user = mockUsers.find(
-            u => u.username === username && u.password === password
-        );
-        
-        if (user) {
-            console.log(`✅ 验证成功: ${user.username} (${user.role})`);
-            // 可以将用户信息存储到 localStorage
-            localStorage.setItem('currentUser', JSON.stringify({
-                username: user.username,
-                role: user.role,
-                loginTime: new Date().toISOString()
-            }));
+    // 真实的用户认证和Token获取
+    const authenticateUser = async (username: string, password: string): Promise<boolean> => {
+        try {
+            // 获取访问令牌
+            const tokenResponse = await fetch('http://localhost:8080/realms/guardians/protocol/openid-connect/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    grant_type: 'password',
+                    client_id: 'backend-service',
+                    username: username,
+                    password: password
+                })
+            });
+
+            if (!tokenResponse.ok) {
+                const errorText = await tokenResponse.text();
+                console.error('Token获取失败:', errorText);
+                return false;
+            }
+
+            const tokenData = await tokenResponse.json();
+            const accessToken = tokenData.access_token;
+
+            // 使用访问令牌调用用户信息接口
+            const userResponse = await fetch('http://localhost:8081/api/users/me', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!userResponse.ok) {
+                const errorText = await userResponse.text();
+                console.error('获取用户信息失败:', errorText);
+                return false;
+            }
+
+            const userData = await userResponse.json();
+            
+            // 存储用户信息和访问令牌
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            localStorage.setItem('accessToken', accessToken);
+            
+            console.log('✅ 登录成功，用户信息:', userData);
             return true;
+        } catch (error) {
+            console.error('登录过程中出现错误:', error);
+            return false;
         }
-        
-        console.log('❌ 验证失败: 用户名或密码错误');
-        return false;
     };
 
-    const handleLoginClick = () => {
+    const handleLoginClick = async () => {
         console.log('=== 登录按钮被点击 ===');
         
         // 清除之前的错误
@@ -106,7 +133,7 @@ export default function Login(props: {
         setIsLoginButtonDisabled(true);
 
         // 用户凭据验证
-        const isAuthenticated = authenticateUser(username, password);
+        const isAuthenticated = await authenticateUser(username, password);
         
         if (isAuthenticated) {
             console.log('✅ 登录成功，准备跳转...');
@@ -244,10 +271,10 @@ export default function Login(props: {
 
                     <CustomButton
                         type="button"
-                        onClick={handleLoginClick}
+                        onClick={() => handleLoginClick()}
                         disabled={isLoginButtonDisabled}
                     >
-                        {isAppInitiatedAction ? "继续" : "登录"}
+                        {isLoginButtonDisabled ? "登录中..." : (isAppInitiatedAction ? "继续" : "登录")}
                     </CustomButton>
                 </div>
             </div>

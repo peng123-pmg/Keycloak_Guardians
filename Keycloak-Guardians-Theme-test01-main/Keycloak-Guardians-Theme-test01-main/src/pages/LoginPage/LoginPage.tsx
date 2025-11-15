@@ -22,6 +22,7 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({ username: '', password: '' });
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors = { username: '', password: '' };
@@ -44,23 +45,61 @@ export const LoginPage: React.FC = () => {
     return isValid;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (validateForm()) {
-      // Mock登录逻辑
-      console.log('登录信息:', { username, password, rememberMe });
-      
-      // TODO: 调用后端API
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ username, password })
-      // });
-      
-      // 模拟登录成功，跳转到主界面
-      console.log('✅ 登录验证通过，跳转到主界面...');
-      
-      // 使用 hash 路由跳转
-      window.location.hash = '#/dashboard';
+      setLoading(true);
+      try {
+        // 先获取访问令牌
+        const tokenResponse = await fetch('http://localhost:8080/realms/guardians/protocol/openid-connect/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams({
+            grant_type: 'password',
+            client_id: 'backend-service',
+            username: username,
+            password: password
+          })
+        });
+
+        if (!tokenResponse.ok) {
+          throw new Error('登录失败，请检查用户名和密码');
+        }
+
+        const tokenData = await tokenResponse.json();
+        const accessToken = tokenData.access_token;
+
+        // 使用访问令牌调用用户信息接口
+        const userResponse = await fetch('http://localhost:8081/api/users/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!userResponse.ok) {
+          throw new Error('获取用户信息失败');
+        }
+
+        const userData = await userResponse.json();
+        
+        // 存储用户信息和访问令牌
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        localStorage.setItem('accessToken', accessToken);
+        
+        console.log('✅ 登录验证通过，跳转到主界面...');
+        console.log('用户信息:', userData);
+        
+        // 使用 hash 路由跳转
+        window.location.hash = '#/dashboard';
+      } catch (error) {
+        console.error('登录过程中出现错误:', error);
+        alert(error.message || '登录失败，请稍后重试');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -109,8 +148,8 @@ export const LoginPage: React.FC = () => {
           <a href="#" className={styles.forgotPassword}>忘记密码？</a>
         </div>
 
-        <Button onClick={handleLogin}>
-          登录
+        <Button onClick={handleLogin} disabled={loading}>
+          {loading ? '登录中...' : '登录'}
         </Button>
 
         <div className={styles.footer}>

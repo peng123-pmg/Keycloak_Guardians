@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import type { KcContext } from "../KcContext";
-import { BACKEND_BASE_URL } from "../../config";
 import { CustomHeader } from "../components/CustomHeader";
 import { WaterMark } from "../components/WaterMark";
 import { CustomButton } from "../components/CustomButton";
@@ -112,37 +111,13 @@ export default function Login(props: {
         if (isAuthenticated) {
             console.log('✅ 登录成功，准备跳转...');
             
-            // 创建一个隐藏的表单提交到Keycloak
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = url.loginAction;
-            form.style.display = 'none';
+            // 触发自定义登录事件（用于开发模式跳转）
+            window.dispatchEvent(new CustomEvent('keycloak-login'));
             
-            // 添加用户名字段
-            const usernameInput = document.createElement('input');
-            usernameInput.type = 'hidden';
-            usernameInput.name = 'username';
-            usernameInput.value = username;
-            form.appendChild(usernameInput);
-            
-            // 添加密码字段
-            const passwordInput = document.createElement('input');
-            passwordInput.type = 'hidden';
-            passwordInput.name = 'password';
-            passwordInput.value = password;
-            form.appendChild(passwordInput);
-            
-            // 添加记住我字段
-            if (isRememberMe) {
-                const rememberMeInput = document.createElement('input');
-                rememberMeInput.type = 'hidden';
-                rememberMeInput.name = 'rememberMe';
-                rememberMeInput.value = 'on';
-                form.appendChild(rememberMeInput);
+            // 如果有回调函数也调用它
+            if (onLoginSuccess) {
+                onLoginSuccess();
             }
-            
-            document.body.appendChild(form);
-            form.submit();
         } else {
             // 验证失败
             setErrors({

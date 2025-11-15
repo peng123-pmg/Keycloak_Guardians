@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import Keycloak from 'keycloak-js';
+import App from './App';
+import './index.css';
 import { fetchCurrentUser } from './utils/api';
 
 // 初始化 Keycloak 实例

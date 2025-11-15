@@ -12,19 +12,13 @@
     "preview": "vite preview",
     "preview:app": "vite preview --config vite.app.config.ts"
   },
-  "keywords": [
-    "keycloak",
-    "theme",
-    "react"
-  ],
+  "keywords": ["keycloak", "theme", "react"],
   "author": "李欣冉",
   "license": "MIT",
   "dependencies": {
-    "@react-keycloak/web": "^3.4.0",
-    "keycloak-js": "^26.2.1",
-    "keycloakify": "^10.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "keycloakify": "^10.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

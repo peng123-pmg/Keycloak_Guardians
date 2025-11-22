@@ -1,0 +1,175 @@
+/* 页面容器 - 可滚动容器 */
+.pageContainer {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+  position: relative;
+}
+
+/* 内容包装器 - 用于创建顶部100px偏移 */
+.contentWrapper {
+  padding-top: clamp(60px, 10vh, 100px);
+  min-height: 100vh;
+  position: relative;
+  padding-left: clamp(0px, 2vw, 20px);
+  padding-right: clamp(0px, 2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+/* ========== 我创建的 - 三个独立部分 ========== */
+
+/* 1. 标题区域 - 响应式尺寸，蓝色50% */
+.createdTitleSection {
+  width: clamp(300px, 90vw, 1074px);
+  height: clamp(80px, 12vh, 120px);
+  background: rgba(90, 155, 230, 0.5);
+  margin-left: 0;
+  padding: clamp(15px, 2vh, 20px) clamp(20px, 3vw, 40px);
+  display: flex;
+  align-items: center;
+}
+
+/* 2. 团队列表区域 - 响应式宽度，自动填充行数 */
+.createdTeamsList {
+  width: clamp(300px, 90vw, 1074px);
+  background: rgba(223, 228, 235, 0.5);
+  margin-left: 0;
+  padding: clamp(10px, 1.5vh, 15px) 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== 我加入的 - 三个独立部分 ========== */
+
+/* 1. 标题区域 - 响应式尺寸，蓝色50% */
+.joinedTitleSection {
+  width: clamp(300px, 90vw, 1074px);
+  height: clamp(80px, 12vh, 120px);
+  background: rgba(90, 155, 230, 0.5);
+  margin-left: 0;
+  padding: clamp(15px, 2vh, 20px) clamp(20px, 3vw, 40px);
+  display: flex;
+  align-items: center;
+}
+
+/* 2. 团队列表区域 - 响应式宽度，填充到视口底部 */
+.joinedTeamsList {
+  width: clamp(300px, 90vw, 1074px);
+  background: rgba(223, 228, 235, 0.5);
+  margin-left: 0;
+  padding: clamp(10px, 1.5vh, 15px) 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* 40px 空白间隔 - 响应式 */
+.spacer {
+  width: 100%;
+  height: clamp(20px, 4vh, 40px);
+  background: transparent;
+}
+
+/* 滚动条样式 */
+.pageContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pageContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pageContainer::-webkit-scrollbar-thumb {
+  background: rgba(90, 155, 230, 0.5);
+  border-radius: 4px;
+}
+
+.pageContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(90, 155, 230, 0.7);
+}
+
+/* 标题 - 思源黑体 heavy，响应式字号，#DFE4EB */
+.sectionTitle {
+  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 900;
+  color: #DFE4EB;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* 团队列表项 - 响应式高度，淡紫色背景（真实数据），填满宽度，较细间隔 */
+.teamItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: clamp(35px, 4.5vh, 45px);
+  padding: 0 clamp(20px, 3vw, 40px);
+  margin-bottom: clamp(2px, 0.3vh, 3px);
+  background: rgba(200, 180, 220, 0.5);
+  transition: background 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.teamItem:last-child {
+  margin-bottom: 0;
+}
+
+.teamItem:hover {
+  background: rgba(200, 180, 220, 0.7);
+}
+
+/* 占位符项 - 空白行，淡紫色背景，不可点击，不显示悬停效果 */
+.placeholderItem {
+  cursor: default;
+  background: rgba(200, 180, 220, 0.5);
+}
+
+.placeholderItem:hover {
+  background: rgba(200, 180, 220, 0.5);
+}
+
+/* 底部粉色区块项 - 作为列表中的最后一行 */
+.bottomFillItem {
+  cursor: default;
+  background: rgba(242, 191, 191, 0.5);
+}
+
+.bottomFillItem:hover {
+  background: rgba(242, 191, 191, 0.5);
+}
+
+/* 团队名称 - 黑体 regular，响应式字号，#333333 */
+.teamName {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: clamp(14px, 1.8vw, 20px);
+  font-weight: 400;
+  color: #333333;
+  line-height: 1;
+}
+
+/* 删除按钮 - 响应式字号，#999999 */
+.deleteBtn {
+  background: transparent;
+  border: none;
+  font-size: clamp(12px, 1.5vw, 16px);
+  color: #999999;
+  cursor: pointer;
+  padding: clamp(2px, 0.5vh, 4px);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.deleteBtn:hover {
+  opacity: 1;
+}

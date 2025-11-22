@@ -1,0 +1,85 @@
+/* 搜索容器 */
+.searchContainer {
+  position: fixed;
+  top: 25px;
+  right: 420px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 搜索框容器 - 图标+输入框组合 */
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 搜索图标 - 独立在输入框外部 */
+.searchIcon {
+  width: 16px;
+  height: 16px;
+  color: #3366CC;
+  flex-shrink: 0;
+}
+
+/* 搜索输入框 */
+.searchInput {
+  width: 230px;
+  height: 25px;
+  border: 2px solid #3399FF;
+  border-radius: 4px;
+  padding: 0 6px;
+  background: #FFFFFF;
+  outline: none;
+  font-size: 14px;
+  color: #333333;
+  font-family: '宋体', SimSun, serif;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+  color: #999999;
+  font-family: '宋体', SimSun, serif;
+}
+
+/* 提示框 */
+.hintBox {
+  width: 230px;
+  height: 225px;
+  background: #F2F5F7;
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: '思源黑体', 'Source Han Sans', sans-serif;
+  box-sizing: border-box;
+  margin-left: 24px; /* 与输入框对齐(图标宽度16px + gap 8px) */
+}
+
+/* 提示框每行 */
+.hintRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 提示标签 */
+.hintLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 1.4;
+}
+
+/* 提示值 */
+.hintValue {
+  font-family: '思源黑体', 'Source Han Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 300; /* light */
+  color: #FFC300;
+  line-height: 1.4;
+}

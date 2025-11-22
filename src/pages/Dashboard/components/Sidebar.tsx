@@ -10,44 +10,33 @@ interface MenuItem {
   id: string;
   label: string;
   children?: MenuItem[];
-  isBlue?: boolean;
-  topSpacing?: number;
 }
 
-// 严格按照UI设计稿的菜单结构
+// 新的菜单结构
 const menuData: MenuItem[] = [
   {
     id: 'personal',
     label: '个人文件管理',
     children: [
-      { id: 'my-files', label: '我的文件' },
-      { id: 'upload', label: '上传文件' },
-      { id: 'delete', label: '删除文件' }
+      { id: 'my-files', label: '我的文件' }
     ]
   },
-  { id: 'team-management', label: '团队文件管理', isBlue: true, topSpacing: 50 },
-  { id: 'create-team', label: '创建团队' },
   {
-    id: 'my-team',
-    label: '我的团队',
+    id: 'team-management',
+    label: '团队文件管理',
     children: [
-      { id: 'team-files', label: '团队文件' },
-      {
-        id: 'team-users',
-        label: '团队用户',
-        children: [
-          { id: 'invite-user', label: '邀请用户' },
-          { id: 'remove-user', label: '移出用户' }
-        ]
-      }
+      { id: 'create-team', label: '创建团队' },
+      { id: 'my-teams', label: '我的团队' }
     ]
   },
-  { id: 'settings', label: '设置', isBlue: true },
+  { id: 'recycle-bin', label: '回收站' },
+  { id: 'notifications', label: '消息中心' },
+  { id: 'settings', label: '设置' },
   { id: 'logout', label: '退出登录' }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) => {
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(['personal']);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(['personal', 'team-management']);
 
   const toggleMenu = (menuId: string) => {
     setExpandedMenus(prev =>

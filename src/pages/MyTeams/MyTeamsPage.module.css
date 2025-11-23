@@ -1,206 +1,286 @@
-/* 页面容器 - 固定画布内 */
+/* ==================== 页面容器 ==================== */
 .pageContainer {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+  margin-left: 0;
   padding: 0;
-  overflow: hidden;
-  background: transparent;
-  position: relative;
+  font-family: 'Source Han Sans CN', 'Noto Sans CJK SC', 'Microsoft YaHei', '微软雅黑', sans-serif;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 页面标题 */
-.pageTitle {
-  position: absolute;
-  top: 50px;
-  left: 100px;
-  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
-  font-size: 48px;
-  font-weight: 700;
+/* ==================== 团队文件区块 ==================== */
+.teamFilesSection {
+  width: 100%;
+  background: rgba(90, 155, 230, 0.5);
+  padding: 6.25rem 2rem 2rem 2rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin-top: 4rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+
+.mainTitle {
+  font-family: 'Source Han Sans CN Heavy', 'Noto Sans CJK SC', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 2.5rem);
   color: #DFE4EB;
   margin: 0;
-  padding: 0;
-  z-index: 5;
+  text-align: left;
 }
 
-/* 文件区域 */
-.filesSection {
-  position: absolute;
-  top: 128px;
-  left: 280px;
-  width: 1074px;
-  height: 290px;
-  background: rgba(90, 155, 230, 0.5);
-  padding: 0;
+.subTitle {
+  font-family: 'Source Han Sans CN Bold', 'Noto Sans CJK SC', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: #DFE4EB;
+  margin: 0;
+  text-align: left;
 }
 
-/* 文件网格 */
+.addButton {
+  min-width: 3rem;
+  min-height: 3rem;
+  background: #2A82E4;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.addButton:hover {
+  background: #1a6bc4;
+}
+
+/* 文件卡片网格 */
 .filesGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 60px;
-  padding: 60px;
-  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-left: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
 }
 
-/* 文件卡片 */
 .fileCard {
-  width: 100%;
-  height: 100%;
-  background: rgba(90, 155, 230, 0.5);
-  border-radius: 0;
+  min-width: 12.5rem;
+  max-width: 20rem;
+  flex: 1 1 calc(25% - 1.5rem);
+  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 20px 10px;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
   box-sizing: border-box;
   position: relative;
+  transition: transform 0.2s ease;
 }
 
-.fileCard:nth-child(2),
-.fileCard:nth-child(4) {
-  background: rgba(223, 228, 235, 1);
+.fileCard:hover {
+  transform: translateY(-0.25rem);
 }
 
-/* 文件图标区域 */
-.fileIconArea {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
+.fileCardBlue {
+  background: rgba(90, 155, 230, 0.5);
+}
+
+.fileCardWhite {
+  background: rgba(255, 255, 255, 1);
 }
 
 .fileIcon {
-  font-size: 48px;
-}
-
-/* 文件信息 */
-.fileInfo {
-  text-align: center;
-  width: 100%;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .fileName {
-  font-family: '思源黑体', sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: #000000;
-  margin-bottom: 10px;
-  word-break: break-all;
+  font-family: 'Source Han Sans CN', sans-serif;
+  font-size: 1.125rem;
+  color: #333333;
+  text-align: center;
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
-/* 文件操作按钮 */
 .fileActions {
   display: flex;
-  gap: 8px;
+  gap: 1rem;
+  width: 100%;
   justify-content: center;
-  margin-top: 10px;
 }
 
-.iconBtn {
+.downloadButton,
+.deleteButton {
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 4px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+  transition: transform 0.2s ease;
 }
 
-.iconBtn:hover {
-  opacity: 1;
+.downloadButton:hover,
+.deleteButton:hover {
+  transform: scale(1.2);
 }
 
-/* 文件尺寸信息 */
-.fileSize {
-  margin-top: 10px;
-  font-family: '思源黑体', sans-serif;
-  font-size: 14px;
-  color: #333;
-  text-align: center;
-  line-height: 1.4;
-}
-
-.fileMeta {
-  font-size: 12px;
-  color: #666;
-}
-
-/* 团队区域 */
-.teamsSection {
-  position: absolute;
-  top: 450px;
-  left: 280px;
-  width: 1074px;
-  min-height: 453px;
+/* ==================== 我加入的区块 ==================== */
+.joinedTeamsSection {
+  width: 100%;
   background: rgba(242, 191, 191, 0.5);
-  padding: 0;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 20rem;
+  flex: 1;
 }
 
-/* 区域标题 */
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 40px;
-  background: rgba(242, 191, 191, 0.5);
-}
-
-.sectionTitle {
-  font-family: '思源黑体', sans-serif;
-  font-size: 36px;
-  font-weight: 700;
-  color: #DFE4EB;
-  margin: 0;
-}
-
-.addBtn {
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: 2px solid #DFE4EB;
-  border-radius: 4px;
-  font-size: 32px;
-  color: #DFE4EB;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.addBtn:hover {
-  background: rgba(223, 228, 235, 0.2);
-}
-
-/* 团队表格 */
 .teamsTable {
-  padding: 0 40px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
 }
 
 .teamRow {
-  display: grid;
-  grid-template-columns: 150px 200px 150px 150px;
-  gap: 80px;
-  padding: 15px 20px;
-  background: rgba(223, 228, 235, 0.3);
-  margin-bottom: 10px;
-  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  min-height: 3.125rem;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  border-bottom: 1px solid rgba(223, 228, 235, 0.3);
+  transition: background 0.2s ease;
+}
+
+.teamRow:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.teamInfo {
+  display: flex;
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
 }
 
 .teamName,
-.teamId,
+.teamNumber,
 .teamRole,
 .teamPermission {
-  font-family: '思源黑体', sans-serif;
-  font-size: 18px;
+  font-family: 'Source Han Sans CN', sans-serif;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   color: #333333;
-  font-weight: 400;
 }
 
 .teamName {
+  min-width: 5rem;
   font-weight: 500;
+}
+
+.teamNumber {
+  min-width: 8rem;
+  color: #666666;
+}
+
+.teamRole {
+  min-width: 4rem;
+}
+
+.teamPermission {
+  min-width: 4rem;
+}
+
+.deleteTeamButton {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.deleteTeamButton:hover {
+  transform: scale(1.2);
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1024px) {
+  .fileCard {
+    flex: 1 1 calc(33.33% - 1.5rem);
+  }
+
+  .teamInfo {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .teamFilesSection,
+  .joinedTeamsSection {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .fileCard {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+
+  .filesGrid {
+    padding-left: 0.5rem;
+  }
+
+  .teamInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .teamRow {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .teamFilesSection {
+    padding-top: 4rem;
+  }
+
+  .fileCard {
+    flex: 1 1 100%;
+  }
+
+  .mainTitle {
+    font-size: 1.75rem;
+  }
+
+  .subTitle {
+    font-size: 1.5rem;
+  }
+
+  .addButton {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    font-size: 1.25rem;
+  }
 }

@@ -39,58 +39,97 @@ export const MyTeamsPage: React.FC = () => {
     }
   };
 
+  const handleAddFile = () => {
+    console.log('添加文件');
+  };
+
+  const handleDownloadFile = (fileId: string) => {
+    console.log('下载文件:', fileId);
+  };
+
+  const handleDeleteFile = (fileId: string) => {
+    console.log('删除文件:', fileId);
+  };
+
+  const handleAddTeam = () => {
+    console.log('加入团队');
+  };
+
+  const handleDeleteTeam = (teamId: string) => {
+    console.log('退出团队:', teamId);
+  };
+
   return (
     <div className={styles.pageContainer}>
-      {/* 页面标题 */}
-      <h1 className={styles.pageTitle}>团队文件</h1>
+      {/* 团队文件区块 */}
+      <section className={styles.teamFilesSection}>
+        <div className={styles.sectionHeader}>
+          <h1 className={styles.mainTitle}>团队文件</h1>
+          <button className={styles.addButton} onClick={handleAddFile} title="添加文件">
+            +
+          </button>
+        </div>
 
-      {/* 文件网格区域 */}
-      <div className={styles.filesSection}>
         <div className={styles.filesGrid}>
-          {files.map((file) => (
-            <div key={file.id} className={styles.fileCard}>
-              <div className={styles.fileIconArea}>
-                <span className={styles.fileIcon}>{getFileIcon(file.type)}</span>
+          {files.map((file, index) => (
+            <div
+              key={file.id}
+              className={`${styles.fileCard} ${index % 2 === 0 ? styles.fileCardBlue : styles.fileCardWhite}`}
+            >
+              <div className={styles.fileIcon}>
+                {getFileIcon(file.type)}
               </div>
-              <div className={styles.fileInfo}>
-                <div className={styles.fileName}>{file.name}</div>
-                <div className={styles.fileActions}>
-                  <button className={styles.iconBtn} title="下载">⬇</button>
-                  <button className={styles.iconBtn} title="复制">📋</button>
-                  <button className={styles.iconBtn} title="删除">🗑️</button>
-                </div>
+              <div className={styles.fileName}>{file.name}</div>
+              <div className={styles.fileActions}>
+                <button
+                  className={styles.downloadButton}
+                  onClick={() => handleDownloadFile(file.id)}
+                  title="下载"
+                >
+                  ↓
+                </button>
+                <button
+                  className={styles.deleteButton}
+                  onClick={() => handleDeleteFile(file.id)}
+                  title="删除"
+                >
+                  🗑️
+                </button>
               </div>
-              {file.size && (
-                <div className={styles.fileSize}>
-                  {file.size}<br/>
-                  <span className={styles.fileMeta}>背景色</span><br/>
-                  <span className={styles.fileMeta}>5A9BE6 50%</span><br/>
-                  <span className={styles.fileMeta}>字体思源黑体</span><br/>
-                  <span className={styles.fileMeta}>18</span>
-                </div>
-              )}
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* 我加入的团队 */}
-      <div className={styles.teamsSection}>
+      {/* 我加入的区块 */}
+      <section className={styles.joinedTeamsSection}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>我加入的</h2>
-          <button className={styles.addBtn}>+</button>
+          <h2 className={styles.subTitle}>我加入的</h2>
+          <button className={styles.addButton} onClick={handleAddTeam} title="加入团队">
+            +
+          </button>
         </div>
+
         <div className={styles.teamsTable}>
           {teams.map((team) => (
             <div key={team.id} className={styles.teamRow}>
-              <div className={styles.teamName}>{team.name}</div>
-              <div className={styles.teamId}>{team.teamId}</div>
-              <div className={styles.teamRole}>{team.role}</div>
-              <div className={styles.teamPermission}>{team.permission}</div>
+              <div className={styles.teamInfo}>
+                <span className={styles.teamName}>{team.name}</span>
+                <span className={styles.teamNumber}>{team.teamId}</span>
+                <span className={styles.teamRole}>{team.role}</span>
+                <span className={styles.teamPermission}>{team.permission}</span>
+              </div>
+              <button
+                className={styles.deleteTeamButton}
+                onClick={() => handleDeleteTeam(team.id)}
+                title="退出团队"
+              >
+                🗑️
+              </button>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

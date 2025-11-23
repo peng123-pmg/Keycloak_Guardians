@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { GlobalSearch } from '../../components/GlobalSearch/GlobalSearch';
+import { BackButton } from '../../components/BackButton/BackButton';
 import { WelcomeSection } from './components/WelcomeSection';
 import { PersonalFilesPage } from '../PersonalFiles/PersonalFilesPage';
 import { MyTeamsPage } from '../MyTeams/MyTeamsPage';
@@ -80,6 +81,8 @@ const DashboardContent: React.FC = () => {
       {/* 全局搜索框 */}
       <GlobalSearch />
       <main className={styles.mainContent}>
+        {/* 返回按钮 - 放在主内容区内部 */}
+        <BackButton />
         <Routes>
           <Route path="/" element={<WelcomeSection />} />
           <Route path="/personal-files" element={<PersonalFilesPage />} />

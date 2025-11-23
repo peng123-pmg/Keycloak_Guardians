@@ -28,65 +28,60 @@ Authorization: Bearer <access_token>
     "welcome": "欢迎回来，管理员!"
 }
 
-2.1.用户信息概况
+2. 用户信息概况
+2.1 基本信息
 请求路径：/api/user/stats
 请求方式：GET
-接口描述：该接口用于返回所有用户的统计信息
+接口描述：返回所有用户及其文件概况，需要 admin 角色
 
 2.2 请求参数
 Authorization: Bearer <access_token>
 
 2.3 响应数据
 参数格式：application/json
-参数说明：
--message：请求成功返回信息
--datal：数据
--summary：数据总结
--roleDistribution：根据角色区分的用户信息
--registrationHistory：根据注册日期区分的用户信息
--metadata：请求成功的信息
+字段说明：
+- message：请求结果描述
+- data.summary：概览信息
+  - totalOwners：至少上传过一次的用户数
+  - activeOwners：有 ACTIVE 文件的用户数
+  - totalFiles：有效文件总数
+  - storageUsedBytes：占用字节数
+  - storageUsedReadable：人类可读格式
+  - averageFileSizeBytes：平均单个文件大小
+- data.filesByStatus：按状态统计
+- data.topUsersByStorage：Top5 用户（文件数、存储量）
+- data.generatedAt：生成时间 (ISO-8601)
 
-响应数据样例：
+响应示例：
+```
 {
-    "message": "用户数据概览获取成功",
-    "data": {
-        "summary": {
-            "总用户数": 3,
-            "活跃用户": 3,
-            "今日新增": 0
-        },
-        "roleDistribution": [
-            {
-                "角色": "admin",
-                "用户数": 1
-            },
-            {
-                "角色": "user",
-                "用户数": 3
-            }
-        ],
-        "registrationHistory": [
-            {
-                "日期": "2024-01-01",
-                "注册人数": 1
-            },
-            {
-                "日期": "2024-01-02",
-                "注册人数": 1
-            },
-            {
-                "日期": "2024-01-03",
-                "注册人数": 1
-            }
-        ]
+  "message": "用户数据概览获取成功",
+  "data": {
+    "summary": {
+      "totalOwners": 2,
+      "activeOwners": 2,
+      "totalFiles": 5,
+      "storageUsedBytes": 7340032,
+      "storageUsedReadable": "7.0 MB",
+      "averageFileSizeBytes": 1468006
     },
-    "metadata": {
-        "生成者": "admin",
-        "生成时间": "2025-11-14 19:18:13",
-        "timestamp": 1763119093385
-    }
+    "filesByStatus": {
+      "ACTIVE": 4,
+      "ARCHIVED": 1
+    },
+    "topUsersByStorage": [
+      {
+        "ownerId": "user-123",
+        "fileCount": 3,
+        "storageBytes": 6291456
+      }
+    ],
+    "generatedAt": "2025-11-23T10:43:21.123456Z"
+  }
 }
+```
 
+3. 用户管理
 3.1 创建用户
 请求路径：/api/admin/users
 请求方式：POST

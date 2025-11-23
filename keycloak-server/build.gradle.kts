@@ -44,6 +44,11 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+
+    // Flyway and MySQL dependencies
+    implementation("io.quarkus:quarkus-flyway")
+    implementation("io.quarkus:quarkus-jdbc-mysql")
+    implementation("io.quarkus:quarkus-agroal")
 }
 
 tasks.withType<JavaCompile> {

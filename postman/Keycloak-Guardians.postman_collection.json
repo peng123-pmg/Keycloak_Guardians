@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "Keycloak Guardians",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection covering token retrieval, user profile, and stats API"
+  },
+  "item": [
+    {
+      "name": "Auth / 获取 Token",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "grant_type", "value": "password" },
+            { "key": "client_id", "value": "backend-service" },
+            { "key": "username", "value": "admin" },
+            { "key": "password", "value": "admin" }
+          ]
+        },
+        "url": {
+          "raw": "{{keycloak_url}}/realms/guardians/protocol/openid-connect/token",
+          "host": ["{{keycloak_url}}"],
+          "path": ["realms","guardians","protocol","openid-connect","token"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "pm.collectionVariables.set('access_token', json.access_token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/users/me",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base}}/api/users/me",
+          "host": ["{{api_base}}"],
+          "path": ["api","users","me"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.code === 200);",
+              "const body = pm.response.json();",
+              "pm.test('has username', () => body.username);",
+              "pm.test('has roles array', () => Array.isArray(body.roles));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /api/user/stats",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{access_token}}" }
+        ],
+        "url": {
+          "raw": "{{api_base}}/api/user/stats",
+          "host": ["{{api_base}}"],
+          "path": ["api","user","stats"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.code === 200);",
+              "const body = pm.response.json();",
+              "pm.test('message ok', () => body.message);",
+              "pm.test('has summary', () => body.data && body.data.summary);",
+              "pm.test('has filesByStatus map', () => body.data && body.data.filesByStatus);"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "keycloak_url", "value": "http://localhost:8080" },
+    { "key": "api_base", "value": "http://localhost:8081" },
+    { "key": "access_token", "value": "" }
+  ]
+}
+

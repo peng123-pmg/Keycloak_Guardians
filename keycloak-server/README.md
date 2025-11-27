@@ -10,20 +10,20 @@
 
 ## 数据库准备（MySQL 8.0 + Flyway）
 1. 安装并启动 MySQL 8.0，确保能通过 `mysql` CLI 连接。
-2. 使用 root 账号执行以下 SQL（可直接复制粘贴到终端��：
+2. 使用 root 账号执行以下 SQL（仅允许本机访问，其他成员拉仓库后在自己机器执行即可）：
     ```sql
     CREATE DATABASE IF NOT EXISTS iamkc DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    CREATE USER IF NOT EXISTS 'iamkc'@'%' IDENTIFIED BY 'iamkc';
-    GRANT ALL PRIVILEGES ON iamkc.* TO 'iamkc'@'%';
+    CREATE USER IF NOT EXISTS 'iamkc'@'localhost' IDENTIFIED BY 'iamkc';
+    GRANT ALL PRIVILEGES ON iamkc.* TO 'iamkc'@'localhost';
     FLUSH PRIVILEGES;
     ```
 3. （可选）根据实际环境修改 `MYSQL_JDBC_URL`、`MYSQL_USERNAME`、`MYSQL_PASSWORD` 环境变量，或直接编辑 `src/main/resources/application.properties`。
-4. 运行 Flyway 迁移创建核心表（包含 `files` 元数据表，定义见 `src/main/resources/db/migration/V1__create_files_table.sql`）：
+4. 运行 Flyway 迁移创建核心表（包含 `files`、`users`、`storage_usage_daily` 等元数据表，定义见 `src/main/resources/db/migration/*.sql`）：
     ```powershell
     cd keycloak-server
     ./gradlew flywayMigrate
     ```
-5. 确认数据库内出现 `files` 表及 `flyway_schema_history` 记录后，再启动后端服务。
+5. 确认数据库内出现 `files`、`users`、`storage_usage_daily` 以及 `flyway_schema_history` 记录后，再启动后端服务。
 
 ## 快速启动
 1. **导入 Keycloak realm**
@@ -81,6 +81,7 @@
 ## Postman 测试集
 - 集合文件：`postman/Keycloak-Guardians.postman_collection.json`
 - 导入后先运行 **Auth / 获取 Token** 请求，会自动把 `access_token` 保存到 `{{access_token}}` 变量；随后依次测试 `GET /api/users/me`、`GET /api/user/stats` 等接口，断言会校验状态码与关键字段格式。
+- 新增/更新接口完成后，请运行集合内 **User Stats / GET /api/user/stats** 请求验证返回结构是否符合文档（`API.md` / `docs/wiki/API.md`）。
 
 ---
 如有疑问请联系后端负责人或查阅 Keycloak 官方文档。

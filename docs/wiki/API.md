@@ -30,4 +30,3 @@
 - Postman 集合位于 `postman/Keycloak-Guardians.postman_collection.json`，用以验证字段格式与权限要求。
 
 > Wiki 推送步骤：复制本文件内容到 GitHub Wiki 仓库（`*.wiki.git`），提交后通知团队即可。
-

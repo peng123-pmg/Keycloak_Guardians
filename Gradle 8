@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en-US" class="site-layout" itemscope itemtype="https://schema.org/WebPage">
+  <head prefix="og: http://ogp.me/ns#
+                
+                website: http://ogp.me/ns/website#
+                ">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradle | Thank you for downloading Gradle!</title>
+    <link crossorigin href="//assets.gradle.com" rel="preconnect">
+    <style type="text/css">/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */
+    html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}</style>
+    <link rel="stylesheet" href="https://gradle.org/styles.css">
+    
+    <link rel="stylesheet" href="https://gradle.org/next-steps.css">
+    
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://gradle.org/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="https://gradle.org/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://gradle.org/icon/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="https://gradle.org/icon/manifest.json">
+    <link rel="mask-icon" href="https://gradle.org/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="https://gradle.org/icon/favicon.ico">
+    
+    <meta name="description" content="Next steps after downloading Gradle">
+    
+    <meta name="apple-mobile-web-app-title" content="Gradle Build Tool">
+    <meta name="application-name" content="Gradle Build Tool">
+    <meta name="msapplication-config" content="https://gradle.org/con/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="google" content="nositelinkssearchbox">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@gradle">
+    <meta name="twitter:creator" content="@gradle">
+    <meta name="twitter:title" content="Gradle | Thank you for downloading Gradle!">
+    <meta name="twitter:url" content="https://gradle.org/next-steps/">
+    
+    <meta name="twitter:description" content="Next steps after downloading Gradle">
+    
+    <meta name="twitter:image" content="https://gradle.org/images/gradle-400x400.png ">
+    <meta property="og:description" content="Next steps after downloading Gradle">
+    <meta property="og:image" content="https://gradle.org/images/gradle-400x400.png">
+    <meta property="og:image:secure_url" content="https://gradle.org/images/gradle-400x400.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:site_name" content="Gradle">
+    <meta property="fb:app_id" content="1986896958304057">
+    <meta property="og:title" content="Gradle | Thank you for downloading Gradle!">
+    
+    <meta property="og:type" content="website">
+    
+    
+    <meta property="og:url" content="https://gradle.org/next-steps/">
+    
+    <!-- Events popup -->
+    <script src="https://gradle.org/js/events.js" defer></script>
+
+    
+    
+        <!-- Google Tag Manager - NEW MODE -->
+        <link rel="stylesheet" href="https://gradle.org/lib/cookie-consent-banner.css">
+        <script id="bt-google-tag-manager-injector" src="https://gradle.org/js/google-tag-analytics.js" promo_location="dotorg-site"></script> 
+    
+
+
+  </head>
+  <body class="site-layout__layout">
+
+    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WRTQKGT"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    
+    
+
+
+    
+      <header class="site-layout__header site-header" itemscope itemtype="https://schema.org/WPHeader">
+  <nav class="site-header__navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <div class="site-header__navigation-header">
+    <a class="logo" href="https://gradle.org/" title="Gradle Logo"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="243" height="43" viewBox="0 0 484 102"><defs><style>.cls-1{fill:#02303a;}</style></defs><title>gradle-build-tool-dark-green-primary</title><path class="cls-1" d="M147.17,56.39V70.28a18.16,18.16,0,0,1-5.57,2.81,21.62,21.62,0,0,1-6.33.89,21.08,21.08,0,0,1-7.6-1.3,17,17,0,0,1-5.82-3.63,15.9,15.9,0,0,1-3.72-5.56,18.62,18.62,0,0,1-1.3-7.05,19.36,19.36,0,0,1,1.26-7.1,16.05,16.05,0,0,1,3.57-5.56,15.83,15.83,0,0,1,5.61-3.6,20.21,20.21,0,0,1,7.41-1.29,21.89,21.89,0,0,1,3.91.34,19.51,19.51,0,0,1,3.37.91,15.34,15.34,0,0,1,2.84,1.41,18.65,18.65,0,0,1,2.35,1.83l-1.83,2.9a1.75,1.75,0,0,1-1.12.84,2,2,0,0,1-1.49-.34l-1.57-.91a10,10,0,0,0-1.75-.78,15.42,15.42,0,0,0-2.16-.55,16.15,16.15,0,0,0-2.76-.21,11.86,11.86,0,0,0-4.6.86,9.83,9.83,0,0,0-3.5,2.44,11.13,11.13,0,0,0-2.23,3.82,15.06,15.06,0,0,0-.78,5,15.4,15.4,0,0,0,.84,5.26,11.1,11.1,0,0,0,2.37,3.92,10.21,10.21,0,0,0,3.7,2.44,13.18,13.18,0,0,0,4.82.84,13,13,0,0,0,3.39-.4,16.6,16.6,0,0,0,2.92-1.09V61.19h-4.32a1.3,1.3,0,0,1-1-.35,1.15,1.15,0,0,1-.35-.84V56.39Zm10.42-2.92A10.63,10.63,0,0,1,160.3,50,5.76,5.76,0,0,1,164,48.8a4.53,4.53,0,0,1,2.71.73l-.38,4.39a1.14,1.14,0,0,1-.34.61,1,1,0,0,1-.61.18,6.89,6.89,0,0,1-1.06-.12,8,8,0,0,0-1.36-.12,4.87,4.87,0,0,0-1.73.28,4.42,4.42,0,0,0-1.37.82,5.76,5.76,0,0,0-1.07,1.3,11.15,11.15,0,0,0-.86,1.73v15h-5.87V49.25h3.44a1.42,1.42,0,0,1,1.74,1.47Zm11.3-.83A14.5,14.5,0,0,1,179,48.8a10,10,0,0,1,3.82.69,8.22,8.22,0,0,1,2.85,1.95,8.55,8.55,0,0,1,1.77,3,11.56,11.56,0,0,1,.6,3.8V73.61H185.4a2.78,2.78,0,0,1-1.29-.25,1.79,1.79,0,0,1-.71-1l-.52-1.76a21.88,21.88,0,0,1-1.81,1.46,10.78,10.78,0,0,1-1.82,1.06,10.24,10.24,0,0,1-2,.65,11.78,11.78,0,0,1-2.39.22,9.26,9.26,0,0,1-2.85-.41,6.18,6.18,0,0,1-2.25-1.25,5.53,5.53,0,0,1-1.48-2.06,7.31,7.31,0,0,1-.52-2.87,5.66,5.66,0,0,1,.31-1.85,5.26,5.26,0,0,1,1-1.74,8.38,8.38,0,0,1,1.81-1.57A12.16,12.16,0,0,1,173.61,61a24,24,0,0,1,3.78-.89,36.6,36.6,0,0,1,4.94-.41V58.22a5.36,5.36,0,0,0-1-3.62,3.84,3.84,0,0,0-3-1.18,7.19,7.19,0,0,0-2.36.34,9.81,9.81,0,0,0-1.65.74l-1.29.75a2.59,2.59,0,0,1-1.3.33,1.63,1.63,0,0,1-1-.32,2.54,2.54,0,0,1-.69-.74Zm13.44,10.57a31.33,31.33,0,0,0-4.27.44,11.38,11.38,0,0,0-2.78.81,3.7,3.7,0,0,0-1.49,1.17,2.45,2.45,0,0,0-.46,1.45,2.54,2.54,0,0,0,.92,2.2,3.9,3.9,0,0,0,2.38.67,7,7,0,0,0,3.13-.65,9.45,9.45,0,0,0,2.57-2Zm32.39-24.89V73.61h-3.59a1.38,1.38,0,0,1-1.47-1.07l-.5-2.35a12.46,12.46,0,0,1-3.38,2.73,9.23,9.23,0,0,1-4.45,1,7.93,7.93,0,0,1-6.52-3.24,11.4,11.4,0,0,1-1.85-3.9,19.61,19.61,0,0,1-.66-5.32,16.64,16.64,0,0,1,.74-5,12.18,12.18,0,0,1,2.11-4,9.88,9.88,0,0,1,3.3-2.67,9.53,9.53,0,0,1,4.32-1,8.53,8.53,0,0,1,3.49.64,8.71,8.71,0,0,1,2.59,1.73V38.32Zm-5.87,17.15a5.71,5.71,0,0,0-2.17-1.71,6.28,6.28,0,0,0-2.53-.5,5.48,5.48,0,0,0-2.4.5,4.76,4.76,0,0,0-1.82,1.5,7.27,7.27,0,0,0-1.17,2.57,14.71,14.71,0,0,0-.4,3.67,16.31,16.31,0,0,0,.34,3.62,7.11,7.11,0,0,0,1,2.42,3.72,3.72,0,0,0,1.56,1.35,5,5,0,0,0,2.07.42,6,6,0,0,0,3.11-.76,9.44,9.44,0,0,0,2.42-2.16Zm17.59-17.15V73.61h-5.86V38.32Zm10.38,23.84a11.66,11.66,0,0,0,.66,3.24,6.74,6.74,0,0,0,1.38,2.26,5.56,5.56,0,0,0,2,1.33,7.43,7.43,0,0,0,2.6.44,7.82,7.82,0,0,0,2.46-.34,11,11,0,0,0,1.8-.73c.52-.27,1-.52,1.36-.74a2.25,2.25,0,0,1,1.12-.33,1.22,1.22,0,0,1,1.1.55L253,70a9.81,9.81,0,0,1-2.18,1.91,12.1,12.1,0,0,1-2.53,1.24,14,14,0,0,1-2.68.65A18.78,18.78,0,0,1,243,74a13.07,13.07,0,0,1-4.73-.84,10.64,10.64,0,0,1-3.8-2.49,11.88,11.88,0,0,1-2.54-4.09A16,16,0,0,1,231,60.9a13.48,13.48,0,0,1,.81-4.69,11.3,11.3,0,0,1,2.31-3.82,10.93,10.93,0,0,1,3.68-2.57,12.94,12.94,0,0,1,9.15-.22,9.24,9.24,0,0,1,3.35,2.15,10,10,0,0,1,2.2,3.47,12.92,12.92,0,0,1,.79,4.69A3.83,3.83,0,0,1,253,61.7a1.18,1.18,0,0,1-1.09.46ZM248,58.62a7.21,7.21,0,0,0-.32-2.15,4.93,4.93,0,0,0-1-1.76,4.41,4.41,0,0,0-1.63-1.2,6.22,6.22,0,0,0-6.29,1,7.1,7.1,0,0,0-1.86,4.1ZM280.93,40a19.3,19.3,0,0,1,5,.57,9.53,9.53,0,0,1,3.49,1.67,6.83,6.83,0,0,1,2,2.7,9.33,9.33,0,0,1,.66,3.61,7.2,7.2,0,0,1-.46,2.56,8,8,0,0,1-1.33,2.28,8.61,8.61,0,0,1-2.13,1.82,10.55,10.55,0,0,1-2.91,1.17A10.73,10.73,0,0,1,291.37,59a7.19,7.19,0,0,1,2.12,5.4,9.3,9.3,0,0,1-.76,3.84,7.77,7.77,0,0,1-2.21,2.9A10.06,10.06,0,0,1,287,73a16.79,16.79,0,0,1-4.79.63h-10.9V40Zm-7.22,1.92v13.8H281a11.7,11.7,0,0,0,4-.6,7.68,7.68,0,0,0,2.7-1.56,6,6,0,0,0,1.56-2.21,6.76,6.76,0,0,0,.5-2.54,6.24,6.24,0,0,0-2.15-5.14q-2.16-1.76-6.64-1.75Zm8.43,29.73c2.95,0,5.17-.64,6.69-1.91a7.39,7.39,0,0,0,1.66-8.24,6,6,0,0,0-1.75-2.16,8.05,8.05,0,0,0-2.8-1.37,14,14,0,0,0-3.77-.47h-8.46V71.66ZM318,50V73.61h-1.26A.64.64,0,0,1,316,73l-.21-3.52A13.23,13.23,0,0,1,312,72.75,9.43,9.43,0,0,1,307.24,74a8.93,8.93,0,0,1-3.45-.61,6.36,6.36,0,0,1-2.44-1.78,7.87,7.87,0,0,1-1.47-2.8,12.52,12.52,0,0,1-.5-3.71V50h2.28v15.1a8,8,0,0,0,1.52,5.21,5.57,5.57,0,0,0,4.63,1.89A8.43,8.43,0,0,0,312.12,71a12.35,12.35,0,0,0,3.57-3.27V50Zm11.25-8.14a1.76,1.76,0,0,1-.18.79,2.18,2.18,0,0,1-.46.66,2.15,2.15,0,0,1-.66.45,2.13,2.13,0,0,1-1.62,0,2.15,2.15,0,0,1-1.11-1.11,1.9,1.9,0,0,1-.17-.79,2.08,2.08,0,0,1,.17-.82,2.12,2.12,0,0,1,.45-.68,2.15,2.15,0,0,1,.66-.45,2.13,2.13,0,0,1,1.62,0A2.16,2.16,0,0,1,329,41,1.92,1.92,0,0,1,329.22,41.84Zm-1,8.14V73.61H326V50Zm10.54-10.92V73.61h-2.28V39.06Zm26.38,0V73.61h-1.24a.65.65,0,0,1-.71-.62L363,69.26a12.63,12.63,0,0,1-3.65,3.4,9,9,0,0,1-4.7,1.25,8.2,8.2,0,0,1-6.79-3q-2.43-3-2.43-9.05a16.73,16.73,0,0,1,.68-4.83,11.62,11.62,0,0,1,2-3.89,9.37,9.37,0,0,1,3.22-2.6,9.66,9.66,0,0,1,4.4-1,9.15,9.15,0,0,1,4.16.88,8.59,8.59,0,0,1,3.06,2.61v-14Zm-2.26,16a8,8,0,0,0-3-2.87,8.33,8.33,0,0,0-3.77-.83,8.21,8.21,0,0,0-3.65.76,7.12,7.12,0,0,0-2.63,2.15,9.76,9.76,0,0,0-1.59,3.32,16.24,16.24,0,0,0-.53,4.26c0,3.52.64,6.1,1.94,7.75a6.65,6.65,0,0,0,5.59,2.49,7.82,7.82,0,0,0,4.25-1.22,11.4,11.4,0,0,0,3.39-3.39Zm44.42-13h-11.8V73.61h-2.44V42.08H381.22V40h26.11Zm8,7.52a11.28,11.28,0,0,1,4.54.87,9.33,9.33,0,0,1,3.39,2.46,10.91,10.91,0,0,1,2.1,3.83,17.83,17.83,0,0,1,0,10,11,11,0,0,1-2.1,3.82,9.19,9.19,0,0,1-3.39,2.45,12.58,12.58,0,0,1-9.09,0,9.19,9.19,0,0,1-3.39-2.45,10.67,10.67,0,0,1-2.12-3.82,17.83,17.83,0,0,1,0-10,10.63,10.63,0,0,1,2.12-3.83,9.33,9.33,0,0,1,3.39-2.46A11.33,11.33,0,0,1,415.36,49.6Zm0,22.53a8.8,8.8,0,0,0,3.69-.72,7,7,0,0,0,2.63-2.08,8.93,8.93,0,0,0,1.58-3.26,17.55,17.55,0,0,0,0-8.56,9.07,9.07,0,0,0-1.58-3.29,7,7,0,0,0-2.63-2.1,9.57,9.57,0,0,0-7.38,0,7,7,0,0,0-2.64,2.1,9.6,9.6,0,0,0-1.59,3.29,17.55,17.55,0,0,0,0,8.56A9.45,9.45,0,0,0,409,69.33a6.92,6.92,0,0,0,2.64,2.08A8.8,8.8,0,0,0,415.36,72.13ZM441.85,49.6a11.33,11.33,0,0,1,4.55.87,9.29,9.29,0,0,1,3.38,2.46,10.75,10.75,0,0,1,2.1,3.83,17.59,17.59,0,0,1,0,10,10.79,10.79,0,0,1-2.1,3.82,9.15,9.15,0,0,1-3.38,2.45,12.58,12.58,0,0,1-9.09,0,9.31,9.31,0,0,1-3.4-2.45,10.81,10.81,0,0,1-2.11-3.82,17.59,17.59,0,0,1,0-10,10.77,10.77,0,0,1,2.11-3.83,9.45,9.45,0,0,1,3.4-2.46A11.28,11.28,0,0,1,441.85,49.6Zm0,22.53a8.88,8.88,0,0,0,3.7-.72,7,7,0,0,0,2.63-2.08,9.26,9.26,0,0,0,1.58-3.26,17.87,17.87,0,0,0,0-8.56,9.41,9.41,0,0,0-1.58-3.29,7,7,0,0,0-2.63-2.1,9.6,9.6,0,0,0-7.39,0,7,7,0,0,0-2.63,2.1,9.25,9.25,0,0,0-1.59,3.29,17.23,17.23,0,0,0,0,8.56,9.11,9.11,0,0,0,1.59,3.26,7,7,0,0,0,2.63,2.08A8.8,8.8,0,0,0,441.85,72.13Zm19.64-33.07V73.61h-2.28V39.06ZM104.4,14a13.73,13.73,0,0,0-19.08-.33,1.34,1.34,0,0,0-.42.94,1.37,1.37,0,0,0,.39.95L87,17.33a1.31,1.31,0,0,0,1.71.12,7.78,7.78,0,0,1,4.71-1.57A7.86,7.86,0,0,1,99,29.31C88.1,40.21,73.55,9.67,40.53,25.38a4.49,4.49,0,0,0-2,6.29l5.66,9.79a4.49,4.49,0,0,0,6.07,1.67l.14-.08-.11.08,2.51-1.41a57.53,57.53,0,0,0,7.9-5.9,1.39,1.39,0,0,1,1.81,0h0a1.28,1.28,0,0,1,.49,1,1.32,1.32,0,0,1-.43,1A59.24,59.24,0,0,1,54.24,44l-.08,0-2.51,1.4a7,7,0,0,1-3.48.91,7.22,7.22,0,0,1-6.23-3.57l-5.35-9.25c-10.28,7.26-16.52,21.25-13.17,39a1.32,1.32,0,0,0,1.28,1.06h6.1a1.3,1.3,0,0,0,1.29-1.14,8.93,8.93,0,0,1,17.72,0,1.31,1.31,0,0,0,1.3,1.14h5.94a1.3,1.3,0,0,0,1.29-1.14,8.94,8.94,0,0,1,17.73,0,1.3,1.3,0,0,0,1.29,1.14h5.87a1.3,1.3,0,0,0,1.3-1.28C84.67,64,86.9,54.5,93.26,49.74,115.29,33.26,109.5,19.13,104.4,14ZM81.93,38.93l-4.2-2.11h0a2.64,2.64,0,1,1,4.2,2.12Z"/></svg></a>
+    <button type="button" class="site-header__navigation-button hamburger">
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+    </button>
+    </div>
+
+    <div class="site-header__navigation-collapsible site-header__navigation-collapsible--collapse">
+    <ul class="site-header__navigation-items">
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link ">
+              About
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on About">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/releases"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle Releases</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/features"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle Features</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/whats-new/gradle-9"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle 9 Highlights</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/whats-new/gradle-8"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle 8 Highlights</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/maven-and-gradle"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle vs Maven</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://declarative.gradle.org/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Declarative Gradle</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link active">
+              Docs
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on Docs">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://docs.gradle.org/current/userguide/userguide.html"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle User Guide</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://docs.gradle.org/current/userguide/installation.html"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Installing Gradle</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://cookbook.gradle.org/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle Cookbook</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link ">
+              Learn
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on Learn">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://dpeuniversity.gradle.com/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">DPE University</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://www.youtube.com/channel/UCvClhveoEjokKIuBAsSjEwQ"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">YouTube Channel</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.com/training/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Events and Webinars</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link ">
+              Get Help
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on Get Help">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/slack-invite"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Community Slack</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://discuss.gradle.org/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Community Forums</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/services"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Professional Services</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link ">
+              Community
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on Community">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://newsletter.gradle.org"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Newsletter</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://blog.gradle.org"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Blog</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://github.com/gradle/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">GitHub</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.org/fellowship"
+                    
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Gradle Fellowship</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item site-header__navigation-submenu-section" tabindex="0">
+            <span class="site-header__navigation-link ">
+              Gradle, Inc.
+              <img class="site-header__down-arrow site-header__icon-light"
+                src="https://gradle.org/images/collapse-light.svg"
+                alt="More on Gradle, Inc.">
+            </span>
+            <div class="site-header__navigation-submenu">
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.com/develocity"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Develocity®</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://scans.gradle.com/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Build Scan®</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://dpe.org/"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">DPE.org</span>
+                </a>
+              </div>
+            
+              
+              <div class="site-header__navigation-submenu-item" itemprop="name">
+                <a class="site-header__navigation-submenu-item-link"
+                    promo_location="Nav Bar Submenu Link"
+                    href="https://gradle.com/careers/?_ga=2.256030216.287138346.1663079591-294412720.1663079591"
+                    target="_blank"
+                    itemprop="url">
+                  <span class="site-header__navigation-submenu-item-link-text">Careers</span>
+                </a>
+              </div>
+            
+            </div>
+        </li>
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item" itemprop="name">
+          
+            <a class="site-header__navigation-link site-header__navigation-icon
+                "
+                promo_location="Nav Bar Icon"
+                href="https://twitter.com/gradle"
+                target="_blank"
+                itemprop="url">
+                <img
+                  src="https://gradle.org/images/icons/x-icon.svg"
+                  alt="Twitter">
+            </a>
+          
+        </li>    
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item" itemprop="name">
+          
+            <a class="site-header__navigation-link site-header__navigation-icon
+                "
+                promo_location="Nav Bar Icon"
+                href="https://www.linkedin.com/company/gradle"
+                target="_blank"
+                itemprop="url">
+                <img
+                  src="https://gradle.org/images/icons/linkedin.svg"
+                  alt="LinkedIn">
+            </a>
+          
+        </li>    
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item" itemprop="name">
+          
+            <a class="site-header__navigation-link site-header__navigation-icon
+                "
+                promo_location="Nav Bar Icon"
+                href="https://github.com/gradle/gradle"
+                target="_blank"
+                itemprop="url">
+                <img
+                  src="https://gradle.org/images/icons/github.svg"
+                  alt="GitHub">
+            </a>
+          
+        </li>    
+        
+    
+        
+        
+        
+        <li class="site-header__navigation-item" itemprop="name">
+          
+            <a class="site-header__navigation-link site-header__navigation-icon
+                "
+                promo_location="Nav Bar Icon"
+                href="https://gradle.org/slack-invite"
+                target="_blank"
+                itemprop="url">
+                <img
+                  src="https://gradle.org/images/icons/slack-black.svg"
+                  alt="Community Slack">
+            </a>
+          
+        </li>    
+        
+    
+    </ul>
+    </div>
+    
+  </nav>
+</header>
+
+    
+
+    <div class="site-layout__body">
+      <div class="layout">
+  <main class="layout__main">
+    <section id="download-header" class="u-text-center">
+    <div class="section-content">
+        <h2>Thank you for downloading Gradle!</h2>
+    </div>
+</section>
+
+<section id="download-content" class="u-text-center">
+    <div class="section-content">
+        <ul class="inline-list">
+            <li>❯ <a id="checksum-link" href="#">Verify SHA-256 checksum</a></li>
+            <li>❯ <a href="https://gradle.org/install/#manually">Installation instructions</a></li>
+            <li>❯ <a href="https://docs.gradle.org">View Documentation</a></li>
+        </ul>
+      
+        <p class="lead">Your download should start shortly. If it doesn't, use the
+            <a href="#" id="direct-link">direct link</a>.
+        </p>
+    </div>
+</section>
+
+<section id="newsletter" class="u-text-center dark">
+  <div class="section-content newsletter-section">
+    <div class="header">
+      <h2>Stay in the Know</h2>
+      <h4>Join <a href="https://newsletter.gradle.org" target="_blank">100,000+</a> Gradle newsletter subscribers.</h4>
+    </div>
+
+    <p class='disclaimer'>
+      By entering your email, you agree to our <a href="https://gradle.com/legal/terms-of-service/">Terms</a> and <a href="https://gradle.com/legal/privacy/">Privacy Policy</a>, including receipt of emails. You can unsubscribe at any time.
+    </p>
+
+    <iframe id="newsletter-form-frame" class="newsletter-form"
+            src="https://go.gradle.com/l/68052/2018-10-10/bkvm3b">
+    </iframe>
+
+    <script>
+      var iframe = document.querySelector("iframe");
+
+      // Append query params for automated Pardot source tracking
+      if (window && window.location && window.location.search) {
+        iframe.src += window.location.search;
+      }
+      window.addEventListener("message", function(e) {
+        if (isNaN(e.data)) {
+          return;
+        }
+        iframe.style.height = e.data + "px";
+      });
+      /*
+       * Replace the iframe with an error message if for any reason the URL of the Pardot form
+       * is blocked. For example, Firefox blocks this URL in a Private Window when "Tracking
+       * Protection in Private Windows" is enabled.
+       */
+
+      fetch(iframe.src, {
+        method: "get",
+        mode: "no-cors"
+      }).catch(function() {
+        var newsletterSection = document.getElementById("newsletter");
+        newsletterSection.parentElement.removeChild(newsletterSection);
+        track('Error', 'Logged', 'Pardot Newsletter iFrame');
+      });
+    </script>
+</div>
+</section>
+
+  </main>
+</div>
+
+    </div>
+
+    <footer class="site-layout__footer site-footer" itemscope itemtype="https://schema.org/WPFooter">    
+      <div class="cookie-consent-holder">
+      </div>  
+      <div class="site-footer__contents">
+        <div class="site-footer__logo"><a href="https://gradle.org/"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 90 66.06"><defs><style>.cls-1{fill:#02303a;}</style></defs><path class="cls-1" d="M85.11,4.18a14.27,14.27,0,0,0-19.83-.34,1.38,1.38,0,0,0,0,2L67,7.6a1.36,1.36,0,0,0,1.78.12A8.18,8.18,0,0,1,79.5,20.06C68.17,31.38,53.05-.36,18.73,16a4.65,4.65,0,0,0-2,6.54l5.89,10.17a4.64,4.64,0,0,0,6.3,1.73l.14-.08-.11.08L31.53,33a60.29,60.29,0,0,0,8.22-6.13,1.44,1.44,0,0,1,1.87-.06h0a1.34,1.34,0,0,1,.06,2A61.61,61.61,0,0,1,33,35.34l-.09,0-2.61,1.46a7.34,7.34,0,0,1-3.61.94,7.45,7.45,0,0,1-6.47-3.71l-5.57-9.61C4,32-2.54,46.56,1,65a1.36,1.36,0,0,0,1.33,1.11H8.61A1.36,1.36,0,0,0,10,64.87a9.29,9.29,0,0,1,18.42,0,1.35,1.35,0,0,0,1.34,1.19H35.9a1.36,1.36,0,0,0,1.34-1.19,9.29,9.29,0,0,1,18.42,0A1.36,1.36,0,0,0,57,66.06H63.1a1.36,1.36,0,0,0,1.36-1.34c.14-8.6,2.46-18.48,9.07-23.43C96.43,24.16,90.41,9.48,85.11,4.18ZM61.76,30.05l-4.37-2.19h0a2.74,2.74,0,1,1,4.37,2.2Z"/></svg></a></div>
+        <div class="site-footer__links">
+          <a href="https://gradle.com/careers">Careers</a> |
+          <a href="https://gradle.com/legal/privacy/">Privacy</a> |
+          <a href="https://gradle.com/legal/terms-of-service/">Terms of Service</a> |
+          <a href="https://gradle.org/contact">Contact</a>
+        </div>
+      </div>
+      <div class="site-footer__copyright">&copy;
+        <time datetime="2025-10-29T15:37:15+00:00">2025</time>
+        Gradle, Inc.
+        Gradle®, Develocity®, Build Scan®, and the Gradlephant logo are registered trademarks of Gradle, Inc.
+        "Gradle" means "Gradle Build Tool" and does not reference Gradle, Inc. and/or its subsidiaries.
+      </div>
+    </footer>
+
+    <script src="https://gradle.org/js/site-header.js"></script>
+    
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", function initDownloadNextStepsPage() {
+  function getQueryParameter(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split("=");
+      if (decodeURIComponent(pair[0]) === variable) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+    return null;
+  }
+
+  // Retrieve distribution version and type from the URL
+  function computeDownloadUrl() {
+    var distributionVersion = getQueryParameter("version");
+    var distributionFormat = getQueryParameter("format");
+    if (distributionVersion !== null && distributionFormat !== null) {
+      return "https://services.gradle.org/distributions/gradle-" + distributionVersion + "-" + distributionFormat + ".zip";
+    }
+    return null;
+  }
+
+  function setDirectHref(href) {
+    document.getElementById("direct-link").setAttribute("href", href);
+  }
+
+  function setChecksumHref(href) {
+    document.getElementById("checksum-link").setAttribute("href", href);
+  }
+
+  function triggerDownload(url) {
+    window.location = url;
+  }
+
+  var downloadUrl = computeDownloadUrl();
+  if (downloadUrl !== null) {
+    setDirectHref(downloadUrl);
+    setChecksumHref(downloadUrl + ".sha256");
+    triggerDownload(downloadUrl);
+  }
+});
+
+    </script>
+    
+    
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "name": "Gradle",
+      "url": "https://gradle.org",
+      "logo": "https://gradle.org/images/gradle-knowledge-graph-logo.png?20170228",
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "telephone": "+1-415-446-9553",
+        "contactType": "sales",
+        "areaServed": ["US"]
+      }],
+      "sameAs": [
+        "https://www.wikidata.org/entity/Q965596",
+        "https://twitter.com/gradle",
+        "https://www.linkedin.com/company/gradle/",
+        "https://www.youtube.com/channel/UCvClhveoEjokKIuBAsSjEwQ"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "Gradle",
+      "url": "https://gradle.org"
+    }
+    </script>
+  </body>
+</html>

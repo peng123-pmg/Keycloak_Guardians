@@ -1,0 +1,67 @@
+/* 设计规范 - 基于UI设计稿提取 */
+
+:root {
+  /* 主色系 */
+  --primary-blue: #267CDE;
+  --primary-blue-light: #B2D2ED;
+  --purple: #8A9BE6;
+  --pink: #F2D5D5;
+  
+  /* 背景色 */
+  --bg-gray: #E5E5E5;
+  --bg-light: #FAFBFC;
+  --bg-white: #FFFFFF;
+  
+  /* 文字颜色 */
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-placeholder: #999999;
+  --text-white: #FFFFFF;
+  
+  /* 边框 */
+  --border-color: #CCCCCC;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  
+  /* 间距 */
+  --spacing-xs: 10px;
+  --spacing-sm: 15px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  --spacing-xl: 50px;
+  --spacing-xxl: 60px;
+  
+  /* 尺寸 - 登录页 */
+  --login-card-size: 450px;
+  --login-input-width: 300px;
+  --login-input-height: 35px;
+  
+  /* 尺寸 - 主界面 */
+  --sidebar-width: 375px;
+  --welcome-block-width: 595px;
+  --welcome-block-height: 295px;
+  
+  /* 字体 */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 32px;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.16);
+  
+  /* 过渡 */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* 透明度 */
+  --opacity-sidebar: 0.5;
+}

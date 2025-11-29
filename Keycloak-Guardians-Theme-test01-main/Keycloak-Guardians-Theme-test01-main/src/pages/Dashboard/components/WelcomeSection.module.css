@@ -1,0 +1,50 @@
+/* 主容器 - 使用相对定位以容纳绝对定位的子元素 */
+.welcomeContainer {
+  position: relative;
+  width: 100%;
+  height: 1024px;
+}
+
+/* 主标题 - 宋体 Heavy 72px，横跨两个色块重叠区域中间 */
+.mainTitle {
+  position: absolute;
+  top: 420px;
+  left: 270px;
+  font-family: '宋体', SimSun, serif;
+  font-size: 72px;
+  font-weight: 900; /* Heavy */
+  background: linear-gradient(180deg, #B2D2ED 0%, #95BBE8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* 蓝色区块 - 595×295px，#5A9BE6 50%透明度，左边距60px */
+.blueBlock {
+  position: absolute;
+  top: 280px;
+  left: 60px;
+  width: 595px;
+  height: 295px;
+  background: rgba(90, 155, 230, 0.5); /* #5A9BE6 50% */
+  border-radius: 0;
+  z-index: 1;
+}
+
+/* 粉色区块 - 595×295px，#F2D5D5 50%透明度，左边距450px，右边距60px（部分重叠蓝色块） */
+.pinkBlock {
+  position: absolute;
+  top: 410px;
+  left: 450px;
+  width: 595px;
+  height: 295px;
+  background: rgba(242, 213, 213, 0.5); /* #F2D5D5 50% */
+  border-radius: 0;
+  z-index: 2;
+}

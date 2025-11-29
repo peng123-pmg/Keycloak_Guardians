@@ -6,13 +6,32 @@
   box-sizing: border-box;
 }
 
+/* 固定画布：1024px 高度，禁止滚动 */
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
 button {

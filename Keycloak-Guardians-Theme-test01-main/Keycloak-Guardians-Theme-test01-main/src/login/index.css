@@ -23,12 +23,15 @@ body {
 }
 
 #kc-login {
-  min-height: 100vh;
+  width: 100%;
+  height: 1024px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
 

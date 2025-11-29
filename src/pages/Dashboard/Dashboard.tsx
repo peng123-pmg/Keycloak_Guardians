@@ -9,6 +9,10 @@ import { MyTeamsPage } from '../MyTeams/MyTeamsPage';
 import { CreatedTeamsPage } from '../CreatedTeams/CreatedTeamsPage';
 import { CreatedTeamsListPage } from '../CreatedTeamsList/CreatedTeamsListPage';
 import { CreateTeamPage } from '../CreateTeam/CreateTeamPage';
+import NotificationCenterPage from '../NotificationCenter/NotificationCenterPage';
+import MessageDetailPage from '../MessageDetail/MessageDetailPage';
+import RecycleBinPage from '../RecycleBin/RecycleBinPage';
+import TaskProgressPage from '../TaskProgress/TaskProgressPage';
 import styles from './Dashboard.module.css';
 
 const DashboardContent: React.FC = () => {
@@ -25,6 +29,8 @@ const DashboardContent: React.FC = () => {
     if (path.startsWith('/team-management/joined-team/')) return 'my-teams';
     if (path === '/recycle-bin') return 'recycle-bin';
     if (path === '/notifications') return 'notifications';
+    if (path.startsWith('/message-detail/')) return 'notifications';
+    if (path === '/task-progress') return 'task-progress';
     if (path === '/settings') return 'settings';
     return '';
   };
@@ -67,6 +73,9 @@ const DashboardContent: React.FC = () => {
       case 'notifications':
         navigate('/notifications');
         break;
+      case 'task-progress':
+        navigate('/task-progress');
+        break;
       case 'settings':
         navigate('/settings');
         break;
@@ -90,8 +99,10 @@ const DashboardContent: React.FC = () => {
           <Route path="/team-management/my-teams" element={<CreatedTeamsListPage />} />
           <Route path="/team-management/joined-team/:teamId" element={<MyTeamsPage />} />
           <Route path="/team-management/created-team/:teamId" element={<CreatedTeamsPage />} />
-          <Route path="/recycle-bin" element={<div className={styles.placeholder}>回收站页面（待开发）</div>} />
-          <Route path="/notifications" element={<div className={styles.placeholder}>消息中心页面（待开发）</div>} />
+          <Route path="/recycle-bin" element={<RecycleBinPage />} />
+          <Route path="/notifications" element={<NotificationCenterPage />} />
+          <Route path="/message-detail/:id" element={<MessageDetailPage />} />
+          <Route path="/task-progress" element={<TaskProgressPage />} />
           <Route path="/settings" element={<div className={styles.placeholder}>设置页面（待开发）</div>} />
         </Routes>
 

@@ -59,12 +59,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
 .addButton:hover {
   background: #1a6bc4;
+  transform: scale(1.05);
+}
+
+.addButtonActive {
+  background: #ff4d4f;
+  transform: rotate(45deg);
+}
+
+.addButtonActive:hover {
+  background: #d43f41;
 }
 
 /* 文件卡片网格 */
@@ -75,6 +85,31 @@
   padding-left: 1.5rem;
   overflow-x: auto;
   padding-bottom: 1rem;
+}
+
+/* 上传中提示 */
+.uploadingNotice {
+  background: rgba(42, 130, 228, 0.1);
+  border-left: 4px solid #2A82E4;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+  color: #2A82E4;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* 加载和空状态 */
+.loadingMessage,
+.emptyMessage {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #666666;
+  font-size: 1rem;
+}
+
+.emptyMessage {
+  color: #999999;
 }
 
 .fileCard {
@@ -110,16 +145,51 @@
   margin-bottom: 1rem;
 }
 
+.fileInfo {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .fileName {
   font-family: 'Source Han Sans CN', sans-serif;
   font-size: 1.125rem;
+  font-weight: 500;
   color: #333333;
   text-align: center;
   word-wrap: break-word;
-  margin-bottom: 1rem;
-  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width: 100%;
+}
+
+.fileMetadata {
+  font-size: 0.875rem;
+  color: #666666;
   display: flex;
   align-items: center;
+  gap: 0.25rem;
+}
+
+.fileSize,
+.fileTime {
+  white-space: nowrap;
+}
+
+.fileSeparator {
+  color: #999999;
+}
+
+.fileUploader {
+  font-size: 0.75rem;
+  color: #999999;
+  font-style: italic;
 }
 
 .fileActions {
@@ -135,12 +205,18 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 0.25rem;
 }
 
-.downloadButton:hover,
+.downloadButton:hover {
+  transform: scale(1.3);
+  color: #2A82E4;
+}
+
 .deleteButton:hover {
-  transform: scale(1.2);
+  transform: scale(1.3);
+  filter: brightness(1.2);
 }
 
 /* ==================== 我加入的区块 ==================== */

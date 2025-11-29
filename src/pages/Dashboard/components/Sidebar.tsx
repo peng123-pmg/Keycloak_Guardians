@@ -29,8 +29,9 @@ const menuData: MenuItem[] = [
       { id: 'my-teams', label: '我的团队' }
     ]
   },
-  { id: 'recycle-bin', label: '回收站' },
-  { id: 'notifications', label: '消息中心' },
+  { id: 'recycle-bin', label: '回收站管理' },
+  { id: 'notifications', label: '消息通知中心' },
+  { id: 'task-progress', label: '任务进度' },
   { id: 'settings', label: '设置' },
   { id: 'logout', label: '退出登录' }
 ];

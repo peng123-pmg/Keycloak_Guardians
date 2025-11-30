@@ -31,12 +31,13 @@ class FileService {
    */
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await apiClient.post('/api/files', formData, {
+      // 使用 ArrayBuffer 方式上传文件，符合后端API要求
+      const arrayBuffer = await file.arrayBuffer();
+      
+      const response = await apiClient.post('/api/files', arrayBuffer, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/octet-stream',
+          'X-File-Name': encodeURIComponent(file.name)
         },
         onUploadProgress: (progressEvent) => {
           if (onProgress && progressEvent.progress) {

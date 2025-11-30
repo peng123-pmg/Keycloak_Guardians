@@ -1,8 +1,10 @@
 /**
  * 文件服务层
  * 提供文件上传、下载、删除等功能
- * TODO: 后端 API 就绪后，替换为真实接口调用
+ * 已连接真实后端API
  */
+
+import apiClient from './apiClient';
 
 export interface FileInfo {
   id: string;
@@ -25,61 +27,40 @@ export interface UploadProgress {
 class FileService {
   /**
    * 上传文件
-   * TODO: 替换为真实 API - POST /api/files/upload
+   * API: POST /api/files
    */
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
-    // 模拟上传进度
-    return new Promise((resolve, reject) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        if (onProgress) {
-          onProgress(Math.min(progress, 100));
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await apiClient.post('/api/files', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        onUploadProgress: (progressEvent) => {
+          if (onProgress && progressEvent.progress) {
+            onProgress(Math.round(progressEvent.progress * 100));
+          }
         }
+      });
 
-        if (progress >= 100) {
-          clearInterval(interval);
-          
-          // 模拟返回的文件信息
-          const fileInfo: FileInfo = {
-            id: `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            name: file.name,
-            type: this.getFileType(file.name),
-            size: file.size,
-            uploadTime: new Date().toISOString(),
-            uploader: '当前用户', // TODO: 从认证系统获取
-            url: URL.createObjectURL(file), // 临时 URL，仅用于预览
-          };
+      const data = response.data.file;
+      
+      const fileInfo: FileInfo = {
+        id: data.id.toString(),
+        name: data.originalName,
+        type: this.getFileType(data.originalName),
+        size: data.sizeBytes,
+        uploadTime: data.createdAt,
+        uploader: data.ownerId,
+      };
 
-          resolve(fileInfo);
-        }
-      }, 100);
-
-      // 模拟上传失败（10% 概率，用于测试错误处理）
-      // if (Math.random() < 0.1) {
-      //   clearInterval(interval);
-      //   reject(new Error('上传失败：网络错误'));
-      // }
-    });
-
-    /* 真实 API 调用示例：
-    const formData = new FormData();
-    formData.append('file', file);
-    
-    const response = await fetch('/api/files/upload', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`, // TODO: 添加认证
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('上传失败');
+      return fileInfo;
+    } catch (error: any) {
+      console.error('文件上传失败:', error);
+      throw new Error(error.response?.data?.message || '文件上传失败');
     }
-
-    return await response.json();
-    */
   }
 
   /**
@@ -89,138 +70,86 @@ class FileService {
     files: File[],
     onProgress?: (fileId: string, progress: number) => void
   ): Promise<FileInfo[]> {
-    const uploadPromises = files.map((file) => 
-      this.uploadFile(file, (progress) => {
-        if (onProgress) {
-          onProgress(file.name, progress);
-        }
-      })
-    );
+    const results: FileInfo[] = [];
+    
+    for (const file of files) {
+      try {
+        const fileInfo = await this.uploadFile(file, (progress) => {
+          if (onProgress) {
+            onProgress(file.name, progress);
+          }
+        });
+        results.push(fileInfo);
+      } catch (error) {
+        console.error(`文件 ${file.name} 上传失败:`, error);
+        throw error;
+      }
+    }
 
-    return Promise.all(uploadPromises);
+    return results;
   }
 
   /**
    * 下载文件
-   * TODO: 替换为真实 API - GET /api/files/{fileId}/download
+   * API: GET /api/files/{id}
    */
   async downloadFile(fileId: string, fileName: string): Promise<void> {
-    // 模拟下载延迟
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const response = await apiClient.get(`/api/files/${fileId}`, {
+        responseType: 'blob'
+      });
 
-    // TODO: 真实实现应该从后端获取文件
-    console.log(`下载文件: ${fileId} - ${fileName}`);
-    
-    // 临时方案：如果有 URL，直接下载
-    // 注意：这只适用于浏览器内存中的临时文件
-    // 真实场景需要从后端获取文件流
-
-    /* 真实 API 调用示例：
-    const response = await fetch(`/api/files/${fileId}/download`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('下载失败');
+      // 创建下载链接
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      
+      // 清理
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      console.error('文件下载失败:', error);
+      throw new Error(error.response?.data?.message || '文件下载失败');
     }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    */
   }
 
   /**
    * 删除文件
-   * TODO: 替换为真实 API - DELETE /api/files/{fileId}
+   * API: DELETE /api/files/{id}
    */
   async deleteFile(fileId: string): Promise<void> {
-    // 模拟删除延迟
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    
-    console.log(`删除文件: ${fileId}`);
-
-    /* 真实 API 调用示例：
-    const response = await fetch(`/api/files/${fileId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('删除失败');
+    try {
+      await apiClient.delete(`/api/files/${fileId}`);
+    } catch (error: any) {
+      console.error('文件删除失败:', error);
+      throw new Error(error.response?.data?.message || '文件删除失败');
     }
-    */
   }
 
   /**
-   * 获取团队文件列表
-   * TODO: 替换为真实 API - GET /api/teams/{teamId}/files
+   * 获取文件列表
+   * API: GET /api/files
    */
-  async getTeamFiles(teamId: string): Promise<FileInfo[]> {
-    // 模拟 API 延迟
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // 返回模拟数据
-    return [
-      {
-        id: '1',
-        name: '团队的文件.cpp',
-        type: 'file',
-        size: 2048,
-        uploadTime: '2025-11-20T10:30:00Z',
-        uploader: '张三',
-      },
-      {
-        id: '2',
-        name: '团队文件.cpp',
-        type: 'link',
-        size: 1024,
-        uploadTime: '2025-11-21T14:20:00Z',
-        uploader: '李四',
-      },
-      {
-        id: '3',
-        name: '我的音乐.mp3',
-        type: 'audio',
-        size: 5242880,
-        uploadTime: '2025-11-22T09:15:00Z',
-        uploader: '王五',
-      },
-      {
-        id: '4',
-        name: '团队文件.png',
-        type: 'image',
-        size: 102400,
-        uploadTime: '2025-11-23T11:45:00Z',
-        uploader: '赵六',
-      },
-    ];
-
-    /* 真实 API 调用示例：
-    const response = await fetch(`/api/teams/${teamId}/files`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('获取文件列表失败');
+  async getUserFiles(): Promise<FileInfo[]> {
+    try {
+      const response = await apiClient.get('/api/files');
+      const files = response.data.files || [];
+      
+      return files.map((file: any) => ({
+        id: file.id.toString(),
+        name: file.originalName,
+        type: this.getFileType(file.originalName),
+        size: file.sizeBytes,
+        uploadTime: file.createdAt,
+        uploader: file.ownerId,
+      }));
+    } catch (error: any) {
+      console.error('获取文件列表失败:', error);
+      throw new Error(error.response?.data?.message || '获取文件列表失败');
     }
-
-    return await response.json();
-    */
   }
 
   /**

@@ -131,57 +131,6 @@ import { fileService } from '@/services/fileService';
 />
 ```
 
-## 常见问题
-
-### 1. 如何添加新页面?
-
-**步骤**:
-1. 在 `src/pages/` 下创建新页面文件夹
-2. 创建页面组件和样式文件
-3. 在 `Dashboard.tsx` 中添加路由
-4. 在 `Sidebar.tsx` 中添加菜单项
-
-**示例**:
-```tsx
-// src/pages/NewPage/NewPage.tsx
-export const NewPage: React.FC = () => {
-  return <div>新页面</div>;
-};
-
-// Dashboard.tsx 中添加路由
-<Route path="/new-page" element={<NewPage />} />
-```
-
-### 2. 如何修改侧边栏菜单?
-
-编辑 `src/pages/Dashboard/components/Sidebar.tsx`:
-```tsx
-const menuItems = [
-  { id: 'my-teams', label: '我的团队', path: '/my-teams', icon: '👥' },
-  // 添加新菜单项...
-];
-```
-
-### 3. 如何修改全局颜色?
-
-修改 `src/styles/variables.css` 中的 CSS 变量:
-```css
-:root {
-  --primary-color: #你的颜色;
-}
-```
-
-### 4. 登录页面在哪里?
-
-登录页面在 `src/login/pages/Login.tsx`,使用 Keycloakify 框架。
-
-### 5. 热更新不生效?
-
-检查:
-- Vite 服务是否正常运行
-- 浏览器控制台是否有错误
-- 尝试重启开发服务器: `Ctrl+C` 然后 `npm run dev`
-
 ## 开发流程建议
 
 1. **启动项目**: `npm run dev`

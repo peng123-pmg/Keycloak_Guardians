@@ -4,16 +4,25 @@ import { CustomHeader } from "../components/CustomHeader";
 import { WaterMark } from "../components/WaterMark";
 import { CustomButton } from "../components/CustomButton";
 import { getKcClsx } from "keycloakify/login/lib/kcClsx";
-import { authService } from "../../src/services/authService";
 import "../index.css";
 
 export default function Login(props: { 
     kcContext: Extract<KcContext, { pageId: "login.ftl" }>;
     i18n: any;
+    onLogin?: () => void;
     onLoginSuccess?: () => void;
 }) {
+    console.log('Login 组件渲染，props keys:', Object.keys(props));
+    console.log('完整 props:', props);
+    console.log('onLoginSuccess 类型:', typeof props.onLoginSuccess);
+    console.log('onLoginSuccess 是否存在:', !!props.onLoginSuccess);
+    
     const { kcContext, onLoginSuccess } = props;
     
+    useEffect(() => {
+        console.log('Login useEffect，onLoginSuccess:', onLoginSuccess);
+        console.log('onLoginSuccess 类型:', typeof onLoginSuccess);
+    }, [onLoginSuccess]);
     const { realm, url, message, login, usernameHidden, messagesPerField, isAppInitiatedAction } = kcContext;
 
     const { kcClsx } = getKcClsx({
@@ -25,12 +34,18 @@ export default function Login(props: {
     const [isRememberMe, setIsRememberMe] = useState(false);
     const [username, setUsername] = useState(login.username ?? "");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState<{ username?: string; password?: string; general?: string }>({});
-    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState<{ username?: string; password?: string }>({});
 
     useEffect(() => {
         document.title = "欢迎登录我们的系统";
     }, []);
+
+    // Mock 账号数据（测试用）
+    const mockUsers = [
+        { username: "admin", password: "123456", role: "管理员" },
+        { username: "user", password: "123456", role: "普通用户" },
+        { username: "test", password: "test123", role: "测试用户" }
+    ];
 
     // 验证表单
     const validateForm = (): boolean => {
@@ -39,66 +54,77 @@ export default function Login(props: {
         // 验证用户名
         if (!username.trim()) {
             newErrors.username = "请输入用户名";
+        } else if (username.length < 3) {
+            newErrors.username = "用户名至少3个字符";
         }
 
         // 验证密码
         if (!password.trim()) {
             newErrors.password = "请输入密码";
+        } else if (password.length < 6) {
+            newErrors.password = "密码至少6个字符";
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleLoginClick = async () => {
+    // 验证用户凭据
+    const authenticateUser = (username: string, password: string): boolean => {
+        const user = mockUsers.find(
+            u => u.username === username && u.password === password
+        );
+        
+        if (user) {
+            console.log(`✅ 验证成功: ${user.username} (${user.role})`);
+            // 可以将用户信息存储到 localStorage
+            localStorage.setItem('currentUser', JSON.stringify({
+                username: user.username,
+                role: user.role,
+                loginTime: new Date().toISOString()
+            }));
+            return true;
+        }
+        
+        console.log('❌ 验证失败: 用户名或密码错误');
+        return false;
+    };
+
+    const handleLoginClick = () => {
+        console.log('=== 登录按钮被点击 ===');
+        
         // 清除之前的错误
         setErrors({});
         
         // 表单验证
         if (!validateForm()) {
+            console.log('❌ 表单验证失败');
             return;
         }
 
-        setIsLoading(true);
+        // 禁用登录按钮
         setIsLoginButtonDisabled(true);
 
-        try {
-            // 用户凭据验证
-            const result = await authService.login({
-                username,
-                password,
-                rememberMe: isRememberMe
-            });
-
-            if (result.success) {
-                console.log('✅ 登录成功');
-                
-                // 触发自定义登录事件（用于开发模式跳转）
-                window.dispatchEvent(new CustomEvent('keycloak-login'));
-                
-                // 如果有回调函数也调用它
-                if (onLoginSuccess) {
-                    onLoginSuccess();
-                }
-                
-                // 如果是在真实的Keycloak环境中，提交表单
-                const form = document.getElementById('kc-form-login') as HTMLFormElement;
-                if (form) {
-                    form.submit();
-                }
-            } else {
-                setErrors({
-                    general: result.error || "登录失败"
-                });
+        // 用户凭据验证
+        const isAuthenticated = authenticateUser(username, password);
+        
+        if (isAuthenticated) {
+            console.log('✅ 登录成功，准备跳转...');
+            
+            // 触发自定义登录事件（用于开发模式跳转）
+            window.dispatchEvent(new CustomEvent('keycloak-login'));
+            
+            // 如果有回调函数也调用它
+            if (onLoginSuccess) {
+                onLoginSuccess();
             }
-        } catch (error: any) {
-            console.error('登录过程中发生错误:', error);
+        } else {
+            // 验证失败
             setErrors({
-                general: error.message || "登录过程中发生错误"
+                password: "用户名或密码错误，请重试"
             });
-        } finally {
-            setIsLoading(false);
             setIsLoginButtonDisabled(false);
+            console.log('❌ 登录失败');
         }
     };
 
@@ -122,13 +148,6 @@ export default function Login(props: {
                 {message !== undefined && (
                     <div className={`alert alert-${message.type}`}>
                         {message.summary}
-                    </div>
-                )}
-
-                {/* 显示错误信息 */}
-                {errors.general && (
-                    <div className="alert alert-error">
-                        {errors.general}
                     </div>
                 )}
 
@@ -226,9 +245,9 @@ export default function Login(props: {
                     <CustomButton
                         type="button"
                         onClick={handleLoginClick}
-                        disabled={isLoginButtonDisabled || isLoading}
+                        disabled={isLoginButtonDisabled}
                     >
-                        {isLoading ? "登录中..." : (isAppInitiatedAction ? "继续" : "登录")}
+                        {isAppInitiatedAction ? "继续" : "登录"}
                     </CustomButton>
                 </div>
             </div>

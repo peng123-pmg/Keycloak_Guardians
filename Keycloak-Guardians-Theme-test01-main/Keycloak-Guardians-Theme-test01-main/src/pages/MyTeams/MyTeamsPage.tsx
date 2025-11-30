@@ -28,7 +28,7 @@ export const MyTeamsPage: React.FC = () => {
     try {
       setIsLoading(true);
       // TODO: 替换为真实的 teamId
-      const teamFiles = await fileService.getTeamFiles('team_001');
+      const teamFiles = await fileService.getUserFiles();
       setFiles(teamFiles);
     } catch (error) {
       console.error('加载文件列表失败:', error);
@@ -89,16 +89,6 @@ export const MyTeamsPage: React.FC = () => {
   const handleDownloadFile = async (file: TeamFile) => {
     try {
       await fileService.downloadFile(file.id, file.name);
-      
-      // 临时方案：如果有 URL，使用 a 标签下载
-      if (file.url) {
-        const a = document.createElement('a');
-        a.href = file.url;
-        a.download = file.name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
     } catch (error) {
       console.error('下载文件失败:', error);
       alert('下载失败，请稍后重试');

@@ -1,14 +1,13 @@
-# Keycloak Guardians - 使用指南
+# Keycloak Guardians - UI开发使用指南
 
-这是一个基于 Keycloak 的团队协作管理系统前端项目,支持团队创建、文件管理、任务进度跟踪等功能。
+这是一个基于 Keycloak 的团队协作管理系统前端项目,负责所有用户界面的开发。
 
 ## 技术栈
 
 - **框架**: React 18 + TypeScript
 - **构建工具**: Vite 5
 - **路由**: React Router v7
-- **认证**: Keycloakify 10.0
-- **HTTP客户端**: Axios
+- **认证主题**: Keycloakify 10.0
 
 ## 快速开始
 
@@ -18,171 +17,195 @@
 npm install
 ```
 
-### 2. 环境配置
+### 2. 启动开发服务器
 
-项目已配置好开发环境,直接使用即可。默认使用 **Mock 模式**(模拟数据),无需启动后端服务。
-
-
-### 3. 启动开发服务器
-
-项目提供了两种开发模式:
-
-#### 方式一: 完整模式 (含Keycloak登录页)
 ```bash
 npm run dev
 ```
+
 访问: http://localhost:5173
 
-包含 Keycloak 登录页面和主应用界面,模拟完整的用户登录流程。
+项目会自动打开,包含登录页面和主应用界面。
 
-#### 方式二: 应用预览模式 (仅主界面)
-```bash
-npm run dev:app
-```
-访问: http://localhost:5173
+### 3. 构建项目
 
-直接预览主应用Dashboard界面,跳过登录页面,适合快速开发UI。
-
-### 4. 构建项目
-
-#### 构建主应用
 ```bash
 npm run build
 ```
 
-#### 构建应用预览版本
-```bash
-npm run build:app
-```
+构建完成后,产物在 `dist/` 目录。
 
-#### 构建 Keycloak 主题包
+### 4. 构建 Keycloak 主题包
+
 ```bash
 npm run build-keycloak-theme
 ```
 
-生成的主题包可以直接部署到 Keycloak 服务器。
+生成的 `.jar` 主题包在 `dist_keycloak/` 目录,可部署到 Keycloak 服务器。
 
 ## 项目结构
 
 ```
 src/
 ├── pages/              # 页面组件
-│   ├── Dashboard/      # 仪表盘主页
+│   ├── Dashboard/      # 主仪表盘(包含所有子页面路由)
 │   ├── MyTeams/        # 我的团队
 │   ├── CreatedTeams/   # 我创建的团队
 │   ├── CreateTeam/     # 创建团队
 │   ├── PersonalFiles/  # 个人文件
 │   ├── RecycleBin/     # 回收站
 │   ├── TaskProgress/   # 任务进度
-│   └── ...
+│   ├── NotificationCenter/  # 通知中心
+│   └── MessageDetail/  # 消息详情
 ├── components/         # 通用组件
-│   ├── Button/
-│   ├── Input/
-│   ├── FileUpload/
-│   └── ...
+│   ├── Button/         # 按钮组件
+│   ├── Input/          # 输入框组件
+│   ├── Checkbox/       # 复选框组件
+│   ├── FileUpload/     # 文件上传组件
+│   ├── GlobalSearch/   # 全局搜索
+│   └── BackButton/     # 返回按钮
+├── login/              # Keycloak登录主题
+│   ├── pages/          # 登录页面(Login.tsx)
+│   └── components/     # 登录相关组件
 ├── services/           # 服务层
 │   └── fileService.ts  # 文件服务(Mock数据)
-├── login/              # Keycloak登录主题
-│   ├── pages/          # 登录页面
-│   └── components/     # 登录组件
 ├── styles/             # 全局样式
-│   ├── variables.css   # CSS变量
+│   ├── variables.css   # CSS变量(颜色、字体等)
 │   └── global.css      # 全局样式
 └── main.tsx            # 应用入口
 ```
 
-## 页面开发说明
+## 开发说明
 
-### 认证和数据模式
+### 页面导航结构
 
-项目默认使用 **Mock 模式**,所有数据都是模拟的:
-- 测试账号: `admin/admin123`
-- 无需启动后端服务
-- 适合专注于前端页面开发
+项目采用单页应用(SPA)架构:
+- **登录页**: `/` - 使用 Keycloak 登录主题
+- **主应用**: 登录后进入 Dashboard,包含侧边栏导航
+  - 我的团队
+  - 我创建的
+  - 个人文件
+  - 回收站
+  - 任务进度
+  - 通知中心
 
-### 主要功能页面
+### 样式开发
 
-1. **团队管理**: 创建团队、加入团队、管理团队成员
-2. **文件管理**: 上传、下载、预览、删除文件
-3. **任务进度**: 跟踪团队任务进度
-4. **消息通知**: 接收系统消息和团队通知
-5. **个人中心**: 管理个人信息和设置
+**CSS变量** (`src/styles/variables.css`):
+```css
+--primary-color: #4A90E2;      /* 主色调 */
+--secondary-color: #7ED321;    /* 辅助色 */
+--bg-color: #F5F7FA;          /* 背景色 */
+/* ... 更多变量 */
+```
+
+**组件样式**: 每个组件使用 CSS Modules (`.module.css`),样式自动隔离。
+
+### 通用组件使用
+
+项目提供了一套通用组件,使用前请查看对应文件:
+
+```tsx
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { FileUpload } from '@/components/FileUpload';
+
+// 使用示例
+<Button variant="primary" onClick={handleClick}>
+  提交
+</Button>
+```
+
+### 文件上传功能
+
+`MyTeamsPage` 中有完整的文件上传示例:
+```tsx
+import { FileUpload } from '@/components/FileUpload';
+import { fileService } from '@/services/fileService';
+
+// 在组件中使用
+<FileUpload
+  onFilesSelected={handleFilesSelected}
+  maxFileSize={50 * 1024 * 1024}  // 50MB
+  multiple={true}
+/>
+```
 
 ## 常见问题
 
-### 1. 启动后看不到登录页面?
+### 1. 如何添加新页面?
 
-检查 `.env` 文件中的 `VITE_USE_MOCK_AUTH` 配置:
-- 如果为 `true`,会显示模拟登录页
-- 如果为 `false`,需要配置正确的 Keycloak 服务器地址
+**步骤**:
+1. 在 `src/pages/` 下创建新页面文件夹
+2. 创建页面组件和样式文件
+3. 在 `Dashboard.tsx` 中添加路由
+4. 在 `Sidebar.tsx` 中添加菜单项
 
-### 2. 如何添加新页面?
+**示例**:
+```tsx
+// src/pages/NewPage/NewPage.tsx
+export const NewPage: React.FC = () => {
+  return <div>新页面</div>;
+};
 
-1. 在 `src/pages/` 下创建新页面文件夹和组件
-2. 在 `Dashboard.tsx` 中添加路由配置
-3. 在侧边栏菜单中添加导航项
-
-### 3. 如何修改样式?
-
-- **全局样式**: 修改 `src/styles/global.css`
-- **CSS变量**: 修改 `src/styles/variables.css` (颜色、字体等)
-- **组件样式**: 每个组件有自己的 CSS 文件
-
-### 4. 文件相关功能
-
-`src/services/fileService.ts` 提供了文件上传、下载等基础功能的 Mock 实现:
-- 上传文件 (模拟进度)
-- 下载文件
-- 删除文件
-- 文件列表管理
-
-在 `MyTeamsPage` 中有使用示例。其他 API 对接功能由后端同学负责。
-
-### 5. 如何调试登录页面?
-
-使用完整模式启动:
-```bash
-npm run dev
-```
-修改 `src/login/` 下的组件,热更新会立即生效。
-
-## 预览和部署
-
-### 本地预览构建结果
-
-```bash
-npm run preview       # 预览主应用
-npm run preview:app   # 预览应用模式
+// Dashboard.tsx 中添加路由
+<Route path="/new-page" element={<NewPage />} />
 ```
 
-### 部署到生产环境
+### 2. 如何修改侧边栏菜单?
 
-1. 修改 `.env.production` 配置生产环境参数
-2. 构建生产版本: `npm run build`
-3. 将 `dist/` 目录部署到静态服务器
-4. 将 Keycloak 主题包部署到 Keycloak 服务器
+编辑 `src/pages/Dashboard/components/Sidebar.tsx`:
+```tsx
+const menuItems = [
+  { id: 'my-teams', label: '我的团队', path: '/my-teams', icon: '👥' },
+  // 添加新菜单项...
+];
+```
 
-## 页面开发流程
+### 3. 如何修改全局颜色?
 
-### 典型开发步骤
+修改 `src/styles/variables.css` 中的 CSS 变量:
+```css
+:root {
+  --primary-color: #你的颜色;
+}
+```
 
-1. **启动项目**: `npm run dev:app` (预览模式,快速看到UI效果)
-2. **创建页面**: 在 `src/pages/` 下新建页面组件
-3. **编写样式**: 使用 CSS 变量保持风格统一
-4. **复用组件**: 优先使用 `src/components/` 中的通用组件
-5. **测试交互**: 在浏览器中测试各种用户操作
+### 4. 登录页面在哪里?
 
-### 开发建议
+登录页面在 `src/login/pages/Login.tsx`,使用 Keycloakify 框架。
 
-- 优先使用 `npm run dev:app` 模式,直接看到页面效果
-- 参考现有页面的代码结构和样式风格
-- 使用 `src/components/` 中的通用组件,保持界面一致性
-- 修改代码后会自动热更新,立即看到效果
-- 提交代码前确保没有 TypeScript 错误
+### 5. 热更新不生效?
+
+检查:
+- Vite 服务是否正常运行
+- 浏览器控制台是否有错误
+- 尝试重启开发服务器: `Ctrl+C` 然后 `npm run dev`
+
+## 开发流程建议
+
+1. **启动项目**: `npm run dev`
+2. **创建分支**: 在 feature 分支上开发
+3. **编写代码**: 专注于 UI 和用户交互
+4. **测试功能**: 在浏览器中测试各种操作
+5. **检查样式**: 确保响应式设计和不同屏幕尺寸
+6. **提交代码**: 提交前确保没有 TypeScript 错误
 
 ## 注意事项
 
 - Node.js 版本建议 >= 16
-- 首次运行需要 `npm install` 安装依赖
-- 开发时建议使用 Chrome 浏览器的开发者工具
-- Mock 模式下的数据不会持久化
+- 使用 Chrome 浏览器开发,便于调试
+- 修改代码后会自动热更新
+- 提交前运行 `npm run build` 确保能正常构建
+- CSS 样式优先使用变量,保持风格统一
+- 组件尽量复用,避免重复代码
+
+## 环境配置
+
+项目根目录的 `.env` 文件包含环境配置,通常无需修改:
+```env
+VITE_USE_MOCK_AUTH=true        # Mock 认证模式
+VITE_BACKEND_URL=http://localhost:8081
+```
+
+如需对接真实后端,由后端同学提供配置参数。

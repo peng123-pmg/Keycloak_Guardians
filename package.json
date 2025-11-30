@@ -5,12 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:app": "vite --config vite.app.config.ts",
     "build": "tsc && vite build",
-    "build:app": "vite build --config vite.app.config.ts",
     "build-keycloak-theme": "npm run build && keycloakify",
-    "preview": "vite preview",
-    "preview:app": "vite preview --config vite.app.config.ts"
+    "preview": "vite preview"
   },
   "keywords": [
     "keycloak",

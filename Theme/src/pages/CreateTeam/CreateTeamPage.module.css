@@ -1,0 +1,114 @@
+/* 页面容器 - 固定画布内 */
+.pageContainer {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 757×757 卡片容器 - 居中显示 */
+.cardContainer {
+  width: 757px;
+  height: 757px;
+  background: rgba(90, 155, 230, 0.5);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* 表单行 - 每行包含标签和输入框 */
+.formRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+/* 第一行距离顶部30px */
+.formRow:first-child {
+  margin-top: 30px;
+}
+
+/* 表单标签 - 黑体 bold 24px */
+.formLabel {
+  width: 95px;
+  margin-left: 95px;
+  margin-right: 40px;
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+/* 输入框 - 400px × 50px */
+.formInput {
+  width: 400px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  padding: 0 8px;
+  font-family: '思源黑体', 'Source Han Sans', sans-serif;
+  font-size: 14px;
+  color: #333333;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.formInput::placeholder {
+  color: #999999;
+  font-family: '思源黑体', 'Source Han Sans', sans-serif;
+}
+
+/* 下拉选择框 - 400px × 50px */
+.formSelect {
+  width: 400px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  padding: 0 8px;
+  font-family: '思源黑体', 'Source Han Sans', sans-serif;
+  font-size: 14px;
+  color: #333333;
+  outline: none;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* 创建按钮 - 270px × 85px */
+.submitBtn {
+  width: 270px;
+  height: 85px;
+  background: #2A82E4;
+  border: none;
+  border-radius: 8px;
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(42, 130, 228, 0.3);
+  position: absolute;
+  bottom: 60px;
+  left: 245px;
+}
+
+.submitBtn:hover {
+  background: #1E6EC8;
+  box-shadow: 0 6px 12px rgba(42, 130, 228, 0.4);
+  transform: translateY(-2px);
+}
+
+.submitBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(42, 130, 228, 0.3);
+}

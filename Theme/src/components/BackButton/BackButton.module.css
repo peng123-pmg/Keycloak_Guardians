@@ -1,0 +1,39 @@
+/* 返回按钮 - 位于主内容区左上角 */
+.backButton {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.backButton:hover {
+  background: #F0F0F0;
+}
+
+.backButton:hover .backIcon,
+.backButton:hover .backText {
+  color: #000000;
+}
+
+.backIcon {
+  font-size: 1.25rem;
+  color: #333333;
+  line-height: 1;
+}
+
+.backText {
+  font-family: '思源黑体', 'Source Han Sans CN', 'Microsoft YaHei', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333333;
+  line-height: 1;
+}

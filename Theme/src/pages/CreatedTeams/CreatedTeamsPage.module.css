@@ -1,0 +1,329 @@
+/* ========== 页面容器 - Flex布局，支持填充 ========== */
+.pageContainer {
+  width: 100%;
+  height: 100%;
+  max-height: 1024px;
+  padding-top: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* 滚动条样式 */
+.pageContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pageContainer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pageContainer::-webkit-scrollbar-thumb {
+  background: rgba(90, 155, 230, 0.5);
+  border-radius: 4px;
+}
+
+.pageContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(90, 155, 230, 0.7);
+}
+
+/* ========== 我创建的区块 ========== */
+.createdSection {
+  width: 100%;
+  background: rgba(90, 155, 230, 0.5);
+  padding: 2rem 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.sectionHeaderWithCards {
+  padding: 0 2rem 1.5rem;
+}
+
+.mainTitle {
+  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #DFE4EB;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* 文件卡片横向滚动容器 */
+.cardsScrollWrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 0 1rem;
+}
+
+.cardsScrollWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.cardsScrollWrapper::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cardsScrollWrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+
+.cardsContainer {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+  min-width: min-content;
+}
+
+/* 文件卡片 - 正方形，响应式 */
+.fileCard {
+  position: relative;
+  min-width: clamp(200px, 20vw, 280px);
+  aspect-ratio: 1 / 1;
+  background: rgba(90, 155, 230, 0.5);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.fileCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 白色背景卡片（第2、4张） */
+.fileCardWhite {
+  background: #FFFFFF;
+}
+
+/* 右上角加号按钮 */
+.cardAddBtn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2rem;
+  height: 2rem;
+  background: #2A82E4;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.cardAddBtn:hover {
+  background: #1e6bc9;
+  transform: scale(1.1);
+}
+
+/* 文件图标区域 */
+.cardIconArea {
+  margin-bottom: 1rem;
+}
+
+.cardIcon {
+  font-size: 3.5rem;
+  display: block;
+}
+
+/* 文件名 */
+.cardFileName {
+  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333333;
+  text-align: center;
+  word-break: break-word;
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+/* 右下角操作按钮 */
+.cardActions {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cardActionBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: #666666;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  line-height: 1;
+}
+
+.cardActionBtn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ========== 我的组员区块 - 自动填充剩余空间 ========== */
+.membersSection {
+  width: 100%;
+  background: rgba(242, 191, 191, 0.5);
+  padding: 2rem;
+  border-radius: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.membersSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.membersTitle {
+  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #DFE4EB;
+  margin: 0;
+}
+
+.membersAddBtn {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: #2A82E4;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.membersAddBtn:hover {
+  background: #1e6bc9;
+  transform: scale(1.05);
+}
+
+/* 成员列表 */
+.membersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.memberItem {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(200px, 2fr) minmax(100px, 0.8fr) 3rem;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(223, 228, 235, 0.5);
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.memberItem:hover {
+  background: rgba(223, 228, 235, 0.7);
+}
+
+.memberName,
+.memberEmail,
+.memberPermission {
+  font-family: '思源黑体', 'Source Han Sans', 'Microsoft YaHei', sans-serif;
+  font-size: 1rem;
+  color: #333333;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memberName {
+  font-weight: 500;
+}
+
+.memberDeleteBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  color: #999999;
+  cursor: pointer;
+  padding: 0.25rem;
+  opacity: 0.7;
+  transition: all 0.2s;
+  line-height: 1;
+  justify-self: center;
+}
+
+.memberDeleteBtn:hover {
+  opacity: 1;
+  color: #e74c3c;
+  transform: scale(1.2);
+}
+
+/* ========== 响应式调整 ========== */
+@media (max-width: 1200px) {
+  .mainTitle {
+    font-size: 2rem;
+  }
+
+  .membersTitle {
+    font-size: 1.75rem;
+  }
+
+  .fileCard {
+    min-width: clamp(180px, 22vw, 240px);
+  }
+}
+
+@media (max-width: 768px) {
+  .createdSection,
+  .membersSection {
+    padding: 1.5rem;
+  }
+
+  .mainTitle {
+    font-size: 1.75rem;
+  }
+
+  .membersTitle {
+    font-size: 1.5rem;
+  }
+
+  .memberItem {
+    grid-template-columns: 1fr 2fr 1fr 3rem;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .memberName,
+  .memberEmail,
+  .memberPermission {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,140 @@
+/* ==================== 页面容器 ==================== */
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+}
+
+/* ==================== 主内容区 ==================== */
+.contentArea {
+  width: 100%;
+  background: rgba(242, 191, 191, 0.2);
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ==================== 标题栏 ==================== */
+.titleBar {
+  width: 100%;
+  height: 60px;
+  background: rgba(90, 155, 230, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+  box-sizing: border-box;
+}
+
+.title {
+  font-family: 'Source Han Sans CN Heavy', 'Source Han Sans CN', 'SimHei', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  color: #FFFFFF;
+  margin: 0;
+  text-align: center;
+}
+
+/* ==================== 内容区域 ==================== */
+.contentBox {
+  width: 100%;
+  height: 960px;
+  background: rgba(242, 191, 191, 0.2);
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.messageContent {
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333333;
+  line-height: 1.8;
+  text-align: center;
+  margin: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* ==================== 错误消息 ==================== */
+.errorMessage {
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #D43030;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1200px) {
+  .contentArea {
+    width: 95%;
+  }
+
+  .contentBox {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding-top: 40px;
+  }
+
+  .titleBar {
+    height: 50px;
+    padding: 0 30px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .contentBox {
+    height: auto;
+    min-height: 600px;
+    padding: 30px 40px;
+  }
+
+  .messageContent {
+    font-size: 18px;
+  }
+
+  .backButton {
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .titleBar {
+    padding: 0 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .contentBox {
+    padding: 20px 30px;
+  }
+
+  .messageContent {
+    font-size: 16px;
+  }
+}

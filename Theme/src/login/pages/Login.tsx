@@ -69,26 +69,32 @@ export default function Login(props: {
         return Object.keys(newErrors).length === 0;
     };
 
+    // ... existing code ...
+
     // 验证用户凭据
     const authenticateUser = (username: string, password: string): boolean => {
-        const user = mockUsers.find(
-            u => u.username === username && u.password === password
-        );
-        
-        if (user) {
-            console.log(`✅ 验证成功: ${user.username} (${user.role})`);
-            // 可以将用户信息存储到 localStorage
-            localStorage.setItem('currentUser', JSON.stringify({
-                username: user.username,
-                role: user.role,
-                loginTime: new Date().toISOString()
-            }));
-            return true;
-        }
-        
-        console.log('❌ 验证失败: 用户名或密码错误');
-        return false;
+      const user = mockUsers.find(
+        u => u.username === username && u.password === password
+      );
+      
+      if (user) {
+        console.log(`✅ 验证成功: ${user.username} (${user.role})`);
+        // 存储用户信息和模拟令牌到 localStorage
+        const userData = {
+          username: user.username,
+          role: user.role,
+          loginTime: new Date().toISOString(),
+          token: btoa(`${user.username}:${user.password}`) // 简单的Base64编码作为模拟令牌
+        };
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        return true;
+      }
+      
+      console.log('❌ 验证失败: 用户名或密码错误');
+      return false;
     };
+
+// ... existing code ...
 
     const handleLoginClick = () => {
         console.log('=== 登录按钮被点击 ===');

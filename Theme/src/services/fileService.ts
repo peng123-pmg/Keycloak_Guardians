@@ -1,7 +1,6 @@
 /**
  * 文件服务层
  * 提供文件上传、下载、删除等功能
- * TODO: 后端 API 就绪后，替换为真实接口调用
  */
 
 export interface FileInfo {
@@ -24,42 +23,63 @@ export interface UploadProgress {
 
 class FileService {
   /**
+   * 获取认证令牌
+   */
+  private getAuthToken(): string | null {
+    // 这里应根据实际认证方式获取令牌
+    // 示例中使用localStorage存储令牌
+    const currentUser = localStorage.getItem('currentUser');
+    return currentUser ? JSON.parse(currentUser).token : null;
+  }
+
+  /**
    * 上传文件
-   * TODO: 替换为真实 API - POST /api/files/upload
    */
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
-    // 模拟上传进度
+    // 创建FormData对象
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // 使用XMLHttpRequest以便监控进度
     return new Promise((resolve, reject) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        if (onProgress) {
-          onProgress(Math.min(progress, 100));
+      const xhr = new XMLHttpRequest();
+
+      // 监听上传进度
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable && onProgress) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          onProgress(percentComplete);
         }
+      });
 
-        if (progress >= 100) {
-          clearInterval(interval);
-          
-          // 模拟返回的文件信息
-          const fileInfo: FileInfo = {
-            id: `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            name: file.name,
-            type: this.getFileType(file.name),
-            size: file.size,
-            uploadTime: new Date().toISOString(),
-            uploader: '当前用户', // TODO: 从认证系统获取
-            url: URL.createObjectURL(file), // 临时 URL，仅用于预览
-          };
-
-          resolve(fileInfo);
+      // 处理响应
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const response = JSON.parse(xhr.responseText);
+            resolve(response);
+          } catch (e) {
+            reject(new Error('服务器响应解析失败'));
+          }
+        } else {
+          reject(new Error(`上传失败: ${xhr.statusText}`));
         }
-      }, 100);
+      });
 
-      // 模拟上传失败（10% 概率，用于测试错误处理）
-      // if (Math.random() < 0.1) {
-      //   clearInterval(interval);
-      //   reject(new Error('上传失败：网络错误'));
-      // }
+      xhr.addEventListener('error', () => {
+        reject(new Error('网络错误'));
+      });
+
+      // 发送请求
+      xhr.open('POST', '/api/files/upload');
+      
+      // 添加认证头
+      const token = this.getAuthToken();
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
+      xhr.send(formData);
     });
 
     /* 真实 API 调用示例：
@@ -89,129 +109,84 @@ class FileService {
     files: File[],
     onProgress?: (fileId: string, progress: number) => void
   ): Promise<FileInfo[]> {
-    const uploadPromises = files.map((file) => 
-      this.uploadFile(file, (progress) => {
-        if (onProgress) {
-          onProgress(file.name, progress);
-        }
-      })
-    );
-
-    return Promise.all(uploadPromises);
+    // 在实际应用中，我们可能想要并行上传文件，并提供每个文件的进度反馈
+    
+    const results: FileInfo[] = [];
+    
+    for (const file of files) {
+      try {
+        const fileInfo = await this.uploadFile(file, (progress) => {
+          if (onProgress) {
+            onProgress(file.name, progress);
+          }
+        });
+        results.push(fileInfo);
+      } catch (error) {
+        console.error(`文件 ${file.name} 上传失败:`, error);
+        throw error;
+      }
+    }
+    
+    return results;
   }
 
   /**
    * 下载文件
-   * TODO: 替换为真实 API - GET /api/files/{fileId}/download
    */
   async downloadFile(fileId: string, fileName: string): Promise<void> {
-    // 模拟下载延迟
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      const response = await fetch(`/api/files/${fileId}/download`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.getAuthToken()}`,
+        },
+      });
 
-    // TODO: 真实实现应该从后端获取文件
-    console.log(`下载文件: ${fileId} - ${fileName}`);
-    
-    // 临时方案：如果有 URL，直接下载
-    // 注意：这只适用于浏览器内存中的临时文件
-    // 真实场景需要从后端获取文件流
+      if (!response.ok) {
+        throw new Error('下载失败');
+      }
 
-    /* 真实 API 调用示例：
-    const response = await fetch(`/api/files/${fileId}/download`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('下载失败');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      
+      // 清理
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('下载文件时出错:', error);
+      throw error;
     }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    */
   }
 
   /**
    * 删除文件
-   * TODO: 替换为真实 API - DELETE /api/files/{fileId}
    */
   async deleteFile(fileId: string): Promise<void> {
-    // 模拟删除延迟
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    
-    console.log(`删除文件: ${fileId}`);
-
-    /* 真实 API 调用示例：
     const response = await fetch(`/api/files/${fileId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
+        'Authorization': `Bearer ${this.getAuthToken()}`,
       },
     });
 
     if (!response.ok) {
       throw new Error('删除失败');
     }
-    */
   }
 
   /**
-   * 获取团队文件列表
-   * TODO: 替换为真实 API - GET /api/teams/{teamId}/files
+   * 获取用户的文件列表
    */
-  async getTeamFiles(teamId: string): Promise<FileInfo[]> {
-    // 模拟 API 延迟
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    // 返回模拟数据
-    return [
-      {
-        id: '1',
-        name: '团队的文件.cpp',
-        type: 'file',
-        size: 2048,
-        uploadTime: '2025-11-20T10:30:00Z',
-        uploader: '张三',
-      },
-      {
-        id: '2',
-        name: '团队文件.cpp',
-        type: 'link',
-        size: 1024,
-        uploadTime: '2025-11-21T14:20:00Z',
-        uploader: '李四',
-      },
-      {
-        id: '3',
-        name: '我的音乐.mp3',
-        type: 'audio',
-        size: 5242880,
-        uploadTime: '2025-11-22T09:15:00Z',
-        uploader: '王五',
-      },
-      {
-        id: '4',
-        name: '团队文件.png',
-        type: 'image',
-        size: 102400,
-        uploadTime: '2025-11-23T11:45:00Z',
-        uploader: '赵六',
-      },
-    ];
-
-    /* 真实 API 调用示例：
-    const response = await fetch(`/api/teams/${teamId}/files`, {
+  async getUserFiles(): Promise<FileInfo[]> {
+    const response = await fetch('/api/user/files', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${getAuthToken()}`,
+        'Authorization': `Bearer ${this.getAuthToken()}`,
       },
     });
 
@@ -220,7 +195,6 @@ class FileService {
     }
 
     return await response.json();
-    */
   }
 
   /**

@@ -1,0 +1,192 @@
+/* ==================== 页面容器 ==================== */
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(to right, rgba(178, 210, 237, 0.5), rgba(250, 251, 252, 0.5));
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px;
+}
+
+/* ==================== 主内容区 ==================== */
+.contentArea {
+  width: 100%;
+  background: transparent;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==================== 标题栏 ==================== */
+.headerRow {
+  width: 100%;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #333333;
+}
+
+.headerCell {
+  flex: 1;
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* ==================== 表格区域 ==================== */
+.tableArea {
+  width: 100%;
+}
+
+.tableRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #333333;
+  background: rgba(242, 191, 191, 0.2);
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.tableRow:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.rowCell {
+  flex: 1;
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* ==================== 操作按钮 ==================== */
+.actionButtons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: center;
+}
+
+.unreadStatus {
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #D43030;
+}
+
+.readStatus {
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #999999;
+}
+
+.markReadButton {
+  background: #5A9BE6;
+  color: #FFFFFF;
+  border: none;
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.markReadButton:hover {
+  background: #1a6bc4;
+}
+
+/* ==================== 批量操作 ==================== */
+.batchActions {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.batchDeleteButton {
+  background: #D43030;
+  color: #FFFFFF;
+  border: none;
+  font-family: 'SimHei', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.batchDeleteButton:hover {
+  background: #b52828;
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1200px) {
+  .contentArea {
+    width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    padding-top: 40px;
+  }
+
+  .headerRow {
+    height: 60px;
+  }
+
+  .headerCell {
+    font-size: 18px;
+  }
+
+  .tableRow {
+    height: 50px;
+  }
+
+  .rowCell {
+    font-size: 18px;
+  }
+
+  .unreadStatus,
+  .readStatus {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerCell {
+    font-size: 14px;
+  }
+
+  .rowCell {
+    font-size: 14px;
+  }
+
+  .unreadStatus,
+  .readStatus {
+    font-size: 14px;
+  }
+}
+

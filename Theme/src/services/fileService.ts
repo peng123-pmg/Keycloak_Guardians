@@ -56,7 +56,7 @@ class FileService {
   /**
    * 上传文件
    */
-  async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileUploadResponse> {
+  async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       
@@ -73,7 +73,7 @@ class FileService {
         if (xhr.status >= 200 && xhr.status < 300) {
           try {
             const response = JSON.parse(xhr.responseText);
-            resolve(response);
+            resolve(response.file);
           } catch (e) {
             reject(new Error('服务器响应解析失败'));
           }
@@ -103,7 +103,7 @@ class FileService {
       }
       
       // 设置文件名和内容类型
-      xhr.setRequestHeader('X-File-Name', file.name);
+      xhr.setRequestHeader('X-File-Name', encodeURIComponent(file.name));
       xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
 
       xhr.send(file);
@@ -111,9 +111,36 @@ class FileService {
   }
 
   /**
+   * 批量上传文件
+   */
+  async uploadFiles(
+    files: File[],
+    onProgress?: (fileName: string, progress: number) => void
+  ): Promise<FileInfo[]> {
+    const results: FileInfo[] = [];
+    
+    // 顺序上传文件以避免并发问题
+    for (const file of files) {
+      try {
+        const fileInfo = await this.uploadFile(file, (progress) => {
+          if (onProgress) {
+            onProgress(file.name, progress);
+          }
+        });
+        results.push(fileInfo);
+      } catch (error) {
+        console.error(`文件 ${file.name} 上传失败:`, error);
+        throw error;
+      }
+    }
+
+    return results;
+  }
+
+  /**
    * 获取用户的文件列表
    */
-  async getUserFiles(): Promise<FileListResponse> {
+  async getUserFiles(): Promise<FileInfo[]> {
     const token = this.getAuthToken();
     
     const response = await fetch('/api/files', {
@@ -135,7 +162,8 @@ class FileService {
       throw new Error(errorMessage);
     }
 
-    return await response.json();
+    const result = await response.json();
+    return result.files;
   }
 
   /**
@@ -188,6 +216,15 @@ class FileService {
       }
       throw new Error(errorMessage);
     }
+  }
+  
+  /**
+   * 获取团队文件列表
+   */
+  async getTeamFiles(teamId: string): Promise<FileInfo[]> {
+    // 在实际应用中应该查询特定团队的文件
+    // 当前只是模拟返回用户的所有文件
+    return await this.getUserFiles();
   }
 }
 

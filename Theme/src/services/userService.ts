@@ -89,7 +89,7 @@ class UserService {
   async getCurrentUser(): Promise<UserInfo> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/users/me`, {
+    const response = await fetch('/api/users/me', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -117,7 +117,7 @@ class UserService {
   async getUserStats(): Promise<UserStatsResponse> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/user/stats`, {
+    const response = await fetch('/api/user/stats', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -145,7 +145,7 @@ class UserService {
   async createUser(userData: CreateUserRequest): Promise<CreateUserResponse> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/users`, {
+    const response = await fetch('/api/admin/users', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -174,7 +174,7 @@ class UserService {
   async getUsers(): Promise<UserListResponse> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/admin/users`, {
+    const response = await fetch('/api/admin/users', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

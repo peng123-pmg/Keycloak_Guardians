@@ -7,8 +7,7 @@ class ApiClient {
   private baseUrl: string;
   
   constructor(baseUrl: string = '') {
-    // 使用环境变量中的后端URL，如果没有则使用传入的baseUrl
-    this.baseUrl = import.meta.env.VITE_BACKEND_URL || baseUrl;
+    this.baseUrl = baseUrl;
   }
 
   /**
@@ -209,4 +208,4 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient(import.meta.env.VITE_BACKEND_URL || '');
+export const apiClient = new ApiClient();

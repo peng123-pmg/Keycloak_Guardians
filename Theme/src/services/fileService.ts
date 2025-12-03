@@ -94,7 +94,7 @@ class FileService {
       });
 
       // 发送请求
-      xhr.open('POST', `${import.meta.env.VITE_BACKEND_URL || ''}/api/files`);
+      xhr.open('POST', '/api/files');
       
       // 添加认证头
       const token = this.getAuthToken();
@@ -116,7 +116,7 @@ class FileService {
   async getUserFiles(): Promise<FileListResponse> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/files`, {
+    const response = await fetch('/api/files', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -144,7 +144,7 @@ class FileService {
   async downloadFile(fileId: number): Promise<Blob> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/files/${fileId}`, {
+    const response = await fetch(`/api/files/${fileId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -171,7 +171,7 @@ class FileService {
   async deleteFile(fileId: number): Promise<void> {
     const token = this.getAuthToken();
     
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || ''}/api/files/${fileId}`, {
+    const response = await fetch(`/api/files/${fileId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

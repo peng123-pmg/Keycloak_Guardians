@@ -80,8 +80,8 @@ function App() {
         };
     }, []);
 
-    // 获取 Keycloak 上下文（生产环境从 window 获取，开发环境也可以使用真实上下文）
-    const kcContext = (window as any).kcContext || undefined;
+    // 获取 Keycloak 上下文（生产环境从 window 获取，开发环境使用模拟数据）
+    const kcContext = (window as any).kcContext || (import.meta.env.DEV ? getMockKcContext() : undefined);
 
     // 如果已登录，显示Dashboard
     if (isLoggedIn) {
@@ -94,7 +94,7 @@ function App() {
     ) : (
         <div style={{ padding: "40px", textAlign: "center" }}>
             <h1>No Keycloak Context</h1>
-            <p>请在 Keycloak 环境中运行</p>
+            <p>请在 Keycloak 环境中运行或启用开发模式</p>
         </div>
     );
 }

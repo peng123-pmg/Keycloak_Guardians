@@ -53,7 +53,7 @@ export const PersonalFilesPage: React.FC = () => {
   // 下载文件
   const handleDownload = async (file: FileInfo) => {
     try {
-      await fileService.downloadFile(file.id, file.name);
+      await fileService.downloadFile(file.id, file.originalName);
     } catch (err) {
       console.error('下载文件失败:', err);
       setError('下载文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
@@ -61,10 +61,7 @@ export const PersonalFilesPage: React.FC = () => {
   };
 
   // 删除文件
-  const handleDelete = async (fileId: string, fileName: string) => {
-    const confirmed = window.confirm(`确定要删除文件 "${fileName}" 吗？`);
-    if (!confirmed) return;
-
+  const handleDelete = async (fileId: number) => {
     try {
       await fileService.deleteFile(fileId);
       // 从列表中移除文件
@@ -75,16 +72,15 @@ export const PersonalFilesPage: React.FC = () => {
     }
   };
 
-  const getFileIcon = (type: string) => {
-    switch (type) {
-      case 'file': return '📄';
-      case 'link': return '🔗';
-      case 'image': return '🖼️';
-      case 'audio': return '🎧';
-      case 'video': return '🎬';
-      case 'document': return '📝';
-      default: return '📄';
-    }
+  const getFileIcon = (mimeType: string) => {
+    if (mimeType.startsWith('image/')) return '🖼️';
+    if (mimeType.startsWith('audio/')) return '🎧';
+    if (mimeType.startsWith('video/')) return '🎬';
+    if (mimeType.includes('pdf')) return '📄';
+    if (mimeType.includes('word') || mimeType.includes('document')) return '📝';
+    if (mimeType.includes('excel') || mimeType.includes('spreadsheet')) return '📊';
+    if (mimeType.includes('zip') || mimeType.includes('compressed')) return '📦';
+    return '📄';
   };
 
   return (
@@ -132,19 +128,19 @@ export const PersonalFilesPage: React.FC = () => {
               <div key={file.id} className={styles.fileCard}>
                 <div className={styles.fileHeader}>
                   <div className={styles.fileIconArea}>
-                    <span className={styles.fileIcon}>{getFileIcon(file.type)}</span>
+                    <span className={styles.fileIcon}>{getFileIcon(file.mimeType)}</span>
                   </div>
                 </div>
                 <div className={styles.fileInfo}>
-                  <div className={styles.fileName} title={file.name}>
-                    {file.name}
+                  <div className={styles.fileName} title={file.originalName}>
+                    {file.originalName}
                   </div>
                   <div className={styles.fileMeta}>
                     <span className={styles.fileSize}>
-                      {fileService.formatFileSize(file.size)}
+                      {fileService.formatFileSize(file.sizeBytes)}
                     </span>
                     <span className={styles.uploadTime}>
-                      {fileService.formatUploadTime(file.uploadTime)}
+                      {new Date(file.createdAt).toLocaleDateString('zh-CN')}
                     </span>
                   </div>
                   <div className={styles.fileActions}>
@@ -158,7 +154,7 @@ export const PersonalFilesPage: React.FC = () => {
                     <button 
                       className={styles.iconBtn} 
                       title="删除"
-                      onClick={() => handleDelete(file.id, file.name)}
+                      onClick={() => handleDelete(file.id)}
                     >
                       🗑️
                     </button>

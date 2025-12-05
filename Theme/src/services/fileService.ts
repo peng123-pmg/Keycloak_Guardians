@@ -62,14 +62,7 @@ class FileService {
             reject(new Error('服务器响应解析失败'));
           }
         } else {
-          let errorMessage = `上传失败: ${xhr.statusText}`;
-          try {
-            const errorResponse = JSON.parse(xhr.responseText);
-            errorMessage = errorResponse.message || errorMessage;
-          } catch (e) {
-            // 解析错误信息失败，使用默认消息
-          }
-          reject(new Error(errorMessage));
+          reject(new Error(`上传失败: ${xhr.statusText}`));
         }
       });
 
@@ -88,6 +81,25 @@ class FileService {
 
       xhr.send(formData);
     });
+
+    /* 真实 API 调用示例：
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await fetch('/api/files/upload', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`, // TODO: 添加认证
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('上传失败');
+    }
+
+    return await response.json();
+    */
   }
 
   /**
@@ -95,24 +107,27 @@ class FileService {
    */
   async uploadFiles(
     files: File[],
-    onProgress?: (fileName: string, progress: number) => void
+    onProgress?: (fileId: string, progress: number) => void
   ): Promise<FileInfo[]> {
-    // 并行上传所有文件
-    const uploadPromises = files.map(file => 
-      this.uploadFile(file, progress => {
-        if (onProgress) {
-          onProgress(file.name, progress);
-        }
-      })
-    );
-
-    try {
-      const results = await Promise.all(uploadPromises);
-      return results;
-    } catch (error) {
-      console.error('批量上传过程中发生错误:', error);
-      throw error;
+    // 在实际应用中，我们可能想要并行上传文件，并提供每个文件的进度反馈
+    
+    const results: FileInfo[] = [];
+    
+    for (const file of files) {
+      try {
+        const fileInfo = await this.uploadFile(file, (progress) => {
+          if (onProgress) {
+            onProgress(file.name, progress);
+          }
+        });
+        results.push(fileInfo);
+      } catch (error) {
+        console.error(`文件 ${file.name} 上传失败:`, error);
+        throw error;
+      }
     }
+    
+    return results;
   }
 
   /**
@@ -120,23 +135,15 @@ class FileService {
    */
   async downloadFile(fileId: string, fileName: string): Promise<void> {
     try {
-      const token = this.getAuthToken();
       const response = await fetch(`/api/files/${fileId}/download`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${this.getAuthToken()}`,
         },
       });
 
       if (!response.ok) {
-        let errorMessage = '下载失败';
-        try {
-          const errorResponse = await response.json();
-          errorMessage = errorResponse.message || errorMessage;
-        } catch (e) {
-          // 解析错误信息失败
-        }
-        throw new Error(errorMessage);
+        throw new Error('下载失败');
       }
 
       const blob = await response.blob();
@@ -160,23 +167,15 @@ class FileService {
    * 删除文件
    */
   async deleteFile(fileId: string): Promise<void> {
-    const token = this.getAuthToken();
     const response = await fetch(`/api/files/${fileId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${this.getAuthToken()}`,
       },
     });
 
     if (!response.ok) {
-      let errorMessage = '删除失败';
-      try {
-        const errorResponse = await response.json();
-        errorMessage = errorResponse.message || errorMessage;
-      } catch (e) {
-        // 解析错误信息失败
-      }
-      throw new Error(errorMessage);
+      throw new Error('删除失败');
     }
   }
 
@@ -184,23 +183,15 @@ class FileService {
    * 获取用户的文件列表
    */
   async getUserFiles(): Promise<FileInfo[]> {
-    const token = this.getAuthToken();
     const response = await fetch('/api/user/files', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${this.getAuthToken()}`,
       },
     });
 
     if (!response.ok) {
-      let errorMessage = '获取文件列表失败';
-      try {
-        const errorResponse = await response.json();
-        errorMessage = errorResponse.message || errorMessage;
-      } catch (e) {
-        // 解析错误信息失败
-      }
-      throw new Error(errorMessage);
+      throw new Error('获取文件列表失败');
     }
 
     return await response.json();

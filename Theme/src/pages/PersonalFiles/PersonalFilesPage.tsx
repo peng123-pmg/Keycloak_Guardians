@@ -18,7 +18,7 @@ export const PersonalFilesPage: React.FC = () => {
       setError(null);
     } catch (err) {
       console.error('获取文件列表失败:', err);
-      setError('获取文件列表失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      setError('获取文件列表失败');
     } finally {
       setLoading(false);
     }
@@ -36,9 +36,7 @@ export const PersonalFilesPage: React.FC = () => {
       setError(null);
       
       // 上传文件
-      const uploadedFiles = await fileService.uploadFiles(selectedFiles, (fileName, progress) => {
-        console.log(`文件 "${fileName}" 上传进度: ${progress}%`);
-      });
+      const uploadedFiles = await fileService.uploadFiles(selectedFiles);
       
       // 更新文件列表
       setFiles(prevFiles => [...uploadedFiles, ...prevFiles]);
@@ -61,10 +59,7 @@ export const PersonalFilesPage: React.FC = () => {
   };
 
   // 删除文件
-  const handleDelete = async (fileId: string, fileName: string) => {
-    const confirmed = window.confirm(`确定要删除文件 "${fileName}" 吗？`);
-    if (!confirmed) return;
-
+  const handleDelete = async (fileId: string) => {
     try {
       await fileService.deleteFile(fileId);
       // 从列表中移除文件
@@ -158,7 +153,7 @@ export const PersonalFilesPage: React.FC = () => {
                     <button 
                       className={styles.iconBtn} 
                       title="删除"
-                      onClick={() => handleDelete(file.id, file.name)}
+                      onClick={() => handleDelete(file.id)}
                     >
                       🗑️
                     </button>

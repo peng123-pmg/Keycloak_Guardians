@@ -22,7 +22,7 @@ export const PersonalFilesPage: React.FC = () => {
         // 认证失败，触发登出
         window.dispatchEvent(new CustomEvent('keycloak-logout'));
       } else {
-        setError('获取文件列表失败');
+        setError('获取文件列表失败: ' + (err instanceof Error ? err.message : '未知错误'));
       }
     } finally {
       setLoading(false);
@@ -138,6 +138,7 @@ export const PersonalFilesPage: React.FC = () => {
             <div className={styles.emptyIcon}>📁</div>
             <p>暂无文件</p>
             <p>请上传文件或刷新列表</p>
+            <button onClick={fetchFiles} className={styles.refreshButton}>刷新</button>
           </div>
         ) : (
           <div className={styles.fileGrid}>

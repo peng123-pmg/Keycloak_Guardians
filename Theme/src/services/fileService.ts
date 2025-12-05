@@ -4,7 +4,7 @@
  */
 
 // 从环境变量获取API基础URL，如果没有则使用相对路径
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 export interface FileInfo {
   id: string;
@@ -38,7 +38,7 @@ class FileService {
    */
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
     // 检查是否处于开发模式且没有配置后端API
-    if (import.meta.env.DEV && !import.meta.env.VITE_API_BASE_URL) {
+    if (import.meta.env.DEV && !import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
       // 在开发模式下模拟上传过程
       return new Promise((resolve) => {
         // 模拟上传进度
@@ -64,8 +64,6 @@ class FileService {
     // 创建FormData对象
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('fileName', file.name);
-    formData.append('fileSize', file.size.toString());
 
     // 使用XMLHttpRequest以便监控进度
     return new Promise((resolve, reject) => {
@@ -147,7 +145,7 @@ class FileService {
    */
   async downloadFile(fileId: string, fileName: string): Promise<void> {
     // 检查是否处于开发模式且没有配置后端API
-    if (import.meta.env.DEV && !import.meta.env.VITE_API_BASE_URL) {
+    if (import.meta.env.DEV && !import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
       // 在开发模式下模拟下载过程
       console.log(`模拟下载文件: ${fileName} (${fileId})`);
       // 创建一个模拟的下载
@@ -207,7 +205,7 @@ class FileService {
    */
   async deleteFile(fileId: string): Promise<void> {
     // 检查是否处于开发模式且没有配置后端API
-    if (import.meta.env.DEV && !import.meta.env.VITE_API_BASE_URL) {
+    if (import.meta.env.DEV && !import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
       // 在开发模式下模拟删除过程
       console.log(`模拟删除文件: ${fileId}`);
       return Promise.resolve();
@@ -240,7 +238,7 @@ class FileService {
    */
   async getUserFiles(): Promise<FileInfo[]> {
     // 检查是否处于开发模式且没有配置后端API
-    if (import.meta.env.DEV && !import.meta.env.VITE_API_BASE_URL) {
+    if (import.meta.env.DEV && !import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
       // 在开发模式下返回模拟的文件列表
       return [
         {
@@ -275,7 +273,7 @@ class FileService {
       throw new Error('未认证，请重新登录');
     }
     
-    const response = await fetch(`${API_BASE_URL}/api/user/files`, {
+    const response = await fetch(`${API_BASE_URL}/api/files`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,

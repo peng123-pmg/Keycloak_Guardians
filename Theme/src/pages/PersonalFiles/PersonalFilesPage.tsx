@@ -18,7 +18,12 @@ export const PersonalFilesPage: React.FC = () => {
       setError(null);
     } catch (err) {
       console.error('获取文件列表失败:', err);
-      setError('获取文件列表失败');
+      if (err instanceof Error && err.message.includes('认证失败')) {
+        // 认证失败，触发登出
+        window.dispatchEvent(new CustomEvent('keycloak-logout'));
+      } else {
+        setError('获取文件列表失败');
+      }
     } finally {
       setLoading(false);
     }
@@ -42,7 +47,12 @@ export const PersonalFilesPage: React.FC = () => {
       setFiles(prevFiles => [...uploadedFiles, ...prevFiles]);
     } catch (err) {
       console.error('上传文件失败:', err);
-      setError('上传文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      if (err instanceof Error && err.message.includes('认证失败')) {
+        // 认证失败，触发登出
+        window.dispatchEvent(new CustomEvent('keycloak-logout'));
+      } else {
+        setError('上传文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      }
     } finally {
       setUploading(false);
     }
@@ -54,7 +64,12 @@ export const PersonalFilesPage: React.FC = () => {
       await fileService.downloadFile(file.id, file.name);
     } catch (err) {
       console.error('下载文件失败:', err);
-      setError('下载文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      if (err instanceof Error && err.message.includes('认证失败')) {
+        // 认证失败，触发登出
+        window.dispatchEvent(new CustomEvent('keycloak-logout'));
+      } else {
+        setError('下载文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      }
     }
   };
 
@@ -66,7 +81,12 @@ export const PersonalFilesPage: React.FC = () => {
       setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
     } catch (err) {
       console.error('删除文件失败:', err);
-      setError('删除文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      if (err instanceof Error && err.message.includes('认证失败')) {
+        // 认证失败，触发登出
+        window.dispatchEvent(new CustomEvent('keycloak-logout'));
+      } else {
+        setError('删除文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
+      }
     }
   };
 
@@ -99,9 +119,9 @@ export const PersonalFilesPage: React.FC = () => {
       {error && (
         <div className={styles.errorNotification}>
           <span className={styles.errorIcon}>⚠️</span>
-          {error}
+          <span className={styles.errorText}>{error}</span>
           <button 
-            className={styles.closeError} 
+            className={styles.closeButton}
             onClick={() => setError(null)}
           >
             ×
@@ -109,27 +129,21 @@ export const PersonalFilesPage: React.FC = () => {
         </div>
       )}
 
-      {/* 文件列表区域 */}
-      <div className={styles.filesSection}>
-        <h2>我的文件 ({files.length})</h2>
-        
+      {/* 文件列表 */}
+      <div className={styles.fileListContainer}>
         {loading ? (
           <div className={styles.loading}>加载中...</div>
         ) : files.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>📁</div>
             <p>暂无文件</p>
-            <p>请通过上方区域上传文件</p>
+            <p>请上传文件或刷新列表</p>
           </div>
         ) : (
-          <div className={styles.filesGrid}>
+          <div className={styles.fileGrid}>
             {files.map((file) => (
               <div key={file.id} className={styles.fileCard}>
-                <div className={styles.fileHeader}>
-                  <div className={styles.fileIconArea}>
-                    <span className={styles.fileIcon}>{getFileIcon(file.type)}</span>
-                  </div>
-                </div>
+                <div className={styles.fileIcon}>{getFileIcon(file.type)}</div>
                 <div className={styles.fileInfo}>
                   <div className={styles.fileName} title={file.name}>
                     {file.name}
@@ -142,22 +156,22 @@ export const PersonalFilesPage: React.FC = () => {
                       {fileService.formatUploadTime(file.uploadTime)}
                     </span>
                   </div>
-                  <div className={styles.fileActions}>
-                    <button 
-                      className={styles.iconBtn} 
-                      title="下载"
-                      onClick={() => handleDownload(file)}
-                    >
-                      ⬇
-                    </button>
-                    <button 
-                      className={styles.iconBtn} 
-                      title="删除"
-                      onClick={() => handleDelete(file.id)}
-                    >
-                      🗑️
-                    </button>
-                  </div>
+                </div>
+                <div className={styles.fileActions}>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => handleDownload(file)}
+                    title="下载"
+                  >
+                    ⬇️
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    onClick={() => handleDelete(file.id)}
+                    title="删除"
+                  >
+                    🗑️
+                  </button>
                 </div>
               </div>
             ))}

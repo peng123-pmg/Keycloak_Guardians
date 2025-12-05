@@ -44,23 +44,51 @@ export const LoginPage: React.FC = () => {
     return isValid;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (validateForm()) {
-      // Mock登录逻辑
-      console.log('登录信息:', { username, password, rememberMe });
-      
-      // TODO: 调用后端API
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ username, password })
-      // });
-      
-      // 模拟登录成功，跳转到主界面
-      console.log('✅ 登录验证通过，跳转到主界面...');
-      
-      // 使用 hash 路由跳转
-      window.location.hash = '#/dashboard';
+      try {
+        // 调用Keycloak API进行登录
+        const response = await fetch('/auth/realms/myrealm/protocol/openid-connect/token', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: new URLSearchParams({
+            grant_type: 'password',
+            client_id: 'my-client',
+            username: username,
+            password: password
+          })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // 存储访问令牌
+          localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('refresh_token', data.refresh_token);
+          
+          // 设置登录状态
+          sessionStorage.setItem('isLoggedIn', 'true');
+          
+          // 触发登录事件
+          window.dispatchEvent(new CustomEvent('keycloak-login'));
+          
+          // 跳转到主界面
+          window.location.hash = '#/dashboard';
+        } else {
+          setErrors({
+            username: '登录失败',
+            password: '用户名或密码错误'
+          });
+        }
+      } catch (error) {
+        console.error('登录错误:', error);
+        setErrors({
+          username: '登录异常',
+          password: '请稍后重试'
+        });
+      }
     }
   };
 

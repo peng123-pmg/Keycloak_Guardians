@@ -54,41 +54,6 @@ class FileService {
   }
 
   /**
-   * 格式化文件大小
-   */
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-  }
-
-  /**
-   * 格式化上传时间
-   */
-  formatUploadTime(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) {
-      return '刚刚';
-    } else if (diffMins < 60) {
-      return `${diffMins}分钟前`;
-    } else if (diffHours < 24) {
-      return `${diffHours}小时前`;
-    } else if (diffDays < 30) {
-      return `${diffDays}天前`;
-    } else {
-      return date.toLocaleDateString('zh-CN');
-    }
-  }
-
-  /**
    * 上传文件
    */
   async uploadFile(file: File, onProgress?: (progress: number) => void): Promise<FileInfo> {
@@ -204,7 +169,7 @@ class FileService {
   /**
    * 下载文件
    */
-  async downloadFile(fileId: number, fileName?: string): Promise<void> {
+  async downloadFile(fileId: number): Promise<Blob> {
     const token = this.getAuthToken();
     
     const response = await fetch(`/api/files/${fileId}`, {
@@ -225,16 +190,7 @@ class FileService {
       throw new Error(errorMessage);
     }
 
-    // 创建下载链接
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName || `file_${fileId}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    return await response.blob();
   }
 
   /**

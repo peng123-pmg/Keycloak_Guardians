@@ -23,12 +23,15 @@ kotlin {
 
 dependencies {
     implementation(enforcedPlatform("io.quarkus:quarkus-bom:3.15.1"))
-    implementation("io.quarkus:quarkus-resteasy-reactive")
+    implementation("io.quarkus:quarkus-resteasy")
     implementation("io.quarkus:quarkus-oidc")
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-smallrye-jwt")
-    implementation("io.quarkus:quarkus-resteasy-reactive-jackson")
-    implementation("io.quarkus:quarkus-resteasy-reactive-qute")
+    implementation("io.quarkus:quarkus-resteasy-jackson")
+    implementation("io.quarkus:quarkus-resteasy-qute")
+    implementation("io.quarkus:quarkus-resteasy-client")
+    implementation("io.quarkus:quarkus-resteasy-client-jackson")
+    implementation("io.quarkus:quarkus-resteasy-multipart")
 
     // 注意：不添加任何multipart依赖
 
@@ -42,8 +45,7 @@ dependencies {
 
     // Keycloak Admin Client
     implementation("org.keycloak:keycloak-admin-client:26.4.1")
-    implementation("org.jboss.resteasy:resteasy-client:6.2.8.Final")
-    implementation("org.jboss.resteasy:resteasy-jackson2-provider:6.2.8.Final")
+    implementation("org.jboss.resteasy:resteasy-multipart-provider:6.2.9.Final")
 
     // Jackson
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")

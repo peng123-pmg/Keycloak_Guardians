@@ -1,9 +1,13 @@
 package com.example.config
 
+import jakarta.annotation.PreDestroy
 import jakarta.enterprise.context.ApplicationScoped
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.KeycloakBuilder
+import org.jboss.resteasy.client.jaxrs.ResteasyClient
+import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl
+import org.jboss.resteasy.plugins.providers.FormUrlEncodedProvider
 
 @ApplicationScoped
 class KeycloakConfig {
@@ -22,6 +26,11 @@ class KeycloakConfig {
     @ConfigProperty(name = "keycloak.admin.password")
     lateinit var adminPassword: String
 
+    private val resteasyClient: ResteasyClient =
+        ResteasyClientBuilderImpl()
+            .register(FormUrlEncodedProvider())
+            .build()
+
     fun getKeycloakInstance(): Keycloak {
         return KeycloakBuilder.builder()
             .serverUrl(serverUrl)
@@ -29,6 +38,15 @@ class KeycloakConfig {
             .clientId(adminClientId)
             .username(adminUsername)
             .password(adminPassword)
+            .resteasyClient(resteasyClient)
             .build()
+    }
+
+    @PreDestroy
+    fun closeClient() {
+        try {
+            resteasyClient.close()
+        } catch (_: Exception) {
+        }
     }
 }

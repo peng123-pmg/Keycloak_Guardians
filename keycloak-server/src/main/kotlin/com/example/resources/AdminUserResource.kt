@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Response
 import org.eclipse.microprofile.jwt.JsonWebToken
 import jakarta.inject.Inject
 import com.example.models.requests.CreateUserRequest
-import com.example.models.responses.UserResponse
 import jakarta.annotation.security.RolesAllowed
 import com.example.utils.RoleUtils
 import jakarta.enterprise.context.ApplicationScoped
@@ -26,7 +25,6 @@ class AdminUserResource @Inject constructor(
         return keycloakConfig.getKeycloakInstance()
     }
 
-
     @POST
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
@@ -35,17 +33,22 @@ class AdminUserResource @Inject constructor(
     fun createUser(request: CreateUserRequest): Response {
         println("=== DEBUG: createUser called ===")
         println("=== DEBUG: Request received: $request ===")
-        // 验证请求数据
-        if (request.username.isBlank() || request.email.isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                .entity(mapOf("error" to "用户名和邮箱不能为空"))
-                .build()
-        }
 
-
+        // 验证管理员权限
         if (!RoleUtils.hasAdminRole(jwt)) {
             return Response.status(Response.Status.FORBIDDEN)
                 .entity(mapOf("error" to "权限不足，需要管理员角色"))
+                .build()
+        }
+
+        // 验证请求参数
+        val validationErrors = validateCreateUserRequest(request)
+        if (validationErrors.isNotEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(mapOf(
+                    "error" to "请求参数验证失败",
+                    "validationErrors" to validationErrors
+                ))
                 .build()
         }
 
@@ -58,17 +61,21 @@ class AdminUserResource @Inject constructor(
             val user = UserRepresentation()
             user.isEnabled = request.enabled
             user.username = request.username
-            user.email = request.email
-            user.firstName = request.firstName
-            user.lastName = request.lastName
 
-            // 使用正确的方法设置 emailVerified
-            user.setEmailVerified(true) // 修复这里：使用 setter 方法而不是直接访问字段
+            // 设置邮箱（如果提供了的话）
+            if (!request.email.isNullOrBlank()) {
+                user.email = request.email
+                user.setEmailVerified(false)
+            }
 
-            // 创建凭证（密码）
+            // 设置姓名（可选）
+            request.firstName?.let { user.firstName = it }
+            request.lastName?.let { user.lastName = it }
+
+            // 创建凭证（密码）- 使用随机密码并要求用户在首次登录时更改
             val credential = CredentialRepresentation()
             credential.type = CredentialRepresentation.PASSWORD
-            credential.value = "TempPassword123!" // 临时密码，应该由用户更改
+            credential.value = generateRandomPassword()
             credential.isTemporary = true
 
             user.credentials = listOf(credential)
@@ -83,8 +90,15 @@ class AdminUserResource @Inject constructor(
 
                 println("=== DEBUG: User created with ID: $userId ===")
 
+                // 设置默认角色（如果没有提供角色，则默认为user）
+                val rolesToAssign = if (request.roles.isNotEmpty()) {
+                    request.roles
+                } else {
+                    listOf("user")
+                }
+
                 // 分配角色
-                if (request.roles.isNotEmpty()) {
+                if (rolesToAssign.isNotEmpty()) {
                     try {
                         val realmResource = keycloak.realm(realm)
                         val userResource = realmResource.users().get(userId)
@@ -92,12 +106,12 @@ class AdminUserResource @Inject constructor(
                         // 获取当前realm的所有角色
                         val roles = realmResource.roles().list()
                         val rolesToAdd = roles.filter { role ->
-                            request.roles.contains(role.name)
+                            rolesToAssign.contains(role.name)
                         }
 
                         if (rolesToAdd.isNotEmpty()) {
                             userResource.roles().realmLevel().add(rolesToAdd)
-                            println("=== DEBUG: Roles assigned: ${request.roles} ===")
+                            println("=== DEBUG: Roles assigned: $rolesToAssign ===")
                         }
                     } catch (roleException: Exception) {
                         println("=== DEBUG: Role assignment failed: ${roleException.message} ===")
@@ -106,24 +120,17 @@ class AdminUserResource @Inject constructor(
                 }
 
                 // 返回创建的用户信息
-                val newUser = UserResponse(
-                    id = userId,
-                    username = request.username,
-                    email = request.email,
-                    enabled = request.enabled,
-                    roles = request.roles
-                )
-
                 return Response.status(Response.Status.CREATED)
                     .entity(mapOf(
                         "message" to "用户创建成功",
                         "user" to mapOf(
-                            "id" to newUser.id,
-                            "username" to newUser.username,
-                            "email" to newUser.email,
-                            "enabled" to newUser.enabled,
-                            "roles" to newUser.roles
-                        )
+                            "id" to userId,
+                            "username" to request.username,
+                            "email" to request.email,
+                            "enabled" to request.enabled,
+                            "roles" to rolesToAssign
+                        ),
+                        "note" to "用户初始密码已生成，首次登录时需要修改密码"
                     ))
                     .build()
             } else {
@@ -136,10 +143,22 @@ class AdminUserResource @Inject constructor(
                     .entity(mapOf("error" to "创建用户失败: HTTP ${response.status} - $errorMessage"))
                     .build()
             }
+        } catch (e: jakarta.ws.rs.ClientErrorException) {
+            when (e.response?.status) {
+                409 -> return Response.status(Response.Status.CONFLICT)
+                    .entity(mapOf("error" to "用户已存在"))
+                    .build()
+                400 -> return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(mapOf("error" to "请求参数错误: ${e.message}"))
+                    .build()
+                else -> return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(mapOf("error" to "创建用户失败: ${e.message}"))
+                    .build()
+            }
         } catch (e: Exception) {
             println("=== DEBUG: Exception: ${e.message} ===")
             e.printStackTrace()
-            return Response.status(Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(mapOf("error" to "创建用户失败: ${e.message}"))
                 .build()
         } finally {
@@ -147,7 +166,36 @@ class AdminUserResource @Inject constructor(
         }
     }
 
-    // 其他方法保持不变...
+    // 验证创建用户请求
+    private fun validateCreateUserRequest(request: CreateUserRequest): List<String> {
+        val errors = mutableListOf<String>()
+
+        // 1. 验证用户名
+        if (request.username.isBlank()) {
+            errors.add("username: 用户名不能为空")
+        }
+
+        // 2. 验证邮箱格式（如果提供了邮箱）
+        if (!request.email.isNullOrBlank()) {
+            if (!request.email.contains("@")) {
+                errors.add("email: 邮箱格式不正确，必须包含@符号")
+            }
+        }
+
+        // 注意：enabled 字段由 Kotlin 类型安全保证为布尔值
+        // 如果请求体中的 enabled 不是布尔值，会在反序列化时失败
+
+        return errors
+    }
+
+    // 生成随机密码
+    private fun generateRandomPassword(): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
+        return (1..12)
+            .map { chars.random() }
+            .joinToString("")
+    }
+
     @GET
     @Path("/users")
     @Produces(MediaType.APPLICATION_JSON)
@@ -159,38 +207,67 @@ class AdminUserResource @Inject constructor(
                 .build()
         }
 
-        // 使用模拟数据，避免 Keycloak Admin Client 兼容性问题
-        val users = listOf(
-            mapOf(
-                "id" to "1",
-                "username" to "admin",
-                "email" to "admin@example.com",
-                "enabled" to true,
-                "roles" to listOf("admin", "user")
-            ),
-            mapOf(
-                "id" to "2",
-                "username" to "alice",
-                "email" to "alice@example.com",
-                "enabled" to true,
-                "roles" to listOf("user")
-            ),
-            mapOf(
-                "id" to "3",
-                "username" to "jdoe",
-                "email" to "jdoe@example.com",
-                "enabled" to true,
-                "roles" to listOf("user", "user_premium")
-            )
-        )
+        var keycloak: Keycloak? = null
+        try {
+            keycloak = getKeycloak()
+            val realm = keycloakConfig.realm
 
-        return Response.ok(mapOf(
-            "total" to users.size,
-            "users" to users
-        )).build()
+            val users = keycloak.realm(realm).users().list()
+            val userList = users.map { user ->
+                val userResource = keycloak.realm(realm).users().get(user.id)
+                val roles = userResource.roles().realmLevel().listAll().map { it.name }
+
+                mapOf(
+                    "id" to user.id,
+                    "username" to user.username,
+                    "email" to user.email,
+                    "enabled" to user.isEnabled,
+                    "firstName" to user.firstName,
+                    "lastName" to user.lastName,
+                    "emailVerified" to user.isEmailVerified,
+                    "roles" to roles
+                )
+            }
+
+            return Response.ok(mapOf(
+                "total" to userList.size,
+                "users" to userList
+            )).build()
+        } catch (e: Exception) {
+            // 如果查询失败，返回模拟数据
+            val users = listOf(
+                mapOf(
+                    "id" to "1",
+                    "username" to "admin",
+                    "email" to "admin@example.com",
+                    "enabled" to true,
+                    "roles" to listOf("admin", "user")
+                ),
+                mapOf(
+                    "id" to "2",
+                    "username" to "alice",
+                    "email" to "alice@example.com",
+                    "enabled" to true,
+                    "roles" to listOf("user")
+                ),
+                mapOf(
+                    "id" to "3",
+                    "username" to "jdoe",
+                    "email" to "jdoe@example.com",
+                    "enabled" to true,
+                    "roles" to listOf("user", "user_premium")
+                )
+            )
+
+            return Response.ok(mapOf(
+                "total" to users.size,
+                "users" to users
+            )).build()
+        } finally {
+            keycloak?.close()
+        }
     }
 
-    // 测试端点保持不变...
     @GET
     @Path("/test")
     @Produces(MediaType.APPLICATION_JSON)

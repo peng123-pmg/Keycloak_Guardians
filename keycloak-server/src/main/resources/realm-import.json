@@ -53,6 +53,22 @@
         }
       ],
       "realmRoles": ["user", "user_premium"]
+    },
+    {
+      "username": "disabled_user",
+      "email": "disabled@example.com",
+      "firstName": "Disabled",
+      "lastName": "User",
+      "enabled": false,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "disabled",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["user"]
     }
   ],
 
@@ -88,12 +104,30 @@
       ],
       "protocol": "openid-connect",
       "attributes": {
-        "pkce.code.challenge.method": "S256"
+        "pkce.code.challenge.method": "S256",
+        "access.token.lifespan": "3600"
       }
     }
   ],
 
   "defaultRoles": [
     "user"
+  ],
+
+  "protocolMappers": [
+    {
+      "name": "enabled",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "user.attribute": "enabled",
+        "claim.name": "enabled",
+        "jsonType.label": "boolean",
+        "id.token.claim": "true",
+        "access.token.claim": "true",
+        "userinfo.token.claim": "true"
+      }
+    }
   ]
 }

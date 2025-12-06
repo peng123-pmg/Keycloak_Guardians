@@ -23,7 +23,22 @@
     cd keycloak-server
     ./gradlew flywayMigrate
     ```
-5. 确认数据库内出现 `files`、`users`、`storage_usage_daily` 以及 `flyway_schema_history` 记录后，再启动后端服务。
+5. 确认数据库内出现 `files`、`users`、`storage_usage_daily`、`groups`、`group_members`、`notifications` 等核心表以及 `flyway_schema_history` 记录后，再启动后端服务。
+
+### 已创建的数据表速览
+- `users`：绑定 Keycloak 用户，扩展显示名、状态、配额等后端字段
+- `files`：文件元信息与生命周期状态
+- `storage_usage_daily`：每日用户存储量快照
+- `groups` / `group_members`：小组管理、成员角色与状态
+- `notifications`：系统/协作/审核通知中心
+- `trash_entries`：回收站保留记录
+- `backups` / `backup_jobs` / `backup_notifications`：备份计划与执行结果
+- `file_versions`：版本历史、差异指针与备注
+- `tasks` / `task_assignments` / `submissions` / `submission_reviews`：任务分工、作业提交与审核
+- `favorites` / `tags` / `file_tags`：收藏与标签体系
+- `sharing_links` / `file_shares`：分享链接和细粒度权限
+
+> 所有表定义位于 `src/main/resources/db/migration/V*.sql`，拉取仓库后只需运行 `./gradlew flywayMigrate` 或启动 `quarkusDev` 即会自动创建。
 
 ## 快速启动
 1. **导入 Keycloak realm**

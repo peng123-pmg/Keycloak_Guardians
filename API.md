@@ -224,3 +224,20 @@ json
   text
   Content-Disposition: attachment; filename="test.txt"
   Content-Type: text/plain
+
+- 更多 API 示例与字段说明可在 `docs/wiki/API.md` 或 GitHub Wiki 中查看，保持与 Postman 集合同步。
+
+## 数据库结构附录
+- `files`：文件元信息和生命周期状态
+- `users`：Keycloak 用户扩展字段
+- `storage_usage_daily`：每日存储统计
+- `groups` / `group_members`：小组、成员和角色
+- `notifications`：消息通知中心
+- `trash_entries`：回收站记录
+- `backups` / `backup_jobs` / `backup_notifications`：备份计划与执行记录
+- `file_versions`：文件版本历史
+- `tasks` / `task_assignments` / `submissions` / `submission_reviews`：任务与作业协作
+- `favorites` / `tags` / `file_tags`：收藏、标签体系
+- `sharing_links` / `file_shares`：外部分享及权限控制
+
+所有建表 SQL 位于 `keycloak-server/src/main/resources/db/migration/`，执行 `./gradlew flywayMigrate` 或启动 `quarkusDev` 会自动同步。

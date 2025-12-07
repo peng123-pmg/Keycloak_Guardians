@@ -21,21 +21,40 @@ class UserResource @Inject constructor(
     @Produces(MediaType.APPLICATION_JSON)
     fun getCurrentUser(): Response {
         return try {
-            val roles = RoleUtils.getRolesFromToken(jwt)
+            // 获取用户信息
+            val userId = jwt.getClaim<String>("sub")
+            val username = jwt.name
+            val email = jwt.getClaim<String>("email")
 
-            // 根据用户名提供个性化的欢迎消息
-            val welcomeMessage = when (jwt.name) {
+            if (userId == null || username == null) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(mapOf("error" to "无效的token"))
+                    .build()
+            }
+
+            // 从JWT中获取enabled字段
+            val enabled = jwt.getClaim<Boolean>("enabled") ?: true
+
+            // 检查用户是否被禁用 - 新增的验证
+            if (!enabled) {
+                return Response.status(Response.Status.FORBIDDEN)
+                    .entity(mapOf("error" to "用户已被禁用"))
+                    .build()
+            }
+
+            val roles = RoleUtils.getRolesFromToken(jwt)
+            val welcomeMessage = when (username.lowercase()) {
                 "admin" -> "欢迎回来，管理员!"
                 "alice" -> "欢迎回来，Alice!"
                 "jdoe" -> "欢迎回来，John!"
-                else -> "欢迎回来, ${jwt.name ?: "用户"}!"
+                else -> "欢迎回来, $username!"
             }
 
             val userInfo = mapOf(
-                "username" to jwt.name,
-                "email" to jwt.getClaim<String>("email"),
+                "username" to username,
+                "email" to email,
                 "roles" to roles,
-                "userId" to jwt.getClaim<String>("sub"),
+                "userId" to userId,
                 "welcome" to welcomeMessage
             )
             Response.ok(userInfo).build()

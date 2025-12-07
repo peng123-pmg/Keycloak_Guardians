@@ -28,30 +28,30 @@ dependencies {
     implementation("io.quarkus:quarkus-kotlin")
     implementation("io.quarkus:quarkus-smallrye-jwt")
     implementation("io.quarkus:quarkus-resteasy-jackson")
-    implementation("io.quarkus:quarkus-resteasy-qute")
-    implementation("io.quarkus:quarkus-resteasy-client")
-    implementation("io.quarkus:quarkus-resteasy-client-jackson")
-    implementation("io.quarkus:quarkus-resteasy-multipart")
-
-    // 注意：不添加任何multipart依赖
+    implementation("io.quarkus:quarkus-arc")
+    implementation("io.quarkus:quarkus-flyway")
 
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.quarkus:quarkus-test-security-jwt")
     implementation("io.quarkus:quarkus-smallrye-openapi")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.quarkus:quarkus-arc")
-    implementation("io.quarkus:quarkus-flyway")
 
-    // Keycloak Admin Client
-    implementation("org.keycloak:keycloak-admin-client:26.4.1")
-    implementation("org.jboss.resteasy:resteasy-multipart-provider:6.2.9.Final")
+    // Keycloak Admin Client - 使用正确的版本和依赖
+    implementation("org.keycloak:keycloak-admin-client:22.0.5")
 
-    // Jackson
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
+    // 添加必要的 RESTEasy 依赖以支持 Keycloak Admin Client
+    implementation("org.jboss.resteasy:resteasy-client:6.2.8.Final")
+    implementation("org.jboss.resteasy:resteasy-jaxb-provider:6.2.8.Final")
+    implementation("org.jboss.resteasy:resteasy-multipart-provider:6.2.8.Final")
+
+    // 添加 JAXB 依赖（Keycloak Admin Client 需要）
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation("com.sun.xml.bind:jaxb-impl:4.0.4")
+    implementation("com.sun.xml.bind:jaxb-core:4.0.4")
+
+    // 添加必要的 XML 处理依赖
+    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.4")
 
     // MySQL
     implementation("io.quarkus:quarkus-jdbc-mysql")

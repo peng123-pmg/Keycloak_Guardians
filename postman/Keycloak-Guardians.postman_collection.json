@@ -254,6 +254,131 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "创建小组",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2OVZVcG5PYnZ6aVA4THpfaXdSc2tweG00SkRPcS0xLV9DakpUTlJoa05nIn0.eyJleHAiOjE3NjUwMjkxODcsImlhdCI6MTc2NTAyODg4NywianRpIjoib25ydHJvOjIxZWNlY2QzLTQ4NGUtMDBiOC0xZmMzLWMwNjMwODg3ZWFiMCIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvZ3VhcmRpYW5zIiwiYXVkIjoicmVhbG0tbWFuYWdlbWVudCIsInN1YiI6ImI4ZDNlZjZiLTA5YmItNDlkMi04ODI5LWIyM2Y0Njc3ODYzNiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJhY2tlbmQtc2VydmljZSIsInNpZCI6IjVjNGNkNDc3LTliNDUtZjYzMi05MjkwLTA0YTM4YjI3NzRhZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyIsInF1ZXJ5LXVzZXJzIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBVc2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6IlVzZXIiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIn0.TrnHbMSBIsGL_YBS3iRHehZ6g8wYO1k54O1Mn_RM6CokZMCmh_yGavj_itYHr9cy9V4no01-lv5uPeaxU7eVDCzHmy977PqPMz4_yQo6GjiCyP9hzgI16Fl9JUsMXs8rtOd7fVcteB4vMjPjwU6oRVSekFkVrbR-PMrwmOOkuod4miUWVv_E8h8FjDXx05jXg4BhNMxj5HbMY-FPsNS6bdbphQQ9Y_ZlkqSAAWsqWkBa94XyYS6N747Xk0pwtloLL5C-QujFIpH7nmtG7Z2lWXt_vei8boR6Ka-qlzzOvIEAliWWuj5DRAKzUo7wChH5O6OeJarVPwzXCx5YCZa3Tw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"数据结构小组\",\r\n    \"description\": \"数据结构学习小组\",\r\n    \"courseCode\": \"CS101\",\r\n    \"joinPolicy\": \"INVITE_ONLY\",\r\n    \"memberLimit\": 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/groups",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "共享文件到小组",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2OVZVcG5PYnZ6aVA4THpfaXdSc2tweG00SkRPcS0xLV9DakpUTlJoa05nIn0.eyJleHAiOjE3NjUwMjk4NDUsImlhdCI6MTc2NTAyOTU0NSwianRpIjoib25ydHJvOjZiNTA2ZjQxLTNkYTAtMGU1Zi0zNTJmLTg0ZThhOWY3YTU5MyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvZ3VhcmRpYW5zIiwiYXVkIjoicmVhbG0tbWFuYWdlbWVudCIsInN1YiI6ImI4ZDNlZjZiLTA5YmItNDlkMi04ODI5LWIyM2Y0Njc3ODYzNiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJhY2tlbmQtc2VydmljZSIsInNpZCI6ImQ0MDY1OTUzLWFhNDUtNDYyMS03YTk0LTIzOGYyZjZmODhiZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyIsInF1ZXJ5LXVzZXJzIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBVc2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6IlVzZXIiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIn0.JUCtCA0DHpr0hw4h5DA7P1IXPLVsuSmQqqHiSzjnOLgnl9OF_q6PkWHxaP1xveOWqhMbonXpYqsAQLUssGC0FE3ayL8S4KYQRTHW1K5_OslLWy7Megpy3VaGf4I4fhYyGVSXvxGTlz8tpF5QKJnV-NOXLFJ4e1Fi0hnkcUjkd_jTjwuBV2B6RIPA57npdOU4-OEQ5N5mwg13fa2UZHYUHhOBaHuFbRl-vDntH0QoefHD0F8THjdwUund-g-qSsfBLdUgFva7-nJswG44CyUZwN1somhtDCFl96LfRngDoP4z9G8GgYwqYesctvlQU9yiOAgFC8tyf7Ca_fSJoHf2tQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fileId\": 6,\r\n    \"permission\": \"READ\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/groups/1/files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"1",
+						"files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取组内文件",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2OVZVcG5PYnZ6aVA4THpfaXdSc2tweG00SkRPcS0xLV9DakpUTlJoa05nIn0.eyJleHAiOjE3NjUwMjk4NDUsImlhdCI6MTc2NTAyOTU0NSwianRpIjoib25ydHJvOjZiNTA2ZjQxLTNkYTAtMGU1Zi0zNTJmLTg0ZThhOWY3YTU5MyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvZ3VhcmRpYW5zIiwiYXVkIjoicmVhbG0tbWFuYWdlbWVudCIsInN1YiI6ImI4ZDNlZjZiLTA5YmItNDlkMi04ODI5LWIyM2Y0Njc3ODYzNiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJhY2tlbmQtc2VydmljZSIsInNpZCI6ImQ0MDY1OTUzLWFhNDUtNDYyMS03YTk0LTIzOGYyZjZmODhiZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyIsInF1ZXJ5LXVzZXJzIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBVc2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6IlVzZXIiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIn0.JUCtCA0DHpr0hw4h5DA7P1IXPLVsuSmQqqHiSzjnOLgnl9OF_q6PkWHxaP1xveOWqhMbonXpYqsAQLUssGC0FE3ayL8S4KYQRTHW1K5_OslLWy7Megpy3VaGf4I4fhYyGVSXvxGTlz8tpF5QKJnV-NOXLFJ4e1Fi0hnkcUjkd_jTjwuBV2B6RIPA57npdOU4-OEQ5N5mwg13fa2UZHYUHhOBaHuFbRl-vDntH0QoefHD0F8THjdwUund-g-qSsfBLdUgFva7-nJswG44CyUZwN1somhtDCFl96LfRngDoP4z9G8GgYwqYesctvlQU9yiOAgFC8tyf7Ca_fSJoHf2tQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/groups/files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "获取用户小组列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI2OVZVcG5PYnZ6aVA4THpfaXdSc2tweG00SkRPcS0xLV9DakpUTlJoa05nIn0.eyJleHAiOjE3NjUwMjk4NDUsImlhdCI6MTc2NTAyOTU0NSwianRpIjoib25ydHJvOjZiNTA2ZjQxLTNkYTAtMGU1Zi0zNTJmLTg0ZThhOWY3YTU5MyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvZ3VhcmRpYW5zIiwiYXVkIjoicmVhbG0tbWFuYWdlbWVudCIsInN1YiI6ImI4ZDNlZjZiLTA5YmItNDlkMi04ODI5LWIyM2Y0Njc3ODYzNiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImJhY2tlbmQtc2VydmljZSIsInNpZCI6ImQ0MDY1OTUzLWFhNDUtNDYyMS03YTk0LTIzOGYyZjZmODhiZiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbImNyZWF0ZS1jbGllbnQiLCJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwidmlldy1jbGllbnRzIiwicXVlcnktY2xpZW50cyIsInF1ZXJ5LWdyb3VwcyIsInF1ZXJ5LXVzZXJzIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJBZG1pbiBVc2VyIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiYWRtaW4iLCJnaXZlbl9uYW1lIjoiQWRtaW4iLCJmYW1pbHlfbmFtZSI6IlVzZXIiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIn0.JUCtCA0DHpr0hw4h5DA7P1IXPLVsuSmQqqHiSzjnOLgnl9OF_q6PkWHxaP1xveOWqhMbonXpYqsAQLUssGC0FE3ayL8S4KYQRTHW1K5_OslLWy7Megpy3VaGf4I4fhYyGVSXvxGTlz8tpF5QKJnV-NOXLFJ4e1Fi0hnkcUjkd_jTjwuBV2B6RIPA57npdOU4-OEQ5N5mwg13fa2UZHYUHhOBaHuFbRl-vDntH0QoefHD0F8THjdwUund-g-qSsfBLdUgFva7-nJswG44CyUZwN1somhtDCFl96LfRngDoP4z9G8GgYwqYesctvlQU9yiOAgFC8tyf7Ca_fSJoHf2tQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/groups",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

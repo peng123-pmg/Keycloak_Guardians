@@ -1,7 +1,6 @@
 {
   "realm": "guardians",
   "enabled": true,
-
   "users": [
     {
       "username": "admin",
@@ -17,10 +16,7 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["admin", "user"],
-      "clientRoles": {
-        "realm-management": ["view-users", "view-clients"]
-      }
+      "realmRoles": ["admin", "user"]
     },
     {
       "username": "alice",
@@ -53,9 +49,24 @@
         }
       ],
       "realmRoles": ["user", "user_premium"]
+    },
+    {
+      "username": "disabled_user",
+      "email": "disabled@example.com",
+      "firstName": "Disabled",
+      "lastName": "User",
+      "enabled": false,
+      "emailVerified": false,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "disabled",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["user"]
     }
   ],
-
   "roles": {
     "realm": [
       {
@@ -72,7 +83,6 @@
       }
     ]
   },
-
   "clients": [
     {
       "clientId": "backend-service",
@@ -92,7 +102,6 @@
       }
     }
   ],
-
   "defaultRoles": [
     "user"
   ]

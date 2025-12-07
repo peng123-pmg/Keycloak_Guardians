@@ -1,0 +1,422 @@
+/* 主容器 - 右侧主内容区 */
+.container {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(178, 210, 237, 0.5), rgba(250, 251, 252, 0.5));
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 100%;
+}
+
+/* 手动备份标题栏 - 透明背景，左对齐 */
+.manualBackupHeader {
+  width: 100%;
+  height: 3.125rem; /* 50px */
+  background: transparent;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.sectionTitle {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.875rem; /* 30px */
+  font-weight: 500;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+  line-height: 3.125rem; /* 50px */
+}
+
+/* 表格容器 */
+.tableWrapper {
+  width: 100%;
+  min-height: 27.5rem; /* 440px */
+  background: rgba(42, 130, 228, 0.2);
+  overflow: auto;
+}
+
+/* 备份表格 */
+.backupTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.backupTable thead {
+  background: transparent;
+}
+
+.backupTable thead tr {
+  background: rgba(90, 155, 230, 0.5);
+  height: 3.75rem; /* 60px */
+}
+
+.backupTable th {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+  color: #333333;
+  text-align: left;
+  padding: 0 0.9375rem; /* 15px */
+  height: 3.75rem; /* 60px */
+  border-bottom: 1px solid #333333;
+  box-sizing: border-box;
+}
+
+.backupTable th:nth-child(1) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable th:nth-child(2) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable th:nth-child(3) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable th:nth-child(4) {
+  width: 55%;
+  min-width: 18.75rem; /* 300px */
+}
+
+.backupTable tbody tr {
+  border-bottom: 1px solid #333333;
+}
+
+.backupTable td {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+  color: #333333;
+  padding: 0 0.9375rem; /* 15px */
+  height: 3.75rem; /* 60px */
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.backupTable td:nth-child(1) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable td:nth-child(2) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable td:nth-child(3) {
+  width: 15%;
+  min-width: 10.3125rem; /* 165px */
+}
+
+.backupTable td:nth-child(4) {
+  width: 55%;
+  min-width: 18.75rem; /* 300px */
+}
+
+/* 进度单元格 */
+.progressCell {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem; /* 10px */
+  width: 100%;
+  height: 3.75rem; /* 60px */
+  padding: 0;
+}
+
+.progressText {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+  color: #333333;
+  white-space: nowrap;
+  min-width: 3.125rem; /* 50px */
+}
+
+.completedText {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+  color: #4CAF50;
+  white-space: nowrap;
+}
+
+/* 进度条 */
+.progressBar {
+  flex: 1;
+  max-width: 12.5rem; /* 200px */
+  height: 1.875rem; /* 30px */
+  background: rgba(42, 130, 228, 0.2);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background: rgba(90, 155, 230, 0.2);
+  transition: width 0.3s ease;
+}
+
+/* 设置区块容器（包含标题和内容） */
+.settingBlock {
+  width: 100%;
+  background: rgba(42, 130, 228, 0.2);
+  margin-top: 3.125rem; /* 50px */
+}
+
+/* 设置区块标题栏 */
+.settingHeader {
+  width: 100%;
+  height: 3.75rem; /* 60px */
+  background: transparent;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.settingHeaderTitle {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.875rem; /* 30px */
+  font-weight: 500;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+/* 设置区块内容区域 */
+.settingContent {
+  width: 100%;
+  padding: 1.25rem 2.5rem; /* 20px 40px */
+  display: flex;
+  align-items: center;
+  gap: 3.125rem; /* 50px */
+  box-sizing: border-box;
+  min-height: 7.5rem; /* 120px */
+  flex-wrap: wrap;
+}
+
+/* 单选项 */
+.radioOption {
+  display: flex;
+  align-items: center;
+  gap: 0.9375rem; /* 15px */
+  cursor: pointer;
+  user-select: none;
+  height: auto;
+}
+
+.radioInput {
+  appearance: none;
+  width: 1.25rem; /* 20px */
+  height: 1.25rem; /* 20px */
+  border: 2px solid #333333;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  background: white;
+}
+
+.radioInput:checked {
+  border-color: #5A9BE6;
+}
+
+.radioInput:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.625rem; /* 10px */
+  height: 0.625rem; /* 10px */
+  background: #5A9BE6;
+  border-radius: 50%;
+}
+
+.radioLabel {
+  font-family: '黑体', 'SimHei', sans-serif;
+  font-size: 1.5rem; /* 24px */
+  font-weight: 400;
+  color: #333333;
+  white-space: nowrap;
+}
+
+/* 响应式设计 - 平板设备 */
+@media (max-width: 768px) {
+  .sectionTitle {
+    font-size: 1.5rem; /* 24px */
+    line-height: 2.5rem; /* 40px */
+  }
+
+  .manualBackupHeader {
+    height: 2.5rem; /* 40px */
+  }
+
+  .settingHeaderTitle {
+    font-size: 1.5rem; /* 24px */
+  }
+
+  .backupTable th,
+  .backupTable td {
+    font-size: 1.25rem; /* 20px */
+    padding: 0 0.625rem; /* 10px */
+    height: 3rem; /* 48px */
+  }
+
+  .backupTable thead tr {
+    height: 3rem; /* 48px */
+  }
+
+  .progressCell {
+    height: 3rem; /* 48px */
+  }
+
+  .progressText,
+  .completedText,
+  .radioLabel {
+    font-size: 1.25rem; /* 20px */
+  }
+
+  .settingContent {
+    padding: 1rem 1.5rem; /* 16px 24px */
+    gap: 2rem; /* 32px */
+  }
+
+  .settingBlock {
+    margin-top: 2rem; /* 32px */
+  }
+
+  /* 表格列宽调整 */
+  .backupTable th:nth-child(1),
+  .backupTable td:nth-child(1) {
+    width: 20%;
+    min-width: 8rem; /* 128px */
+  }
+
+  .backupTable th:nth-child(2),
+  .backupTable td:nth-child(2) {
+    width: 20%;
+    min-width: 8rem; /* 128px */
+  }
+
+  .backupTable th:nth-child(3),
+  .backupTable td:nth-child(3) {
+    width: 20%;
+    min-width: 8rem; /* 128px */
+  }
+
+  .backupTable th:nth-child(4),
+  .backupTable td:nth-child(4) {
+    width: 40%;
+    min-width: 12rem; /* 192px */
+  }
+}
+
+/* 响应式设计 - 手机设备 */
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: 1.25rem; /* 20px */
+    line-height: 2rem; /* 32px */
+  }
+
+  .manualBackupHeader {
+    height: 2rem; /* 32px */
+  }
+
+  .settingHeaderTitle {
+    font-size: 1.25rem; /* 20px */
+  }
+
+  .backupTable th,
+  .backupTable td {
+    font-size: 1rem; /* 16px */
+    padding: 0 0.5rem; /* 8px */
+    height: 2.5rem; /* 40px */
+  }
+
+  .backupTable thead tr {
+    height: 2.5rem; /* 40px */
+  }
+
+  .progressCell {
+    height: 2.5rem; /* 40px */
+    gap: 0.5rem; /* 8px */
+  }
+
+  .progressText,
+  .completedText {
+    font-size: 1rem; /* 16px */
+    min-width: 2.5rem; /* 40px */
+  }
+
+  .radioLabel {
+    font-size: 1rem; /* 16px */
+  }
+
+  .settingContent {
+    padding: 0.75rem 1rem; /* 12px 16px */
+    gap: 1.5rem; /* 24px */
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .settingBlock {
+    margin-top: 1.5rem; /* 24px */
+  }
+
+  .progressBar {
+    max-width: 8rem; /* 128px */
+    height: 1.25rem; /* 20px */
+  }
+
+  .radioInput {
+    width: 1rem; /* 16px */
+    height: 1rem; /* 16px */
+  }
+
+  .radioInput:checked::after {
+    width: 0.5rem; /* 8px */
+    height: 0.5rem; /* 8px */
+  }
+
+  /* 表格改为更紧凑的布局 */
+  .tableWrapper {
+    min-height: 20rem; /* 320px */
+  }
+
+  .backupTable th:nth-child(1),
+  .backupTable td:nth-child(1) {
+    width: 25%;
+    min-width: 6rem; /* 96px */
+  }
+
+  .backupTable th:nth-child(2),
+  .backupTable td:nth-child(2) {
+    width: 25%;
+    min-width: 6rem; /* 96px */
+  }
+
+  .backupTable th:nth-child(3),
+  .backupTable td:nth-child(3) {
+    width: 20%;
+    min-width: 5rem; /* 80px */
+  }
+
+  .backupTable th:nth-child(4),
+  .backupTable td:nth-child(4) {
+    width: 30%;
+    min-width: 8rem; /* 128px */
+  }
+}

@@ -91,11 +91,6 @@
   background: transparent;
 }
 
-/* 蓝色文字的菜单项 */
-.menuItem.blueText .menuLabel {
-  color: #5A9BE6;
-}
-
 /* "删除文件"到"团队文件管理"之间的特殊间距50px */
 .menuItem.topSpacing50 {
   margin-top: 20px; /* 30px默认 + 20px额外 = 50px总间距 */

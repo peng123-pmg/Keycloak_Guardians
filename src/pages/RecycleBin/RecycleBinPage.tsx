@@ -85,7 +85,7 @@ const RecycleBinPage: React.FC = () => {
           <div className={styles.headerCell} style={{ width: '150px' }}>
             原分类
           </div>
-          <div className={styles.headerCell} style={{ width: '250px' }}>
+          <div className={styles.headerCell} style={{ minWidth: '220px' }}>
             删除时间
           </div>
           <div className={styles.headerCell} style={{ width: '180px' }}>
@@ -109,7 +109,7 @@ const RecycleBinPage: React.FC = () => {
                 <div className={styles.rowCell} style={{ width: '150px' }}>
                   {file.category}
                 </div>
-                <div className={styles.rowCell} style={{ width: '250px' }}>
+                <div className={styles.rowCell} style={{ minWidth: '220px' }}>
                   {file.deleteTime}
                 </div>
                 <div className={styles.rowCell} style={{ width: '180px' }}>

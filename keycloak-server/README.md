@@ -23,7 +23,7 @@
     cd keycloak-server
     ./gradlew flywayMigrate
     ```
-5. 确认数据库内出现 `files`、`users`、`storage_usage_daily`、`groups`、`group_members`、`notifications` 等核心表以及 `flyway_schema_history` 记录后，再启动后端服务。
+    > V5 迁移新增 `last_sync_source`、`last_sync_at`、`sync_attempts` 等字段，用于记录“登录即同步”元数据，如遇 checksum mismatch 可先执行 `./gradlew flywayRepair` 再迁移。
 
 ### 已创建的数据表速览
 - `users`：绑定 Keycloak 用户，扩展显示名、状态、配额等后端字段
@@ -37,6 +37,10 @@
 - `tasks` / `task_assignments` / `submissions` / `submission_reviews`：任务分工、作业提交与审核
 - `favorites` / `tags` / `file_tags`：收藏与标签体系
 - `sharing_links` / `file_shares`：分享链接和细粒度权限
+- users表新增字段说明（Flyway V5 迁移）：
+  - `last_sync_source`：上次同步来源（如 "LOGIN_SYNC"、"MANUAL_SYNC"）
+  - `last_sync_at`：上次同步时间戳
+  - `sync_attempts`：累计同步尝试次数
 
 > 所有表定义位于 `src/main/resources/db/migration/V*.sql`，拉取仓库后只需运行 `./gradlew flywayMigrate` 或启动 `quarkusDev` 即会自动创建。
 
@@ -89,6 +93,17 @@
 - 若 roles 字段为空，请检查 Keycloak realm 的 protocol mappers 配置，确保 access_token 中包含角色信息
 - 若 Quarkus 启动报错，请确认 JDK/Gradle 版本和依赖完整
 
+### 常见问题（用户同步）
+- `iamkc.users` 中只有 `admin`：自动同步依赖用户访问受保护接口。realm 导入只影响 Keycloak 自库，不会自动写入业务库。可用 Postman 调用 `GET /api/users/me` 或 `POST /api/users/bootstrap`（管理员）触发 `UserSyncService` 批量写入。
+- 通过 Postman 创建的新用户未出现在 `users` 表：已在 `/api/admin/users` 中集成 `KeycloakUserProvisioner.syncUserById`，确保成功创建后立即 upsert 本地记录；若仍缺失，请检查 Keycloak Admin API 权限或查看日志中的 `Failed to synchronize user ...`。
+
+## 环境变量与配置
+- 主要运行参数集中在 `keycloak-server/src/main/resources/application.properties`，默认连接本地 Keycloak (`http://localhost:8080/realms/guardians`) 与 MySQL (`jdbc:mysql://localhost:3306/iamkc`).
+- 用户同步相关开关：
+  - `user.sync.enabled=true` 控制是否在请求链路自动 upsert Keycloak 用户。
+  - `user.sync.default-quota-bytes=10737418240` 可按需调整业务层默认配额。
+- 如需自定义端口或 CORS，可修改 `quarkus.http.*` / `quarkus.http.cors.*` 设置后重启。
+
 ## 适配前端
 - 前端可通过 OIDC 登录流程获取 access_token，带 token 访问后端受保护接口
 - 推荐使用 axios/fetch 并设置 Authorization header
@@ -96,7 +111,19 @@
 ## Postman 测试集
 - 集合文件：`postman/Keycloak-Guardians.postman_collection.json`
 - 导入后先运行 **Auth / 获取 Token** 请求，会自动把 `access_token` 保存到 `{{access_token}}` 变量；随后依次测试 `GET /api/users/me`、`GET /api/user/stats` 等接口，断言会校验状态码与关键字段格式。
+- 新增请求 **System -> 自检 -> /api/user/stats**，加入断言验证 `summary.totalOwners` 与 `topUsersByStorage` 字段；执行前确保至少有一位登录用户完成同步。
 - 新增/更新接口完成后，请运行集合内 **User Stats / GET /api/user/stats** 请求验证返回结构是否符合文档（`API.md` / `docs/wiki/API.md`）。
+
+## 常用命令
+```powershell
+cd D:\keycloak\Keycloak_Guardians\keycloak-server
+./gradlew quarkusDev
+```
+- 启动后可用 Postman 或 curl 调用：
+```bash
+curl -X POST "http://localhost:8081/api/users/bootstrap" \
+     -H "Authorization: Bearer <admin_token>"
+```
 
 ---
 如有疑问请联系后端负责人或查阅 Keycloak 官方文档。

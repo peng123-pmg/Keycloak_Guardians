@@ -14,12 +14,14 @@ import org.keycloak.admin.client.Keycloak
 import com.example.config.KeycloakConfig
 import org.keycloak.representations.idm.UserRepresentation
 import org.keycloak.representations.idm.CredentialRepresentation
+import com.example.services.KeycloakUserProvisioner
 
 @Path("/api/admin")
 @ApplicationScoped
 class AdminUserResource @Inject constructor(
     private val jwt: JsonWebToken,
-    private val keycloakConfig: KeycloakConfig
+    private val keycloakConfig: KeycloakConfig,
+    private val userProvisioner: KeycloakUserProvisioner
 ) {
 
     private fun getKeycloak(): Keycloak {
@@ -77,7 +79,6 @@ class AdminUserResource @Inject constructor(
             val response = keycloak.realm(realm).users().create(user)
 
             if (response.status == 201) {
-                // 获取用户ID
                 val location = response.location
                 val userId = location.path.split("/").last()
 
@@ -104,6 +105,8 @@ class AdminUserResource @Inject constructor(
                         // 角色分配失败不影响用户创建，只是记录日志
                     }
                 }
+
+                userProvisioner.syncUserById(userId)
 
                 // 返回创建的用户信息
                 val newUser = UserResponse(

@@ -1,6 +1,7 @@
 package com.example.resources
 
 import jakarta.ws.rs.GET
+import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.Produces
 import jakarta.ws.rs.core.MediaType
@@ -9,11 +10,14 @@ import org.eclipse.microprofile.jwt.JsonWebToken
 import jakarta.inject.Inject
 import com.example.utils.RoleUtils
 import jakarta.enterprise.context.ApplicationScoped
+import com.example.services.KeycloakUserProvisioner
+import jakarta.annotation.security.RolesAllowed
 
 @Path("/api/users")
 @ApplicationScoped
 class UserResource @Inject constructor(
-    private val jwt: JsonWebToken
+    private val jwt: JsonWebToken,
+    private val keycloakUserProvisioner: KeycloakUserProvisioner
 ) {
 
     @GET
@@ -44,5 +48,15 @@ class UserResource @Inject constructor(
                 .entity(mapOf("error" to "无效的token: ${e.message}"))
                 .build()
         }
+    }
+
+    @POST
+    @Path("/bootstrap")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("admin")
+    fun bootstrapUsers(): Response {
+        keycloakUserProvisioner.syncAllUsers()
+        return Response.ok(mapOf("message" to "用户同步已触发"))
+            .build()
     }
 }

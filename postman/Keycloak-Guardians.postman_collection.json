@@ -254,6 +254,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "触发用户同步 (Bootstrap)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/users/bootstrap",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"users",
+						"bootstrap"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

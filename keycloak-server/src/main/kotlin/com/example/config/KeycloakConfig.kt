@@ -26,7 +26,7 @@ class KeycloakConfig {
     @ConfigProperty(name = "keycloak.admin.password")
     lateinit var adminPassword: String
 
-    private val resteasyClient: ResteasyClient =
+    private fun buildClient(): ResteasyClient =
         ResteasyClientBuilderImpl()
             .register(FormUrlEncodedProvider())
             .build()
@@ -38,15 +38,7 @@ class KeycloakConfig {
             .clientId(adminClientId)
             .username(adminUsername)
             .password(adminPassword)
-            .resteasyClient(resteasyClient)
+            .resteasyClient(buildClient())
             .build()
-    }
-
-    @PreDestroy
-    fun closeClient() {
-        try {
-            resteasyClient.close()
-        } catch (_: Exception) {
-        }
     }
 }

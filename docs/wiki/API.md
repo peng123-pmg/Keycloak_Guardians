@@ -39,6 +39,12 @@
   2. 进入 `keycloak-server` 运行 `./gradlew flywayMigrate` 或 `./gradlew quarkusDev`
   3. 校验 `iamkc` 库中已生成所有表和 `flyway_schema_history`
 
+## 6. 用户同步工具
+- `POST /api/users/bootstrap`：管理员触发 Keycloak ➜ iamkc 批量同步（调用 `KeycloakUserProvisioner.syncAllUsers`）。接口返回 `{ "message": "用户同步已触发" }`。用于首次导入 realm 后批量填充本地 `users` 表。
+
+## 7. 配置与环境
+- 默认配置保存在 `keycloak-server/src/main/resources/application.properties`，包含 OIDC、HTTP、MySQL、CORS、用户同步等参数。修改后需重新启动 `./gradlew quarkusDev`。
+
 > 本 Wiki 与根目录 `API.md`、Postman 集合同步维护，更新接口或数据表时务必同时修改。
 
 > Wiki 推送步骤：复制本文件内容到 GitHub Wiki 仓库（`*.wiki.git`），提交后通知团队即可。

@@ -25,6 +25,7 @@ json
     "userId": "b8d3ef6b-09bb-49d2-8829-b23f46778636",
     "welcome": "欢迎回来，管理员!"
 }
+  备注：若首次登录后调用接口提示“用户尚未同步”，重新获取 token 并访问任意受保护接口即可触发同步逻辑，随后此接口会返回真实数据。
 
 2. 用户信息概况
 2.1 基本信息
@@ -76,6 +77,10 @@ json
     "generatedAt": "2025-11-23T10:43:21.123456Z"
   }
 }
+  错误提示：
+  - `error: 权限不足，需要管理员角色`
+  - `error: 用户尚未同步，请重新登录`（当前 token 对应用户尚未写入 `iamkc.users`，重新发起请求即��自动写入）
+
 3. 用户管理
 3.1 创建用户
   请求路径：/api/admin/users
@@ -162,6 +167,9 @@ json
         "updatedAt": "2025-11-29T10:30:00Z"
     }
 }
+  错误情况：
+  - `error: 用户尚未同步，请重新登录`：当前用户尚未持久化到 `iamkc.users`，重新访问受保护接口即可触发同步。
+
 4.2 获取文件列表
   请求路径：/api/files
   请求方式：GET
@@ -241,3 +249,7 @@ json
 - `sharing_links` / `file_shares`：外部分享及权限控制
 
 所有建表 SQL 位于 `keycloak-server/src/main/resources/db/migration/`，执行 `./gradlew flywayMigrate` 或启动 `quarkusDev` 会自动同步。
+
+## 配置说明
+- 运行参数在 `keycloak-server/src/main/resources/application.properties`：默认 Keycloak OIDC（`http://localhost:8080/realms/guardians`）、HTTP 端口 8081、MySQL `iamkc` 数据源、CORS 允许运行。需要变更时直接修改对应属性并重启。
+- 用户同步开关：`user.sync.enabled=true`；批量触发可使用 `POST /api/users/bootstrap`（管理员）。

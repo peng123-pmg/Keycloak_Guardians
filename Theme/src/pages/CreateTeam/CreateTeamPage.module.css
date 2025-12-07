@@ -11,52 +11,56 @@
   justify-content: center;
 }
 
-/* 757×757 卡片容器 - 居中显示 */
+/* 卡片容器 - 响应式尺寸 */
 .cardContainer {
-  width: 757px;
-  height: 757px;
+  width: 90%;
+  max-width: 47.3125rem; /* 757px */
+  height: auto;
+  min-height: 47.3125rem; /* 757px */
   background: rgba(90, 155, 230, 0.5);
   position: relative;
   display: flex;
   flex-direction: column;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* 表单行 - 每行包含标签和输入框 */
 .formRow {
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 3.125rem; /* 50px */
 }
 
-/* 第一行距离顶部30px */
+/* 第一行距离顶部 */
 .formRow:first-child {
-  margin-top: 30px;
+  margin-top: 1.875rem; /* 30px */
 }
 
-/* 表单标签 - 黑体 bold 24px */
+/* 表单标签 - 黑体 bold */
 .formLabel {
-  width: 95px;
-  margin-left: 95px;
-  margin-right: 40px;
+  width: 5.9375rem; /* 95px */
+  margin-left: 5.9375rem; /* 95px */
+  margin-right: 2.5rem; /* 40px */
   font-family: '黑体', 'SimHei', sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem; /* 24px */
   font-weight: 700;
   color: #000000;
   text-align: left;
   flex-shrink: 0;
 }
 
-/* 输入框 - 400px × 50px */
+/* 输入框 - 响应式宽度 */
 .formInput {
-  width: 400px;
-  height: 50px;
+  width: 100%;
+  max-width: 25rem; /* 400px */
+  height: 3.125rem; /* 50px */
   background: #FFFFFF;
   border: 1px solid #CCCCCC;
-  border-radius: 4px;
-  padding: 0 8px;
+  border-radius: 0.25rem; /* 4px */
+  padding: 0 0.5rem; /* 8px */
   font-family: '思源黑体', 'Source Han Sans', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: #333333;
   outline: none;
   box-sizing: border-box;
@@ -67,48 +71,146 @@
   font-family: '思源黑体', 'Source Han Sans', sans-serif;
 }
 
-/* 下拉选择框 - 400px × 50px */
+/* 下拉选择框 - 响应式宽度 */
 .formSelect {
-  width: 400px;
-  height: 50px;
+  width: 100%;
+  max-width: 25rem; /* 400px */
+  height: 3.125rem; /* 50px */
   background: #FFFFFF;
   border: 1px solid #CCCCCC;
-  border-radius: 4px;
-  padding: 0 8px;
+  border-radius: 0.25rem; /* 4px */
+  padding: 0 0.5rem; /* 8px */
   font-family: '思源黑体', 'Source Han Sans', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: #333333;
   outline: none;
   box-sizing: border-box;
   cursor: pointer;
 }
 
-/* 创建按钮 - 270px × 85px */
+/* 创建按钮 - 响应式尺寸 */
 .submitBtn {
-  width: 270px;
-  height: 85px;
+  width: 16.875rem; /* 270px */
+  height: 5.3125rem; /* 85px */
   background: #2A82E4;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem; /* 8px */
   font-family: '黑体', 'SimHei', sans-serif;
-  font-size: 36px;
+  font-size: 2.25rem; /* 36px */
   font-weight: 600;
   color: #FFFFFF;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 8px rgba(42, 130, 228, 0.3);
+  box-shadow: 0 0.25rem 0.5rem rgba(42, 130, 228, 0.3);
   position: absolute;
-  bottom: 60px;
-  left: 245px;
+  bottom: 3.75rem; /* 60px */
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .submitBtn:hover {
   background: #1E6EC8;
-  box-shadow: 0 6px 12px rgba(42, 130, 228, 0.4);
-  transform: translateY(-2px);
+  box-shadow: 0 0.375rem 0.75rem rgba(42, 130, 228, 0.4);
+  transform: translateX(-50%) translateY(-0.125rem);
 }
 
 .submitBtn:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(42, 130, 228, 0.3);
+  transform: translateX(-50%) translateY(0);
+  box-shadow: 0 0.125rem 0.25rem rgba(42, 130, 228, 0.3);
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1200px) {
+  .cardContainer {
+    width: 85%;
+    padding: 1rem; /* 16px */
+  }
+
+  .formLabel {
+    width: 5rem; /* 80px */
+    margin-left: 3rem; /* 48px */
+    margin-right: 2rem; /* 32px */
+    font-size: 1.25rem; /* 20px */
+  }
+
+  .formInput,
+  .formSelect {
+    max-width: 22rem; /* 352px */
+    height: 2.75rem; /* 44px */
+  }
+
+  .submitBtn {
+    width: 15rem; /* 240px */
+    height: 4.5rem; /* 72px */
+    font-size: 2rem; /* 32px */
+  }
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    width: 95%;
+    min-height: auto;
+    padding: 1.5rem; /* 24px */
+  }
+
+  .formRow {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 2rem; /* 32px */
+  }
+
+  .formRow:first-child {
+    margin-top: 1rem; /* 16px */
+  }
+
+  .formLabel {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0.5rem; /* 8px */
+    font-size: 1.125rem; /* 18px */
+  }
+
+  .formInput,
+  .formSelect {
+    max-width: 100%;
+    height: 2.5rem; /* 40px */
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .submitBtn {
+    width: 12rem; /* 192px */
+    height: 3.75rem; /* 60px */
+    font-size: 1.5rem; /* 24px */
+    bottom: 2rem; /* 32px */
+  }
+}
+
+@media (max-width: 480px) {
+  .cardContainer {
+    width: 100%;
+    padding: 1rem; /* 16px */
+  }
+
+  .formLabel {
+    font-size: 1rem; /* 16px */
+  }
+
+  .formInput,
+  .formSelect {
+    height: 2.25rem; /* 36px */
+    font-size: 0.75rem; /* 12px */
+    padding: 0 0.375rem; /* 6px */
+  }
+
+  .submitBtn {
+    width: 10rem; /* 160px */
+    height: 3rem; /* 48px */
+    font-size: 1.25rem; /* 20px */
+    bottom: 1.5rem; /* 24px */
+  }
+
+  .formRow {
+    margin-bottom: 1.5rem; /* 24px */
+  }
 }

@@ -8,12 +8,13 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
+  padding-top: 3.75rem; /* 60px */
 }
 
 /* ==================== 主内容区 ==================== */
 .contentArea {
   width: 100%;
+  max-width: 100%;
   background: rgba(242, 191, 191, 0.2);
   padding: 0;
   box-sizing: border-box;
@@ -22,24 +23,25 @@
 /* ==================== 标题栏 ==================== */
 .headerRow {
   width: 100%;
-  height: 80px;
+  height: 5rem; /* 80px */
   background: rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 1.25rem; /* 20px */
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
-  gap: 20px;
+  gap: 1.25rem; /* 20px */
 }
 
 .headerCell {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 1.5rem; /* 24px */
   color: #333333;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 /* ==================== 表格区域 ==================== */
@@ -50,13 +52,13 @@
 .tableRow {
   display: flex;
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: 3.75rem; /* 60px */
+  padding: 0 1.25rem; /* 20px */
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
   background: transparent;
   transition: background 0.2s ease;
-  gap: 20px;
+  gap: 1.25rem; /* 20px */
 }
 
 .tableRow:hover {
@@ -78,7 +80,9 @@
 .actionButtons {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 0.9375rem; /* 15px */
+  flex: 1;
+  justify-content: center;
 }
 
 .deleteButton {
@@ -87,12 +91,12 @@
   border: none;
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  padding: 8px 16px;
+  font-size: 0.75rem; /* 12px */
+  padding: 0.5rem 1rem; /* 8px 16px */
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 0.25rem; /* 4px */
   transition: background 0.2s ease;
-  min-width: 60px;
+  min-width: 3.75rem; /* 60px */
 }
 
 .deleteButton:hover {
@@ -105,12 +109,12 @@
   border: none;
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  padding: 8px 16px;
+  font-size: 0.75rem; /* 12px */
+  padding: 0.5rem 1rem; /* 8px 16px */
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 0.25rem; /* 4px */
   transition: background 0.2s ease;
-  min-width: 60px;
+  min-width: 3.75rem; /* 60px */
 }
 
 .restoreButton:hover {
@@ -120,16 +124,16 @@
 /* ==================== 空状态 ==================== */
 .emptyMessage {
   text-align: center;
-  padding: 80px 20px;
+  padding: 5rem 1.25rem; /* 80px 20px */
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 1.5rem; /* 24px */
   color: #999999;
 }
 
 /* ==================== 底部提示 ==================== */
 .footerHint {
-  padding: 20px;
+  padding: 1.25rem; /* 20px */
   text-align: center;
   background: rgba(255, 255, 255, 0.3);
   border-top: 1px solid rgba(90, 155, 230, 0.3);
@@ -139,68 +143,82 @@
   margin: 0;
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: #666666;
 }
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 1200px) {
-  .contentArea {
-    width: 95%;
-  }
-
-  .headerRow {
-    width: 100%;
+  .headerRow,
+  .tableRow {
+    padding: 0 1rem; /* 16px */
   }
 
   .rowCell {
-    font-size: 20px;
+    font-size: 1.25rem; /* 20px */
   }
 }
 
 @media (max-width: 768px) {
   .pageContainer {
-    padding-top: 40px;
+    padding-top: 2.5rem; /* 40px */
   }
 
   .headerRow {
-    height: 60px;
-    font-size: 10px;
+    height: 3.75rem; /* 60px */
+    font-size: 0.625rem; /* 10px */
     overflow-x: auto;
+    gap: 0.5rem; /* 8px */
+  }
+
+  .headerCell {
+    font-size: 1.125rem; /* 18px */
   }
 
   .tableRow {
-    height: 50px;
+    height: 3.125rem; /* 50px */
     overflow-x: auto;
+    gap: 0.5rem; /* 8px */
   }
 
   .rowCell {
-    font-size: 16px;
+    font-size: 1rem; /* 16px */
   }
 
   .actionButtons {
-    gap: 8px;
+    gap: 0.5rem; /* 8px */
   }
 
   .deleteButton,
   .restoreButton {
-    font-size: 10px;
-    padding: 6px 12px;
-    min-width: 50px;
+    font-size: 0.625rem; /* 10px */
+    padding: 0.375rem 0.75rem; /* 6px 12px */
+    min-width: 3.125rem; /* 50px */
+  }
+
+  .emptyMessage {
+    font-size: 1.125rem; /* 18px */
   }
 }
 
 @media (max-width: 480px) {
   .headerCell {
-    font-size: 10px;
+    font-size: 0.875rem; /* 14px */
   }
 
   .rowCell {
-    font-size: 14px;
+    font-size: 0.875rem; /* 14px */
   }
 
   .emptyMessage {
-    font-size: 18px;
-    padding: 60px 20px;
+    font-size: 1.125rem; /* 18px */
+    padding: 3.75rem 1.25rem; /* 60px 20px */
+  }
+
+  .deleteButton,
+  .restoreButton {
+    font-size: 0.625rem; /* 10px */
+    padding: 0.375rem 0.5rem; /* 6px 8px */
+    min-width: 2.5rem; /* 40px */
   }
 }

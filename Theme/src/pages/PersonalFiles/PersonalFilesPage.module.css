@@ -12,7 +12,7 @@
 .topCategories {
   position: absolute;
   top: 0;
-  left: 320px;
+  left: 20%; /* 相对定位 */
   display: flex;
   gap: 0;
   z-index: 10;
@@ -20,66 +20,67 @@
 
 .categoryBox {
   background: transparent;
-  padding: 15px 20px;
+  padding: 0.9375rem 1.25rem; /* 15px 20px */
 }
 
 .categoryBox:first-child {
-  margin-right: 50px;
+  margin-right: 3.125rem; /* 50px */
 }
 
 .categoryBox:nth-child(2) {
-  margin-right: 150px;
+  margin-right: 9.375rem; /* 150px */
 }
 
 .categoryLabel {
   font-family: '思源黑体', 'Source Han Sans', sans-serif;
-  font-size: 16px;
+  font-size: 1rem; /* 16px */
   font-weight: 600;
   color: #333333;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem; /* 5px */
 }
 
 .categoryCount {
   font-family: '思源黑体', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem; /* 14px */
   color: #FFC300;
   font-weight: 300;
 }
 
 .categoryInfo {
   font-family: '思源黑体', sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem; /* 12px */
   color: #666666;
   line-height: 1.6;
 }
 
-/* 文件网格区域 - 使用百分比定位，适应不同视窗 */
+/* 文件网格区域 - 使用百分比和 flexbox 实现自适应 */
 .filesGrid {
   position: absolute;
-  top: 31.25%; /* 320px / 1024px ≈ 31.25% */
-  left: 165px;
-  width: 750px;
-  height: 66.41%; /* 680px / 1024px ≈ 66.41% */
+  top: 31.25%; /* 保持相对位置 */
+  left: 10%; /* 左侧留白 */
+  right: 10%; /* 右侧留白 */
+  height: 66.41%;
   display: grid;
-  grid-template-columns: 315px 315px;
+  grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr)); /* 300px 最小宽度 */
   grid-template-rows: 1fr 1fr;
-  column-gap: 120px;
-  row-gap: 7.35%; /* 50px / 680px ≈ 7.35% */
+  column-gap: 7.5rem; /* 120px */
+  row-gap: 7.35%;
   padding: 0;
+  max-width: 100%;
 }
 
-/* 文件卡片 - 使用百分比高度，自适应容器 */
+/* 文件卡片 - 使用相对尺寸 */
 .fileCard {
-  width: 315px;
+  width: 100%;
   height: 100%;
-  min-width: 315px;
+  min-width: 18.75rem; /* 300px */
   background: rgba(90, 155, 230, 0.5);
   border-radius: 0;
-  padding: 20px;
+  padding: 1.25rem; /* 20px */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem; /* 12px */
   flex-shrink: 0;
 }
 
@@ -100,24 +101,24 @@
 }
 
 .fileIconArea {
-  width: 60px;
-  height: 60px;
+  width: 3.75rem; /* 60px */
+  height: 3.75rem; /* 60px */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .fileIcon {
-  font-size: 48px;
+  font-size: 3rem; /* 48px */
 }
 
 .addBtn {
-  width: 30px;
-  height: 30px;
+  width: 1.875rem; /* 30px */
+  height: 1.875rem; /* 30px */
   background: transparent;
   border: 2px solid #333;
-  border-radius: 4px;
-  font-size: 24px;
+  border-radius: 0.25rem; /* 4px */
+  font-size: 1.5rem; /* 24px */
   color: #333;
   cursor: pointer;
   display: flex;
@@ -141,22 +142,22 @@
 
 .fileName {
   font-family: '思源黑体', sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   font-weight: 500;
   color: #000000;
 }
 
 .fileActions {
   display: flex;
-  gap: 10px;
+  gap: 0.625rem; /* 10px */
 }
 
 .iconBtn {
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px */
   cursor: pointer;
-  padding: 4px;
+  padding: 0.25rem; /* 4px */
   opacity: 0.7;
   transition: opacity 0.2s;
 }
@@ -165,4 +166,114 @@
   opacity: 1;
 }
 
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 1200px) {
+  .filesGrid {
+    left: 5%;
+    right: 5%;
+    column-gap: 5rem; /* 80px */
+  }
 
+  .fileCard {
+    min-width: 16.875rem; /* 270px */
+  }
+}
+
+@media (max-width: 768px) {
+  .topCategories {
+    left: 10%;
+    flex-direction: column;
+    gap: 1rem; /* 16px */
+  }
+
+  .categoryBox:first-child,
+  .categoryBox:nth-child(2) {
+    margin-right: 0;
+  }
+
+  .filesGrid {
+    top: 25%;
+    left: 5%;
+    right: 5%;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); /* 240px */
+    column-gap: 2rem; /* 32px */
+    row-gap: 5%;
+  }
+
+  .fileCard {
+    min-width: 15rem; /* 240px */
+    padding: 1rem; /* 16px */
+  }
+
+  .fileIconArea {
+    width: 3rem; /* 48px */
+    height: 3rem; /* 48px */
+  }
+
+  .fileIcon {
+    font-size: 2.5rem; /* 40px */
+  }
+
+  .addBtn {
+    width: 1.5rem; /* 24px */
+    height: 1.5rem; /* 24px */
+    font-size: 1.25rem; /* 20px */
+  }
+
+  .fileName {
+    font-size: 1rem; /* 16px */
+  }
+}
+
+@media (max-width: 480px) {
+  .topCategories {
+    left: 5%;
+  }
+
+  .categoryLabel {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .categoryCount {
+    font-size: 0.75rem; /* 12px */
+  }
+
+  .categoryInfo {
+    font-size: 0.625rem; /* 10px */
+  }
+
+  .filesGrid {
+    top: 20%;
+    grid-template-columns: 1fr; /* 单列布局 */
+    grid-template-rows: repeat(4, 1fr);
+    row-gap: 3%;
+  }
+
+  .fileCard {
+    min-width: 100%;
+    padding: 0.75rem; /* 12px */
+  }
+
+  .fileIconArea {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem; /* 40px */
+  }
+
+  .fileIcon {
+    font-size: 2rem; /* 32px */
+  }
+
+  .addBtn {
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+    font-size: 1rem; /* 16px */
+  }
+
+  .fileName {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .iconBtn {
+    font-size: 1rem; /* 16px */
+  }
+}

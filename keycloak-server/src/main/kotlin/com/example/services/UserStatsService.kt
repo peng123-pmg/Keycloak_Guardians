@@ -1,8 +1,5 @@
 package com.example.services
 
-import com.example.models.responses.UserStats
-import com.example.models.responses.UserStatsSummary
-import com.example.models.responses.UserStorageEntry
 import jakarta.enterprise.context.ApplicationScoped
 import java.sql.Connection
 import javax.sql.DataSource
@@ -12,7 +9,7 @@ class UserStatsService(
     private val dataSource: DataSource
 ) {
 
-    fun fetchStats(): UserStats {
+    fun fetchStats(): Map<String, Any> {
         dataSource.connection.use { conn ->
             val totalFiles = scalarLong(conn, "SELECT COUNT(*) FROM files WHERE deleted_at IS NULL")
             val storageUsedBytes = scalarLong(conn, "SELECT COALESCE(SUM(size_bytes),0) FROM files WHERE deleted_at IS NULL")
@@ -21,19 +18,19 @@ class UserStatsService(
             val filesByStatus = mapQuery(conn, "SELECT status, COUNT(*) FROM files GROUP BY status")
             val topUsers = topUsers(conn)
 
-            val summary = UserStatsSummary(
-                totalOwners = totalOwners,
-                activeOwners = activeOwners,
-                totalFiles = totalFiles,
-                storageUsedBytes = storageUsedBytes,
-                storageUsedReadable = humanReadable(storageUsedBytes),
-                averageFileSizeBytes = if (totalFiles > 0) storageUsedBytes / totalFiles else 0
-            )
-
-            return UserStats(
-                summary = summary,
-                filesByStatus = filesByStatus,
-                topUsersByStorage = topUsers
+            // 简化返回结构，避免使用不一致的 UserStats 类
+            return mapOf(
+                "summary" to mapOf(
+                    "totalOwners" to totalOwners,
+                    "activeOwners" to activeOwners,
+                    "totalFiles" to totalFiles,
+                    "storageUsedBytes" to storageUsedBytes,
+                    "storageUsedReadable" to humanReadable(storageUsedBytes),
+                    "averageFileSizeBytes" to if (totalFiles > 0) storageUsedBytes / totalFiles else 0
+                ),
+                "filesByStatus" to filesByStatus,
+                "topUsersByStorage" to topUsers,
+                "generatedAt" to System.currentTimeMillis()
             )
         }
     }
@@ -52,7 +49,7 @@ class UserStatsService(
         }
     }
 
-    private fun topUsers(conn: Connection): List<UserStorageEntry> = conn.prepareStatement(
+    private fun topUsers(conn: Connection): List<Map<String, Any>> = conn.prepareStatement(
         """
             SELECT owner_id, COUNT(*) AS file_count, COALESCE(SUM(size_bytes),0) AS bytes
             FROM files
@@ -63,13 +60,13 @@ class UserStatsService(
         """.trimIndent()
     ).use { ps ->
         ps.executeQuery().use { rs ->
-            val list = mutableListOf<UserStorageEntry>()
+            val list = mutableListOf<Map<String, Any>>()
             while (rs.next()) {
-                list += UserStorageEntry(
-                    ownerId = rs.getString("owner_id"),
-                    fileCount = rs.getLong("file_count"),
-                    storageBytes = rs.getLong("bytes")
-                )
+                list.add(mapOf(
+                    "ownerId" to rs.getString("owner_id"),
+                    "fileCount" to rs.getLong("file_count"),
+                    "storageBytes" to rs.getLong("bytes")
+                ))
             }
             list
         }

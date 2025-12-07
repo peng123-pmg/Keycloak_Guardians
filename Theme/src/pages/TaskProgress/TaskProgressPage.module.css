@@ -14,10 +14,10 @@
 /* ==================== 可滚动内容区 ==================== */
 .scrollableContentArea {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - clamp(2.5rem, 4vh, 3.75rem));
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 100px;
+  padding-top: clamp(4rem, 6vh, 6.25rem);
   box-sizing: border-box;
 }
 
@@ -28,7 +28,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - clamp(8rem, 10vh, 10rem));
 }
 
 /* ==================== 我创建的区块 ==================== */
@@ -41,11 +41,11 @@
 
 .sectionTitle {
   width: 100%;
-  height: 50px;
+  height: clamp(2.5rem, 3.5vh, 3.125rem);
   background: rgba(90, 155, 230, 0.5);
   font-family: 'Source Han Sans CN Heavy', 'Source Han Sans CN', 'SimHei', sans-serif;
   font-weight: 900;
-  font-size: 48px;
+  font-size: clamp(1.5rem, 3vw, 3rem);
   color: #DFE4EB;
   display: flex;
   align-items: center;
@@ -64,11 +64,11 @@
 /* ==================== 标题行 ==================== */
 .headerRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 150px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(1rem, 4vw, 6rem);
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: clamp(3rem, 4vh, 3.75rem);
+  padding: 0 clamp(1rem, 2vw, 2rem);
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.5);
   border-bottom: 1px solid #333333;
@@ -78,7 +78,7 @@
 .headerCell {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
   color: #333333;
   display: flex;
   align-items: center;
@@ -88,11 +88,11 @@
 /* ==================== 团队父级行 ==================== */
 .teamRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 150px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(1rem, 4vw, 6rem);
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: clamp(3rem, 4vh, 3.75rem);
+  padding: 0 clamp(1rem, 2vw, 2rem);
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
   background: rgba(242, 191, 191, 0.2);
@@ -108,8 +108,8 @@
 /* ==================== 展开/收起图标 ==================== */
 .expandIcon {
   display: inline-block;
-  margin-right: 8px;
-  font-size: 14px;
+  margin-right: clamp(0.25rem, 0.5vw, 0.5rem);
+  font-size: clamp(0.75rem, 1vw, 0.875rem);
   color: #5A9BE6;
   transition: transform 0.2s ease;
 }
@@ -117,11 +117,11 @@
 /* ==================== 子任务行（带缩进） ==================== */
 .taskRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 150px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(1rem, 4vw, 6rem);
   align-items: center;
-  height: 60px;
-  padding: 0 20px 0 50px;
+  height: clamp(3rem, 4vh, 3.75rem);
+  padding: 0 clamp(1rem, 2vw, 2rem) 0 clamp(2rem, 3vw, 3.125rem);
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
   background: rgba(242, 191, 191, 0.2);
@@ -137,7 +137,7 @@
 .rowCell {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
   color: #333333;
   display: flex;
   align-items: center;
@@ -147,11 +147,11 @@
 /* ==================== 占位空行 ==================== */
 .placeholderRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 150px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(1rem, 4vw, 6rem);
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: clamp(3rem, 4vh, 3.75rem);
+  padding: 0 clamp(1rem, 2vw, 2rem);
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
   background: rgba(242, 191, 191, 0.2);
@@ -165,11 +165,11 @@
 /* ==================== 最后一行占位行（粉色） ==================== */
 .lastPlaceholderRow {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  column-gap: 150px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(1rem, 4vw, 6rem);
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: clamp(3rem, 4vh, 3.75rem);
+  padding: 0 clamp(1rem, 2vw, 2rem);
   box-sizing: border-box;
   border-bottom: 1px solid #333333;
   background: rgba(242, 191, 191, 0.5);
@@ -184,11 +184,11 @@
 .assigneeSelect {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: clamp(0.75rem, 1vw, 1rem);
   color: #333333;
-  padding: 5px 10px;
+  padding: clamp(0.25rem, 0.5vh, 0.5rem) clamp(0.5rem, 1vw, 0.75rem);
   border: 1px solid #5A9BE6;
-  border-radius: 4px;
+  border-radius: clamp(0.2rem, 0.3vw, 0.25rem);
   background: white;
   cursor: pointer;
 }
@@ -200,10 +200,10 @@
   color: #5A9BE6;
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  padding: 5px 10px;
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  padding: clamp(0.25rem, 0.5vh, 0.5rem) clamp(0.5rem, 1vw, 0.75rem);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: clamp(0.2rem, 0.3vw, 0.25rem);
   transition: all 0.2s ease;
 }
 
@@ -216,7 +216,7 @@
 .progressContainer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
   width: 100%;
   justify-content: center;
 }
@@ -224,17 +224,17 @@
 .progressText {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
   color: #333333;
-  min-width: 45px;
+  min-width: clamp(2rem, 3vw, 2.8rem);
 }
 
 .progressBarBg {
-  width: 200px;
-  height: 30px;
+  width: clamp(8rem, 12vw, 12.5rem);
+  height: clamp(1.5rem, 2vh, 1.875rem);
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid #333333;
-  border-radius: 4px;
+  border-radius: clamp(0.2rem, 0.3vw, 0.25rem);
   overflow: hidden;
 }
 
@@ -251,12 +251,12 @@
   border: none;
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  padding: 8px 16px;
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  padding: clamp(0.4rem, 0.6vh, 0.5rem) clamp(0.75rem, 1.2vw, 1rem);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: clamp(0.2rem, 0.3vw, 0.25rem);
   transition: background 0.2s ease;
-  min-width: 70px;
+  min-width: clamp(3.5rem, 5vw, 4.375rem);
 }
 
 .remindButton:hover:not(:disabled) {
@@ -275,7 +275,7 @@
 /* ==================== 分隔线 ==================== */
 .separator {
   width: 100%;
-  height: 40px;
+  height: clamp(2rem, 2.5vh, 2.5rem);
   background: transparent;
 }
 
@@ -288,127 +288,45 @@
 }
 
 .joinedSection .headerRow {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .joinedSection .teamRow {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .joinedSection .taskRow {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .joinedSection .placeholderRow {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .joinedSection .lastPlaceholderRow {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* ==================== 响应式设计 ==================== */
-@media (max-width: 1200px) {
-  .scrollableContentArea {
-    padding-top: 80px;
-  }
-
-  .headerRow {
-    column-gap: 80px;
-  }
-
-  .teamRow {
-    column-gap: 80px;
-  }
-
-  .taskRow {
-    column-gap: 80px;
-  }
-
-  .sectionTitle {
-    font-size: 36px;
-  }
-}
-
+/* ==================== 响应式设计（仅处理极端情况） ==================== */
 @media (max-width: 768px) {
-  .scrollableContentArea {
-    height: calc(100vh - 40px);
-    padding-top: 60px;
+  .headerRow,
+  .teamRow,
+  .taskRow,
+  .placeholderRow,
+  .lastPlaceholderRow {
+    min-width: max-content;
   }
 
-  .sectionTitle {
-    height: 40px;
-    font-size: 28px;
-  }
-
-  .headerRow {
-    height: 50px;
-    column-gap: 40px;
-    overflow-x: auto;
-  }
-
-  .headerCell {
-    font-size: 16px;
-  }
-
-  .teamRow {
-    height: 50px;
-    column-gap: 40px;
-  }
-
-  .taskRow {
-    height: 50px;
-    column-gap: 40px;
-    overflow-x: auto;
-  }
-
+  .headerCell,
   .rowCell {
-    font-size: 16px;
-  }
-
-  .progressText {
-    font-size: 16px;
-  }
-
-  .progressBarBg {
-    width: 150px;
-    height: 20px;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 480px) {
-  .sectionTitle {
-    height: 35px;
-    font-size: 24px;
-  }
-
-  .headerRow {
-    column-gap: 20px;
-  }
-
-  .teamRow {
-    column-gap: 20px;
-  }
-
+  .headerRow,
+  .teamRow,
   .taskRow {
-    column-gap: 20px;
-  }
-
-  .headerCell {
-    font-size: 14px;
-  }
-
-  .rowCell {
-    font-size: 14px;
-  }
-
-  .progressText {
-    font-size: 14px;
-    min-width: 40px;
-  }
-
-  .progressBarBg {
-    width: 100px;
-    height: 18px;
+    column-gap: clamp(0.5rem, 2vw, 1rem);
   }
 }

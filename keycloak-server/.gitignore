@@ -1,0 +1,30 @@
+# Gradle 构建文件
+.gradle/
+build/
+out/
+target/
+
+# Kotlin 编译产物
+*.class
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# 其他构建产物
+*.log
+*.bak
+*.swp
+*.swo
+
+# 特定于您的项目
+keycloak-server/build/

@@ -33,10 +33,18 @@ class FileService(
     // 添加二进制流上传方法
     fun uploadFile(inputStream: InputStream, fileName: String, contentType: String, ownerId: String): FileResponse {
         dataSource.connection.use { conn ->
+            // 清理文件名，移除非法字符
+            val cleanFileName = fileName.replace(Regex("[<>:\"/\\\\|?*]"), "_")
+
             // 生成唯一文件名
-            val fileExtension = getFileExtension(fileName)
+            val fileExtension = getFileExtension(cleanFileName)
             val storageName = "${UUID.randomUUID()}$fileExtension"
             val storagePath = uploadDir.resolve(storageName)
+
+            // 确保上传目录存在
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir)
+            }
 
             // 保存文件
             Files.copy(inputStream, storagePath, StandardCopyOption.REPLACE_EXISTING)
@@ -120,10 +128,10 @@ class FileService(
     fun getFile(fileId: Long, ownerId: String): Pair<Path, String> {
         dataSource.connection.use { conn ->
             val sql = """
-                SELECT storage_path, file_name, mime_type 
-                FROM files 
-                WHERE id = ? AND owner_id = ? AND deleted_at IS NULL
-            """.trimIndent()
+            SELECT storage_path, file_name, mime_type 
+            FROM files 
+            WHERE id = ? AND owner_id = ? AND deleted_at IS NULL
+        """.trimIndent()
 
             conn.prepareStatement(sql).use { ps ->
                 ps.setLong(1, fileId)
@@ -132,10 +140,16 @@ class FileService(
                     if (rs.next()) {
                         val storagePath = rs.getString("storage_path")
                         val originalName = rs.getString("file_name")
-                        val mimeType = rs.getString("mime_type")
-                        return Pair(Paths.get(storagePath), originalName)
+
+                        // 确保文件存在
+                        val filePath = Paths.get(storagePath)
+                        if (!Files.exists(filePath)) {
+                            throw RuntimeException("文件不存在: $storagePath")
+                        }
+
+                        return Pair(filePath, originalName)
                     } else {
-                        throw RuntimeException("File not found or access denied")
+                        throw RuntimeException("文件不存在或无权访问")
                     }
                 }
             }

@@ -32,12 +32,18 @@ const menuData: MenuItem[] = [
   { id: 'recycle-bin', label: '回收站管理' },
   { id: 'notifications', label: '消息通知中心' },
   { id: 'task-progress', label: '任务进度' },
-  { id: 'settings', label: '设置' },
-  { id: 'logout', label: '退出登录' }
+  {
+    id: 'settings',
+    label: '设置',
+    children: [
+      { id: 'security-backup', label: '安全托管与备份' },
+      { id: 'logout', label: '退出账号' }
+    ]
+  }
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) => {
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(['personal', 'team-management']);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(['personal', 'team-management', 'settings']);
 
   const toggleMenu = (menuId: string) => {
     setExpandedMenus(prev =>
@@ -58,9 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
           className={`${styles.menuItem} 
             ${isActive ? styles.active : ''} 
             ${level === 1 ? styles.level2 : ''} 
-            ${level === 2 ? styles.level3 : ''}
-            ${item.isBlue ? styles.blueText : ''}
-            ${item.topSpacing === 50 ? styles.topSpacing50 : ''}`}
+            ${level === 2 ? styles.level3 : ''}`}
           data-menu={item.id}
           onClick={() => {
             if (hasChildren) {

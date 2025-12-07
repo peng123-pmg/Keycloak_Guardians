@@ -1,6 +1,6 @@
 1. 用户信息查询
 1.1 基本信息
-  请求路径：/api/users/me
+  请求路径：http://localhost:8081/api/users/me
   请求方式：GET
   接口描述：该接口用于返回当前登录用户的基本信息和角色
 1.2 请求参数
@@ -29,7 +29,7 @@ json
 
 2. 用户信息概况
 2.1 基本信息
-  请求路径：/api/user/stats
+  请求路径：http://localhost:8081/api/user/stats
   请求方式：GET
   接口描述：返回所有用户及其文件概况，需要 admin 角色
 
@@ -83,7 +83,7 @@ json
 
 3. 用户管理
 3.1 创建用户
-  请求路径：/api/admin/users
+  请求路径：http://localhost:8081/api/admin/users
   请求方式：POST
   接口描述：该接口用于创建一个用户
 3.2 请求参数
@@ -125,7 +125,7 @@ json
 }
 4. 文件管理
 4.1 文件上传
-  请求路径：/api/files
+  请求路径：http://localhost:8081/api/files
   请求方式：POST
   接口描述：该接口用于上传文件到服务器
 4.1.1 请求参数
@@ -171,7 +171,7 @@ json
   - `error: 用户尚未同步，请重新登录`：当前用户尚未持久化到 `iamkc.users`，重新访问受保护接口即可触发同步。
 
 4.2 获取文件列表
-  请求路径：/api/files
+  请求路径：http://localhost:8081/api/files
   请求方式：GET
   接口描述：该接口用于获取当前用户的文件列表
   4.2.1 请求参数
@@ -213,7 +213,7 @@ json
     "totalSize": 1024
 }
 4.3 文件下载
-  请求路径：/api/files/{id}
+  请求路径：http://localhost:8081/api/files/{id}
   请求方式：GET
   接口描述：该接口用于下载指定文件
 4.3.1 请求参数
@@ -232,8 +232,165 @@ json
   text
   Content-Disposition: attachment; filename="test.txt"
   Content-Type: text/plain
+5.1 创建小组
+  基本信息
+  请求路径：http://localhost:8081/api/groups
+  请求方式：POST
+  接口描述：该接口用于创建一个新的小组，创建者自动成为管理员成员
+  请求参数
+  Authorization: Bearer <access_token>
+  Content-Type: application/json
+  请求体
+json
+{
+    "name": "数据结构小组",
+    "description": "数据结构学习小组",
+    "courseCode": "CS101",
+    "joinPolicy": "INVITE_ONLY",
+    "memberLimit": 50
+}
+  字段说明：
+  name: 小组名称（必需）
+  description: 小组描述（可选）
+  courseCode: 课程代码（可选）
+  joinPolicy: 加入策略，可选值：INVITE_ONLY（仅邀请）、REQUEST（需申请）、OPEN（开放加入），默认INVITE_ONLY
+  memberLimit: 成员上限，默认50
+  响应数据
+json
+{
+    "message": "小组创建成功",
+    "group": {
+        "id": 1,
+        "name": "数据结构小组",
+        "description": "数据结构学习小组",
+        "courseCode": "CS101",
+        "joinPolicy": "INVITE_ONLY",
+        "memberLimit": 50,
+        "status": "ACTIVE",
+        "createdBy": 1,
+        "memberCount": 1,
+        "createdAt": "2025-12-06T21:49:18+08:00",
+        "updatedAt": "2025-12-06T21:49:18+08:00"
+    }
+}
+5.2 共享文件到小组
+  基本信息
+  请求路径：http://localhost:8081/api/groups/{groupId}/files
+  请求方式：POST
+  接口描述：该接口用于将文件共享到指定小组，只有小组成员才能共享文件
+  请求参数
+  Authorization: Bearer <access_token>
+  Content-Type: application/json
+  路径参数：groupId - 小组ID
+  请求体
+json
+{
+    "fileId": {{file_id}},
+    "permission": "READ"
+}
+  字段说明：
+  fileId: 要共享的文件ID（必需）
+  permission: 权限级别，可选值：READ（读）、WRITE（写）、MANAGE（管理），默认READ
+  响应数据
+json
+{
+    "message": "文件已成功共享到小组",
+    "groupId": 1,
+    "fileId": 6,
+    "permission": "READ"
+}
+5.3 获取组内文件
+  基本信息
+  请求路径：http://localhost:8081/api/groups/files
+  请求方式：GET
+  接口描述：该接口用于获取当前用户所在所有小组的共享文件列表
+  请求参数
+  Authorization: Bearer <access_token>
+  响应数据
+  当用户不在任何小组或小组中没有文件时：
+json
+{
+    "message": "您还没有加入任何小组，或小组中没有共享文件",
+    "files": [],
+    "total": 0
+}
+  当用户所在小组有共享文件时：
+json
+{
+    "files": [
+        {
+            "id": 1,
+            "fileId": 6,
+            "groupId": 1,
+            "fileName": "test.txt",
+            "originalName": "test.txt",
+            "mimeType": "text/plain",
+            "sizeBytes": 1024,
+            "ownerId": "b8d3ef6b-09bb-49d2-8829-b23f46778636",
+            "sharedBy": "admin",
+            "permission": "READ",
+            "sharedAt": "2025-12-06T21:55:23+08:00"
+        }
+    ],
+    "total": 1
+}
+  字段说明：
+  files: 共享文件列表
+  id: 共享关系ID
+  fileId: 文件ID
+  groupId: 小组ID
+  fileName: 文件名
+  originalName: 原始文件名
+  mimeType: 文件类型
+  sizeBytes: 文件大小（字节）
+  ownerId: 文件所有者ID
+  sharedBy: 共享者用户名
+  permission: 权限级别
+  sharedAt: 共享时间
+  total: 总文件数
+5.4 获取用户小组列表
+  基本信息
+  请求路径：http://localhost:8081/api/groups
+  请求方式：GET
+  接口描述：该接口用于获取当前用户所在的所有小组列表
+  请求参数
+  Authorization: Bearer <access_token>
+  响应数据
+json
+{
+    "message": "获取用户小组列表成功",
+    "groups": [
+        {
+            "id": 1,
+            "name": "数据结构小组",
+            "description": "数据结构学习小组",
+            "courseCode": "CS101",
+            "joinPolicy": "INVITE_ONLY",
+            "memberLimit": 50,
+            "status": "ACTIVE",
+            "createdBy": 1,
+            "memberCount": 2,
+            "createdAt": "2025-12-06T21:49:18+08:00",
+            "updatedAt": "2025-12-06T21:49:18+08:00"
+        }
+    ],
+    "total": 1
+}
+字段说明：
+  groups: 小组列表
+  id: 小组ID
+  name: 小组名称
+  description: 小组描述
+  courseCode: 课程代码
+  joinPolicy: 加入策略
+  memberLimit: 成员上限
+  status: 小组状态（ACTIVE, INACTIVE等）
+  createdBy: 创建者用户ID
+  memberCount: 当前成员数
+  createdAt: 创建时间
+  updatedAt: 更新时间
+  total: 总小组数
 
-- 更多 API 示例与字段说明可在 `docs/wiki/API.md` 或 GitHub Wiki 中查看，保持与 Postman 集合同步。
 
 ## 数据库结构附录
 - `files`：文件元信息和生命周期状态
@@ -247,7 +404,6 @@ json
 - `tasks` / `task_assignments` / `submissions` / `submission_reviews`：任务与作业协作
 - `favorites` / `tags` / `file_tags`：收藏、标签体系
 - `sharing_links` / `file_shares`：外部分享及权限控制
-
 所有建表 SQL 位于 `keycloak-server/src/main/resources/db/migration/`，执行 `./gradlew flywayMigrate` 或启动 `quarkusDev` 会自动同步。
 
 ## 配置说明

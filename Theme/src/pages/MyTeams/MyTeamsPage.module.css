@@ -15,24 +15,24 @@
 .teamFilesSection {
   width: 100%;
   background: rgba(90, 155, 230, 0.5);
-  padding: 6.25rem 2rem 2rem 2rem;
+  padding: clamp(5rem, 8vh, 6.25rem) clamp(1rem, 2vw, 2rem) clamp(1.5rem, 2vh, 2rem) clamp(1rem, 2vw, 2rem);
   box-sizing: border-box;
   flex-shrink: 0;
-  margin-top: 4rem;
+  margin-top: clamp(3rem, 4vh, 4rem);
 }
 
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1.5rem, 2vh, 2rem);
   max-width: 100%;
 }
 
 .mainTitle {
   font-family: 'Source Han Sans CN Heavy', 'Noto Sans CJK SC', sans-serif;
   font-weight: 900;
-  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
   color: #DFE4EB;
   margin: 0;
   text-align: left;
@@ -41,20 +41,20 @@
 .subTitle {
   font-family: 'Source Han Sans CN Bold', 'Noto Sans CJK SC', sans-serif;
   font-weight: 700;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
   color: #DFE4EB;
   margin: 0;
   text-align: left;
 }
 
 .addButton {
-  min-width: 3rem;
-  min-height: 3rem;
+  min-width: clamp(2.5rem, 3vw, 3rem);
+  min-height: clamp(2.5rem, 3vw, 3rem);
   background: #2A82E4;
   color: white;
   border: none;
-  border-radius: 0.5rem;
-  font-size: 1.5rem;
+  border-radius: clamp(0.4rem, 0.5vw, 0.5rem);
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -81,21 +81,21 @@
 .filesGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  padding-left: 1.5rem;
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  padding-left: clamp(1rem, 1.5vw, 1.5rem);
   overflow-x: auto;
-  padding-bottom: 1rem;
+  padding-bottom: clamp(0.75rem, 1vh, 1rem);
 }
 
 /* 上传中提示 */
 .uploadingNotice {
   background: rgba(42, 130, 228, 0.1);
-  border-left: 4px solid #2A82E4;
-  padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 0.25rem;
+  border-left: clamp(3px, 0.3vw, 4px) solid #2A82E4;
+  padding: clamp(0.75rem, 1vh, 1rem) clamp(1rem, 1.5vw, 1.5rem);
+  margin-bottom: clamp(1rem, 1.5vh, 1.5rem);
+  border-radius: clamp(0.2rem, 0.25vw, 0.25rem);
   color: #2A82E4;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
   font-weight: 500;
 }
 
@@ -103,9 +103,9 @@
 .loadingMessage,
 .emptyMessage {
   text-align: center;
-  padding: 3rem 2rem;
+  padding: clamp(2rem, 3vh, 3rem) clamp(1.5rem, 2vw, 2rem);
   color: #666666;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 1vw, 1rem);
 }
 
 .emptyMessage {
@@ -113,23 +113,23 @@
 }
 
 .fileCard {
-  min-width: 12.5rem;
-  max-width: 20rem;
-  flex: 1 1 calc(25% - 1.5rem);
+  min-width: min(clamp(9rem, 12vw, 11.25rem), 100%);
+  max-width: clamp(14rem, 18vw, 17.5rem);
+  flex: 1 1 clamp(11.25rem, calc(25% - 1.5rem), 17.5rem);
   aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
+  padding: clamp(1rem, 1.5vw, 1.5rem);
+  border-radius: clamp(0.4rem, 0.5vw, 0.5rem);
   box-sizing: border-box;
   position: relative;
   transition: transform 0.2s ease;
 }
 
 .fileCard:hover {
-  transform: translateY(-0.25rem);
+  transform: translateY(clamp(-0.2rem, -0.3vh, -0.25rem));
 }
 
 .fileCardBlue {
@@ -141,8 +141,8 @@
 }
 
 .fileIcon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: clamp(2.5rem, 3vw, 3rem);
+  margin-bottom: clamp(0.75rem, 1vh, 1rem);
 }
 
 .fileInfo {
@@ -150,13 +150,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: clamp(0.4rem, 0.5vh, 0.5rem);
   align-items: center;
 }
 
 .fileName {
   font-family: 'Source Han Sans CN', sans-serif;
-  font-size: 1.125rem;
+  font-size: clamp(0.95rem, 1.1vw, 1.125rem);
   font-weight: 500;
   color: #333333;
   text-align: center;
@@ -170,11 +170,11 @@
 }
 
 .fileMetadata {
-  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 0.9vw, 0.875rem);
   color: #666666;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: clamp(0.2rem, 0.25vw, 0.25rem);
 }
 
 .fileSize,
@@ -187,14 +187,14 @@
 }
 
 .fileUploader {
-  font-size: 0.75rem;
+  font-size: clamp(0.7rem, 0.8vw, 0.75rem);
   color: #999999;
   font-style: italic;
 }
 
 .fileActions {
   display: flex;
-  gap: 1rem;
+  gap: clamp(0.75rem, 1vw, 1rem);
   width: 100%;
   justify-content: center;
 }
@@ -203,10 +203,10 @@
 .deleteButton {
   background: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
   cursor: pointer;
   transition: all 0.2s ease;
-  padding: 0.25rem;
+  padding: clamp(0.2rem, 0.25vw, 0.25rem);
 }
 
 .downloadButton:hover {
@@ -223,27 +223,27 @@
 .joinedTeamsSection {
   width: 100%;
   background: rgba(242, 191, 191, 0.5);
-  padding: 2rem;
+  padding: clamp(1.5rem, 2vh, 2rem);
   box-sizing: border-box;
-  min-height: 20rem;
+  min-height: clamp(15rem, 20vh, 20rem);
   flex: 1;
 }
 
 .teamsTable {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
-  margin-top: 1.5rem;
+  gap: clamp(0.5rem, 0.7vh, 0.625rem);
+  margin-top: clamp(1.25rem, 1.5vh, 1.5rem);
 }
 
 .teamRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 3.125rem;
+  min-height: clamp(2.5rem, 3vh, 3.125rem);
   background: rgba(255, 255, 255, 0.3);
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.25rem;
+  padding: clamp(0.6rem, 0.8vh, 0.75rem) clamp(1rem, 1.5vw, 1.5rem);
+  border-radius: clamp(0.2rem, 0.25vw, 0.25rem);
   border-bottom: 1px solid rgba(223, 228, 235, 0.3);
   transition: background 0.2s ease;
 }
@@ -254,7 +254,7 @@
 
 .teamInfo {
   display: flex;
-  gap: clamp(1rem, 3vw, 3rem);
+  gap: clamp(1rem, 2.5vw, 3rem);
   align-items: center;
   flex: 1;
   flex-wrap: wrap;
@@ -265,32 +265,32 @@
 .teamRole,
 .teamPermission {
   font-family: 'Source Han Sans CN', sans-serif;
-  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-size: clamp(0.8rem, 1vw, 1rem);
   color: #333333;
 }
 
 .teamName {
-  min-width: 5rem;
+  min-width: clamp(4rem, 5vw, 5rem);
   font-weight: 500;
 }
 
 .teamNumber {
-  min-width: 8rem;
+  min-width: clamp(6rem, 8vw, 8rem);
   color: #666666;
 }
 
 .teamRole {
-  min-width: 4rem;
+  min-width: clamp(3.5rem, 4vw, 4rem);
 }
 
 .teamPermission {
-  min-width: 4rem;
+  min-width: clamp(3.5rem, 4vw, 4rem);
 }
 
 .deleteTeamButton {
   background: transparent;
   border: none;
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 1.3vw, 1.25rem);
   cursor: pointer;
   transition: transform 0.2s ease;
   flex-shrink: 0;
@@ -300,63 +300,60 @@
   transform: scale(1.2);
 }
 
-/* ==================== 响应式设计 ==================== */
-@media (max-width: 1024px) {
+/* ==================== 响应式设计（仅处理极端情况） ==================== */
+@media (max-width: 900px) {
   .fileCard {
-    flex: 1 1 calc(33.33% - 1.5rem);
-  }
-
-  .teamInfo {
-    gap: 1.5rem;
+    flex: 1 1 clamp(11.25rem, calc(50% - 1rem), 17.5rem);
   }
 }
 
 @media (max-width: 768px) {
   .teamFilesSection,
   .joinedTeamsSection {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: clamp(0.75rem, 1vw, 1rem);
+    padding-right: clamp(0.75rem, 1vw, 1rem);
   }
 
   .fileCard {
-    flex: 1 1 calc(50% - 1.5rem);
+    flex: 1 1 clamp(10rem, calc(50% - 1rem), 16.25rem);
+    min-width: clamp(10rem, 50%, 16.25rem);
   }
 
   .filesGrid {
-    padding-left: 0.5rem;
+    padding-left: clamp(0.5rem, 0.8vw, 0.75rem);
+    gap: clamp(0.75rem, 1vw, 1rem);
   }
 
   .teamInfo {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: clamp(0.4rem, 0.5vh, 0.5rem);
   }
 
   .teamRow {
-    padding: 1rem;
+    padding: clamp(0.75rem, 1vh, 1rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .filesGrid {
+    justify-content: center;
+  }
+
+  .fileCard {
+    flex: 1 1 clamp(9.375rem, 100%, 18.75rem);
+    max-width: clamp(15rem, 100%, 18.75rem);
   }
 }
 
 @media (max-width: 480px) {
   .teamFilesSection {
-    padding-top: 4rem;
+    padding-top: clamp(3rem, 5vh, 4rem);
   }
 
   .fileCard {
     flex: 1 1 100%;
-  }
-
-  .mainTitle {
-    font-size: 1.75rem;
-  }
-
-  .subTitle {
-    font-size: 1.5rem;
-  }
-
-  .addButton {
-    min-width: 2.5rem;
-    min-height: 2.5rem;
-    font-size: 1.25rem;
+    max-width: 100%;
+    min-width: clamp(9.375rem, 100%, 100%);
   }
 }

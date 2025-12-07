@@ -66,14 +66,12 @@
 .rowCell {
   font-family: 'SimHei', sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: 1.25rem; /* 20px */
   color: #333333;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  flex: 1;
 }
 
 /* ==================== 操作按钮 ==================== */

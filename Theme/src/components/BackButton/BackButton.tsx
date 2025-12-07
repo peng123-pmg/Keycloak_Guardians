@@ -6,14 +6,15 @@ export const BackButton: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 如果是首页，不显示返回按钮
+  // 如果是首页或安全托管与备份页面，不显示返回按钮
   const isHomePage = location.pathname === '/';
+  const isSecurityBackupPage = location.pathname === '/security-backup';
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  if (isHomePage) {
+  if (isHomePage || isSecurityBackupPage) {
     return null;
   }
 

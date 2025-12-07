@@ -13,6 +13,7 @@ import NotificationCenterPage from '../NotificationCenter/NotificationCenterPage
 import MessageDetailPage from '../MessageDetail/MessageDetailPage';
 import RecycleBinPage from '../RecycleBin/RecycleBinPage';
 import TaskProgressPage from '../TaskProgress/TaskProgressPage';
+import SecurityBackupPage from '../SecurityBackup/SecurityBackupPage';
 import styles from './Dashboard.module.css';
 
 const DashboardContent: React.FC = () => {
@@ -32,6 +33,7 @@ const DashboardContent: React.FC = () => {
     if (path.startsWith('/message-detail/')) return 'notifications';
     if (path === '/task-progress') return 'task-progress';
     if (path === '/settings') return 'settings';
+    if (path === '/security-backup') return 'security-backup';
     return '';
   };
 
@@ -79,6 +81,9 @@ const DashboardContent: React.FC = () => {
       case 'settings':
         navigate('/settings');
         break;
+      case 'security-backup':
+        navigate('/security-backup');
+        break;
       default:
         navigate('/');
     }
@@ -104,6 +109,7 @@ const DashboardContent: React.FC = () => {
           <Route path="/message-detail/:id" element={<MessageDetailPage />} />
           <Route path="/task-progress" element={<TaskProgressPage />} />
           <Route path="/settings" element={<div className={styles.placeholder}>设置页面（待开发）</div>} />
+          <Route path="/security-backup" element={<SecurityBackupPage />} />
         </Routes>
 
         {/* 底部装饰区块 */}

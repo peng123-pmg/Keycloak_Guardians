@@ -1,7 +1,6 @@
 {
   "realm": "guardians",
   "enabled": true,
-
   "users": [
     {
       "username": "admin",
@@ -17,10 +16,7 @@
           "temporary": false
         }
       ],
-      "realmRoles": ["admin", "user"],
-      "clientRoles": {
-        "realm-management": ["view-users", "view-clients"]
-      }
+      "realmRoles": ["admin", "user"]
     },
     {
       "username": "alice",
@@ -71,7 +67,6 @@
       "realmRoles": ["user"]
     }
   ],
-
   "roles": {
     "realm": [
       {
@@ -88,7 +83,6 @@
       }
     ]
   },
-
   "clients": [
     {
       "clientId": "backend-service",
@@ -104,30 +98,11 @@
       ],
       "protocol": "openid-connect",
       "attributes": {
-        "pkce.code.challenge.method": "S256",
-        "access.token.lifespan": "3600"
+        "pkce.code.challenge.method": "S256"
       }
     }
   ],
-
   "defaultRoles": [
     "user"
-  ],
-
-  "protocolMappers": [
-    {
-      "name": "enabled",
-      "protocol": "openid-connect",
-      "protocolMapper": "oidc-usermodel-attribute-mapper",
-      "consentRequired": false,
-      "config": {
-        "user.attribute": "enabled",
-        "claim.name": "enabled",
-        "jsonType.label": "boolean",
-        "id.token.claim": "true",
-        "access.token.claim": "true",
-        "userinfo.token.claim": "true"
-      }
-    }
   ]
 }

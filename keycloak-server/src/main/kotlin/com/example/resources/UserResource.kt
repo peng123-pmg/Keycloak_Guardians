@@ -21,32 +21,28 @@ class UserResource @Inject constructor(
     @Produces(MediaType.APPLICATION_JSON)
     fun getCurrentUser(): Response {
         return try {
-            // 从JWT中获取用户信息
+            // 获取用户信息
             val userId = jwt.getClaim<String>("sub")
+            val username = jwt.name
+            val email = jwt.getClaim<String>("email")
 
-            // 检查JWT是否有效
-            if (userId == null || jwt.name == null) {
+            if (userId == null || username == null) {
                 return Response.status(Response.Status.UNAUTHORIZED)
                     .entity(mapOf("error" to "无效的token"))
                     .build()
             }
 
-            // 获取用户信息
-            val email = jwt.getClaim<String>("email")
-            val username = jwt.name
-            val isEnabled = jwt.getClaim<Boolean>("enabled") ?: true
+            // 从JWT中获取enabled字段
+            val enabled = jwt.getClaim<Boolean>("enabled") ?: true
 
-            // 检查用户是否被禁用
-            if (!isEnabled) {
+            // 检查用户是否被禁用 - 新增的验证
+            if (!enabled) {
                 return Response.status(Response.Status.FORBIDDEN)
                     .entity(mapOf("error" to "用户已被禁用"))
                     .build()
             }
 
-            // 获取用户角色
             val roles = RoleUtils.getRolesFromToken(jwt)
-
-            // 生成个性化的欢迎消息
             val welcomeMessage = when (username.lowercase()) {
                 "admin" -> "欢迎回来，管理员!"
                 "alice" -> "欢迎回来，Alice!"
@@ -59,11 +55,8 @@ class UserResource @Inject constructor(
                 "email" to email,
                 "roles" to roles,
                 "userId" to userId,
-                "enabled" to isEnabled,
-                "welcome" to welcomeMessage,
-                "timestamp" to System.currentTimeMillis()
+                "welcome" to welcomeMessage
             )
-
             Response.ok(userInfo).build()
         } catch (e: Exception) {
             Response.status(Response.Status.UNAUTHORIZED)

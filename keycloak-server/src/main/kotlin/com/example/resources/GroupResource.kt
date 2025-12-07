@@ -12,6 +12,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken
 import jakarta.inject.Inject
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.ApplicationScoped
+import java.util.logging.Logger
 
 @Path("/api/groups")
 @ApplicationScoped
@@ -20,6 +21,8 @@ class GroupResource @Inject constructor(
     private val groupService: GroupService,
     private val userService: UserService
 ) {
+
+    private val logger = Logger.getLogger(GroupResource::class.java.name)
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -30,14 +33,14 @@ class GroupResource @Inject constructor(
             // 验证请求
             if (request.name.isBlank()) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(mapOf<String, Any>("error" to "小组名称不能为空"))
+                    .entity(mapOf("error" to "小组名称不能为空"))
                     .build()
             }
 
             // 获取当前用户信息
             val keycloakUserId = jwt.getClaim<String>("sub")
                 ?: return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(mapOf<String, Any>("error" to "无效的token"))
+                    .entity(mapOf("error" to "无效的token"))
                     .build()
 
             val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
@@ -49,32 +52,27 @@ class GroupResource @Inject constructor(
             // 创建小组
             val group = groupService.createGroup(request, localUserId)
 
+            logger.info("小组创建成功: name=${request.name}, creator=$username")
+
             Response.status(Response.Status.CREATED)
-                .entity(mapOf<String, Any>(
+                .entity(mapOf(
                     "message" to "小组创建成功",
-                    "group" to group
+                    "group" to mapOf(
+                        "id" to group.id,
+                        "name" to group.name,
+                        "description" to group.description
+                    )
                 ))
                 .build()
         } catch (e: IllegalArgumentException) {
+            logger.warning("创建小组失败: ${e.message}")
             Response.status(Response.Status.BAD_REQUEST)
-                .entity(mapOf<String, Any>("error" to (e.message ?: "请求参数错误")))
-                .build()
-        } catch (e: jakarta.ws.rs.NotFoundException) {
-            Response.status(Response.Status.NOT_FOUND)
-                .entity(mapOf<String, Any>("error" to "资源不存在"))
-                .build()
-        } catch (e: jakarta.ws.rs.ForbiddenException) {
-            Response.status(Response.Status.FORBIDDEN)
-                .entity(mapOf<String, Any>("error" to "权限不足"))
-                .build()
-        } catch (e: jakarta.ws.rs.NotAuthorizedException) {
-            Response.status(Response.Status.UNAUTHORIZED)
-                .entity(mapOf<String, Any>("error" to "认证失败，请重新登录"))
+                .entity(mapOf("error" to "请求参数错误"))
                 .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("创建小组失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "创建小组失败: ${e.message}"))
+                .entity(mapOf("error" to "创建小组失败"))
                 .build()
         }
     }
@@ -92,14 +90,14 @@ class GroupResource @Inject constructor(
             // 验证请求
             if (request.fileId <= 0) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(mapOf<String, Any>("error" to "文件ID无效"))
+                    .entity(mapOf("error" to "文件ID无效"))
                     .build()
             }
 
             // 获取当前用户信息
             val keycloakUserId = jwt.getClaim<String>("sub")
                 ?: return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(mapOf<String, Any>("error" to "无效的token"))
+                    .entity(mapOf("error" to "无效的token"))
                     .build()
 
             val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
@@ -111,32 +109,27 @@ class GroupResource @Inject constructor(
             // 共享文件到小组
             groupService.shareFileToGroup(groupId, request, localUserId)
 
-            Response.ok(mapOf<String, Any>(
+            logger.info("文件共享成功: groupId=$groupId, fileId=${request.fileId}, user=$username")
+
+            Response.ok(mapOf(
                 "message" to "文件已成功共享到小组",
                 "groupId" to groupId,
-                "fileId" to request.fileId,
-                "permission" to request.permission
+                "fileId" to request.fileId
             )).build()
-        } catch (e: IllegalArgumentException) {
-            Response.status(Response.Status.BAD_REQUEST)
-                .entity(mapOf<String, Any>("error" to (e.message ?: "请求参数错误")))
-                .build()
         } catch (e: SecurityException) {
+            logger.warning("文件共享失败: 权限不足 - ${e.message}")
             Response.status(Response.Status.FORBIDDEN)
-                .entity(mapOf<String, Any>("error" to "权限不足: ${e.message}"))
+                .entity(mapOf("error" to "权限不足"))
                 .build()
-        } catch (e: jakarta.ws.rs.NotFoundException) {
-            Response.status(Response.Status.NOT_FOUND)
-                .entity(mapOf<String, Any>("error" to "资源不存在"))
-                .build()
-        } catch (e: jakarta.ws.rs.NotAuthorizedException) {
-            Response.status(Response.Status.UNAUTHORIZED)
-                .entity(mapOf<String, Any>("error" to "认证失败，请重新登录"))
+        } catch (e: IllegalArgumentException) {
+            logger.warning("文件共享失败: 参数错误 - ${e.message}")
+            Response.status(Response.Status.BAD_REQUEST)
+                .entity(mapOf("error" to "请求参数错误"))
                 .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("文件共享失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "共享文件失败: ${e.message}"))
+                .entity(mapOf("error" to "共享文件失败"))
                 .build()
         }
     }
@@ -150,7 +143,7 @@ class GroupResource @Inject constructor(
             // 获取当前用户信息
             val keycloakUserId = jwt.getClaim<String>("sub")
                 ?: return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(mapOf<String, Any>("error" to "无效的token"))
+                    .entity(mapOf("error" to "无效的token"))
                     .build()
 
             val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
@@ -163,25 +156,31 @@ class GroupResource @Inject constructor(
             val files = groupService.getGroupFiles(localUserId)
 
             if (files.isEmpty()) {
-                Response.ok(mapOf<String, Any>(
-                    "message" to "您还没有加入任何小组，或小组中没有共享文件",
+                Response.ok(mapOf(
+                    "message" to "没有找到共享文件",
                     "files" to emptyList<Any>(),
                     "total" to 0
                 )).build()
             } else {
+                // 移除敏感信息
+                val safeFiles = files.map { file ->
+                    mapOf(
+                        "fileId" to file.fileId,
+                        "fileName" to file.fileName,
+                        "sharedBy" to file.sharedBy,
+                        "sharedAt" to file.sharedAt
+                    )
+                }
+
                 Response.ok(GroupFilesResponse(
                     files = files,
                     total = files.size
                 )).build()
             }
-        } catch (e: jakarta.ws.rs.NotAuthorizedException) {
-            Response.status(Response.Status.UNAUTHORIZED)
-                .entity(mapOf<String, Any>("error" to "认证失败，请重新登录"))
-                .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("获取组内文件失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "获取组内文件失败: ${e.message}"))
+                .entity(mapOf("error" to "获取组内文件失败"))
                 .build()
         }
     }
@@ -194,7 +193,7 @@ class GroupResource @Inject constructor(
             // 获取当前用户信息
             val keycloakUserId = jwt.getClaim<String>("sub")
                 ?: return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(mapOf<String, Any>("error" to "无效的token"))
+                    .entity(mapOf("error" to "无效的token"))
                     .build()
 
             val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
@@ -206,19 +205,15 @@ class GroupResource @Inject constructor(
             // 获取用户所在的小组列表
             val groups = groupService.getUserGroups(localUserId)
 
-            Response.ok(mapOf<String, Any>(
+            Response.ok(mapOf(
                 "message" to "获取用户小组列表成功",
                 "groups" to groups,
                 "total" to groups.size
             )).build()
-        } catch (e: jakarta.ws.rs.NotAuthorizedException) {
-            Response.status(Response.Status.UNAUTHORIZED)
-                .entity(mapOf<String, Any>("error" to "认证失败，请重新登录"))
-                .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("获取用户小组列表失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "获取用户小组列表失败: ${e.message}"))
+                .entity(mapOf("error" to "获取用户小组列表失败"))
                 .build()
         }
     }
@@ -232,7 +227,7 @@ class GroupResource @Inject constructor(
             // 获取当前用户信息
             val keycloakUserId = jwt.getClaim<String>("sub")
                 ?: return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(mapOf<String, Any>("error" to "无效的token"))
+                    .entity(mapOf("error" to "无效的token"))
                     .build()
 
             val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
@@ -244,30 +239,29 @@ class GroupResource @Inject constructor(
             // 获取小组详情（包含权限验证）
             val group = groupService.getGroupDetails(groupId, localUserId)
 
-            Response.ok(mapOf<String, Any>(
+            Response.ok(mapOf(
                 "message" to "获取小组详情成功",
-                "group" to group
+                "group" to mapOf(
+                    "id" to group.id,
+                    "name" to group.name,
+                    "description" to group.description,
+                    "memberCount" to group.memberCount
+                )
             )).build()
         } catch (e: SecurityException) {
+            logger.warning("获取小组详情失败: 权限不足 - groupId=$groupId")
             Response.status(Response.Status.FORBIDDEN)
-                .entity(mapOf<String, Any>("error" to "您不是该小组成员，无权查看详情"))
+                .entity(mapOf("error" to "您不是该小组成员，无权查看详情"))
                 .build()
         } catch (e: IllegalArgumentException) {
+            logger.warning("获取小组详情失败: 小组不存在 - groupId=$groupId")
             Response.status(Response.Status.NOT_FOUND)
-                .entity(mapOf<String, Any>("error" to "小组不存在"))
-                .build()
-        } catch (e: jakarta.ws.rs.NotFoundException) {
-            Response.status(Response.Status.NOT_FOUND)
-                .entity(mapOf<String, Any>("error" to "资源不存在"))
-                .build()
-        } catch (e: jakarta.ws.rs.NotAuthorizedException) {
-            Response.status(Response.Status.UNAUTHORIZED)
-                .entity(mapOf<String, Any>("error" to "认证失败，请重新登录"))
+                .entity(mapOf("error" to "小组不存在"))
                 .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("获取小组详情失败: ${e.javaClass.simpleName} - groupId=$groupId")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "获取小组详情失败: ${e.message}"))
+                .entity(mapOf("error" to "获取小组详情失败"))
                 .build()
         }
     }

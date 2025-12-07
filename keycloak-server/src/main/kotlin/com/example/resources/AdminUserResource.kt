@@ -13,6 +13,7 @@ import org.keycloak.admin.client.Keycloak
 import com.example.config.KeycloakConfig
 import org.keycloak.representations.idm.UserRepresentation
 import org.keycloak.representations.idm.CredentialRepresentation
+import java.util.logging.Logger
 
 @Path("/api/admin")
 @ApplicationScoped
@@ -21,9 +22,7 @@ class AdminUserResource @Inject constructor(
     private val keycloakConfig: KeycloakConfig
 ) {
 
-    private fun getKeycloak(): Keycloak {
-        return keycloakConfig.getKeycloakInstance()
-    }
+    private val logger = Logger.getLogger(AdminUserResource::class.java.name)
 
     @POST
     @Path("/users")
@@ -31,9 +30,6 @@ class AdminUserResource @Inject constructor(
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed("admin")
     fun createUser(request: CreateUserRequest): Response {
-        println("=== DEBUG: createUser called ===")
-        println("=== DEBUG: Request received: $request ===")
-
         // 验证管理员权限
         if (!RoleUtils.hasAdminRole(jwt)) {
             return Response.status(Response.Status.FORBIDDEN)
@@ -54,7 +50,15 @@ class AdminUserResource @Inject constructor(
 
         var keycloak: Keycloak? = null
         try {
-            keycloak = getKeycloak()
+            // 使用 Keycloak.getInstance() 而不是 KeycloakBuilder，以避免依赖问题
+            keycloak = Keycloak.getInstance(
+                keycloakConfig.serverUrl,
+                "master",  // 使用 master realm 获取管理权限
+                keycloakConfig.adminUsername,
+                keycloakConfig.adminPassword,
+                keycloakConfig.adminClientId
+            )
+
             val realm = keycloakConfig.realm
 
             // 创建用户表示
@@ -62,7 +66,7 @@ class AdminUserResource @Inject constructor(
             user.isEnabled = request.enabled
             user.username = request.username
 
-            // 设置邮箱（如果提供了的话）
+            // 邮箱可以为空
             if (!request.email.isNullOrBlank()) {
                 user.email = request.email
                 user.setEmailVerified(false)
@@ -88,7 +92,7 @@ class AdminUserResource @Inject constructor(
                 val location = response.location
                 val userId = location.path.split("/").last()
 
-                println("=== DEBUG: User created with ID: $userId ===")
+                logger.info("用户创建成功: username=${request.username}, userId=$userId")
 
                 // 设置默认角色（如果没有提供角色，则默认为user）
                 val rolesToAssign = if (request.roles.isNotEmpty()) {
@@ -111,11 +115,11 @@ class AdminUserResource @Inject constructor(
 
                         if (rolesToAdd.isNotEmpty()) {
                             userResource.roles().realmLevel().add(rolesToAdd)
-                            println("=== DEBUG: Roles assigned: $rolesToAssign ===")
+                            logger.info("用户角色分配成功: username=${request.username}, roles=$rolesToAssign")
                         }
                     } catch (roleException: Exception) {
-                        println("=== DEBUG: Role assignment failed: ${roleException.message} ===")
-                        // 角色分配失败不影响用户创建，只是记录日志
+                        logger.warning("角色分配失败: ${roleException.message}")
+                        // 角色分配失败不影响用户创建
                     }
                 }
 
@@ -137,32 +141,46 @@ class AdminUserResource @Inject constructor(
                 val errorMessage = try {
                     response.readEntity(String::class.java)
                 } catch (e: Exception) {
-                    "Unknown error"
+                    "HTTP ${response.status}"
                 }
+
+                logger.severe("创建用户失败: $errorMessage")
                 return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(mapOf("error" to "创建用户失败: HTTP ${response.status} - $errorMessage"))
+                    .entity(mapOf("error" to "创建用户失败: $errorMessage"))
                     .build()
             }
         } catch (e: jakarta.ws.rs.ClientErrorException) {
             when (e.response?.status) {
-                409 -> return Response.status(Response.Status.CONFLICT)
-                    .entity(mapOf("error" to "用户已存在"))
-                    .build()
-                400 -> return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(mapOf("error" to "请求参数错误: ${e.message}"))
-                    .build()
-                else -> return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(mapOf("error" to "创建用户失败: ${e.message}"))
-                    .build()
+                409 -> {
+                    logger.warning("创建用户失败: 用户已存在 - username=${request.username}")
+                    return Response.status(Response.Status.CONFLICT)
+                        .entity(mapOf("error" to "用户已存在"))
+                        .build()
+                }
+                400 -> {
+                    logger.warning("创建用户失败: 请求参数错误")
+                    return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(mapOf("error" to "请求参数错误"))
+                        .build()
+                }
+                else -> {
+                    logger.severe("创建用户失败: ${e.message}")
+                    return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(mapOf("error" to "创建用户失败: ${e.message}"))
+                        .build()
+                }
             }
         } catch (e: Exception) {
-            println("=== DEBUG: Exception: ${e.message} ===")
-            e.printStackTrace()
+            logger.severe("创建用户失败: ${e.javaClass.simpleName} - ${e.message}")
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .entity(mapOf("error" to "创建用户失败: ${e.message}"))
                 .build()
         } finally {
-            keycloak?.close()
+            try {
+                keycloak?.close()
+            } catch (e: Exception) {
+                // 忽略关闭异常
+            }
         }
     }
 
@@ -176,24 +194,36 @@ class AdminUserResource @Inject constructor(
         }
 
         // 2. 验证邮箱格式（如果提供了邮箱）
-        if (!request.email.isNullOrBlank()) {
-            if (!request.email.contains("@")) {
-                errors.add("email: 邮箱格式不正确，必须包含@符号")
-            }
+        if (!request.email.isNullOrBlank() && !request.email.contains("@")) {
+            errors.add("email: 邮箱格式不正确，必须包含@符号")
         }
-
-        // 注意：enabled 字段由 Kotlin 类型安全保证为布尔值
-        // 如果请求体中的 enabled 不是布尔值，会在反序列化时失败
 
         return errors
     }
 
     // 生成随机密码
     private fun generateRandomPassword(): String {
-        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
-        return (1..12)
-            .map { chars.random() }
-            .joinToString("")
+        val upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        val lower = "abcdefghijklmnopqrstuvwxyz"
+        val digits = "0123456789"
+        val special = "!@#$%"
+
+        val password = StringBuilder()
+
+        // 确保密码包含每种类型至少一个字符
+        password.append(upper.random())
+        password.append(lower.random())
+        password.append(digits.random())
+        password.append(special.random())
+
+        // 添加剩余字符
+        val allChars = upper + lower + digits + special
+        repeat(8) {
+            password.append(allChars.random())
+        }
+
+        // 打乱顺序
+        return password.toString().toList().shuffled().joinToString("")
     }
 
     @GET
@@ -209,10 +239,17 @@ class AdminUserResource @Inject constructor(
 
         var keycloak: Keycloak? = null
         try {
-            keycloak = getKeycloak()
-            val realm = keycloakConfig.realm
+            keycloak = Keycloak.getInstance(
+                keycloakConfig.serverUrl,
+                "master",
+                keycloakConfig.adminUsername,
+                keycloakConfig.adminPassword,
+                keycloakConfig.adminClientId
+            )
 
+            val realm = keycloakConfig.realm
             val users = keycloak.realm(realm).users().list()
+
             val userList = users.map { user ->
                 val userResource = keycloak.realm(realm).users().get(user.id)
                 val roles = userResource.roles().realmLevel().listAll().map { it.name }
@@ -222,9 +259,6 @@ class AdminUserResource @Inject constructor(
                     "username" to user.username,
                     "email" to user.email,
                     "enabled" to user.isEnabled,
-                    "firstName" to user.firstName,
-                    "lastName" to user.lastName,
-                    "emailVerified" to user.isEmailVerified,
                     "roles" to roles
                 )
             }
@@ -234,7 +268,8 @@ class AdminUserResource @Inject constructor(
                 "users" to userList
             )).build()
         } catch (e: Exception) {
-            // 如果查询失败，返回模拟数据
+            logger.severe("获取用户列表失败: ${e.message}")
+            // 如果失败，返回模拟数据
             val users = listOf(
                 mapOf(
                     "id" to "1",
@@ -249,13 +284,6 @@ class AdminUserResource @Inject constructor(
                     "email" to "alice@example.com",
                     "enabled" to true,
                     "roles" to listOf("user")
-                ),
-                mapOf(
-                    "id" to "3",
-                    "username" to "jdoe",
-                    "email" to "jdoe@example.com",
-                    "enabled" to true,
-                    "roles" to listOf("user", "user_premium")
                 )
             )
 
@@ -264,7 +292,11 @@ class AdminUserResource @Inject constructor(
                 "users" to users
             )).build()
         } finally {
-            keycloak?.close()
+            try {
+                keycloak?.close()
+            } catch (e: Exception) {
+                // 忽略关闭异常
+            }
         }
     }
 
@@ -275,7 +307,6 @@ class AdminUserResource @Inject constructor(
         return Response.ok(mapOf(
             "message" to "Admin endpoint is working",
             "timestamp" to System.currentTimeMillis(),
-            "jwtAvailable" to (jwt != null),
             "jwtName" to jwt.name
         )).build()
     }

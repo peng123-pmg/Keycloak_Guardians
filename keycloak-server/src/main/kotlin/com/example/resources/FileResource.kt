@@ -13,6 +13,7 @@ import java.io.InputStream
 import jakarta.enterprise.context.ApplicationScoped
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.logging.Logger
 
 @Path("/api/files")
 @ApplicationScoped
@@ -20,6 +21,8 @@ class FileResource @Inject constructor(
     private val jwt: JsonWebToken,
     private val fileService: FileService
 ) {
+
+    private val logger = Logger.getLogger(FileResource::class.java.name)
 
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
@@ -45,6 +48,9 @@ class FileResource @Inject constructor(
 
         return try {
             val fileRecord = fileService.uploadFile(fileData, finalFileName, contentType ?: "application/octet-stream", userId)
+
+            logger.info("文件上传成功: fileName=$finalFileName, user=$userId")
+
             Response.status(Response.Status.CREATED)
                 .entity(FileUploadResponse(
                     message = "文件上传成功",
@@ -52,9 +58,9 @@ class FileResource @Inject constructor(
                 ))
                 .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("文件上传失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "文件上传失败: ${e.message}"))
+                .entity(mapOf<String, Any>("error" to "文件上传失败"))
                 .build()
         }
     }
@@ -69,14 +75,27 @@ class FileResource @Inject constructor(
         return try {
             val files = fileService.listFiles(userId)
             val totalSize = files.sumOf { it.sizeBytes }
+
+            // 移除敏感信息
+            val safeFiles = files.map { file ->
+                mapOf(
+                    "id" to file.id,
+                    "fileName" to file.fileName,
+                    "originalName" to file.originalName,
+                    "sizeBytes" to file.sizeBytes,
+                    "createdAt" to file.createdAt
+                )
+            }
+
             Response.ok(FileListResponse(
                 files = files,
                 total = files.size,
                 totalSize = totalSize
             )).build()
         } catch (e: Exception) {
+            logger.severe("获取文件列表失败: ${e.javaClass.simpleName}")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "获取文件列表失败: ${e.message}"))
+                .entity(mapOf<String, Any>("error" to "获取文件列表失败"))
                 .build()
         }
     }
@@ -100,18 +119,21 @@ class FileResource @Inject constructor(
             val fileBytes = Files.readAllBytes(filePath)
             val mimeType = Files.probeContentType(filePath) ?: "application/octet-stream"
 
+            logger.info("文件下载成功: fileId=$id, user=$userId")
+
             Response.ok(fileBytes)
                 .header("Content-Disposition", "attachment; filename=\"$originalName\"")
                 .type(mimeType)
                 .build()
         } catch (e: RuntimeException) {
+            logger.warning("文件下载失败: 文件不存在或无权限 - fileId=$id, user=$userId")
             Response.status(Response.Status.NOT_FOUND)
-                .entity(mapOf<String, Any>("error" to "文件不存在或无权访问: ${e.message}"))
+                .entity(mapOf<String, Any>("error" to "文件不存在或无权访问"))
                 .build()
         } catch (e: Exception) {
-            e.printStackTrace()
+            logger.severe("文件下载失败: ${e.javaClass.simpleName} - fileId=$id")
             Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity(mapOf<String, Any>("error" to "文件下载失败: ${e.message}"))
+                .entity(mapOf<String, Any>("error" to "文件下载失败"))
                 .build()
         }
     }

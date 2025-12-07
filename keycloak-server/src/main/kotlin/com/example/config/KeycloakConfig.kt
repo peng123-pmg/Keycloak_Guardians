@@ -7,7 +7,6 @@ import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.KeycloakBuilder
 import org.jboss.resteasy.client.jaxrs.ResteasyClient
 import org.jboss.resteasy.client.jaxrs.internal.ResteasyClientBuilderImpl
-import org.jboss.resteasy.plugins.providers.FormUrlEncodedProvider
 
 @ApplicationScoped
 class KeycloakConfig {
@@ -28,7 +27,6 @@ class KeycloakConfig {
 
     private fun buildClient(): ResteasyClient =
         ResteasyClientBuilderImpl()
-            .register(FormUrlEncodedProvider())
             .build()
 
     fun getKeycloakInstance(): Keycloak {

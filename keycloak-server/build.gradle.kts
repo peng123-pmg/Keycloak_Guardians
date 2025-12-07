@@ -6,6 +6,9 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url = uri("https://repo.mysql.com/")
+    }
 }
 
 java {

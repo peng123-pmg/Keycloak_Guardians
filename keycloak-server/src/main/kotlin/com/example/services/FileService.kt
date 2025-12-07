@@ -67,9 +67,11 @@ class FileService(
                 ps.setString(6, checksum)
                 ps.executeUpdate()
 
-                // 获取生成的主键
-                val generatedKeys = ps.generatedKeys
-                if (generatedKeys.next()) {
+                // 获取生成的主键并确保 ResultSet 关闭
+                ps.generatedKeys.use { generatedKeys ->
+                    if (!generatedKeys.next()) {
+                        throw RuntimeException("Failed to retrieve file ID")
+                    }
                     val fileId = generatedKeys.getLong(1)
 
                     // 返回文件信息
@@ -85,8 +87,6 @@ class FileService(
                         createdAt = OffsetDateTime.now(),
                         updatedAt = OffsetDateTime.now()
                     )
-                } else {
-                    throw RuntimeException("Failed to retrieve file ID")
                 }
             }
         }

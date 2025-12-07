@@ -1,0 +1,116 @@
+.uploadContainer {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.uploadArea {
+  min-height: 12rem;
+  border: 2px dashed rgba(42, 130, 228, 0.5);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 2rem;
+  position: relative;
+}
+
+.uploadArea:hover {
+  border-color: rgba(42, 130, 228, 0.8);
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.uploadArea.dragging {
+  border-color: #2A82E4;
+  background: rgba(42, 130, 228, 0.1);
+  border-width: 3px;
+}
+
+.uploadIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+  transition: transform 0.3s ease;
+}
+
+.uploadArea:hover .uploadIcon {
+  transform: scale(1.1);
+}
+
+.uploadText {
+  text-align: center;
+}
+
+.primaryText {
+  font-family: 'Source Han Sans CN', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #333333;
+  margin: 0 0 0.5rem 0;
+}
+
+.secondaryText {
+  font-family: 'Source Han Sans CN', sans-serif;
+  font-size: 0.875rem;
+  color: #666666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.fileInput {
+  display: none;
+}
+
+.errorMessage {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 77, 79, 0.1);
+  border-left: 4px solid #ff4d4f;
+  border-radius: 0.25rem;
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .uploadArea {
+    min-height: 10rem;
+    padding: 1.5rem;
+  }
+
+  .uploadIcon {
+    font-size: 3rem;
+  }
+
+  .primaryText {
+    font-size: 1rem;
+  }
+
+  .secondaryText {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .uploadArea {
+    min-height: 8rem;
+    padding: 1rem;
+  }
+
+  .uploadIcon {
+    font-size: 2.5rem;
+  }
+
+  .primaryText {
+    font-size: 0.9rem;
+  }
+
+  .secondaryText {
+    font-size: 0.75rem;
+  }
+}

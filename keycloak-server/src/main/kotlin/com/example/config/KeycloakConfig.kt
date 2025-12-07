@@ -1,5 +1,6 @@
 package com.example.config
 
+import jakarta.annotation.PreDestroy
 import jakarta.enterprise.context.ApplicationScoped
 import org.eclipse.microprofile.config.inject.ConfigProperty
 

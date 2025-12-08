@@ -3,6 +3,8 @@
  * 提供文件上传、下载、删除等功能
  */
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8081";
+
 export interface FileInfo {
   id: string;
   name: string;
@@ -22,14 +24,13 @@ export interface UploadProgress {
 }
 
 class FileService {
-  /**
-   * 获取认证令牌
-   */
-  private getAuthToken(): string | null {
-    // 这里应根据实际认证方式获取令牌
-    // 示例中使用localStorage存储令牌
-    const currentUser = localStorage.getItem('currentUser');
-    return currentUser ? JSON.parse(currentUser).token : null;
+   private async authorizedFetch(path: string, init: RequestInit = {}): Promise<Response> {
+    const token = sessionStorage.getItem("kc_token") || localStorage.getItem("kc_token");
+    const headers = new Headers(init.headers);
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    return fetch(`${API_BASE_URL}${path}`, { ...init, headers });
   }
 
   /**
@@ -71,10 +72,8 @@ class FileService {
       });
 
       // 发送请求
-      xhr.open('POST', '/api/files/upload');
-      
-      // 添加认证头
-      const token = this.getAuthToken();
+      xhr.open('POST', `${API_BASE_URL}/api/files/upload`);
+      const token = sessionStorage.getItem("kc_token") || localStorage.getItem("kc_token");
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
@@ -134,45 +133,30 @@ class FileService {
    * 下载文件
    */
   async downloadFile(fileId: string, fileName: string): Promise<void> {
-    try {
-      const response = await fetch(`/api/files/${fileId}/download`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${this.getAuthToken()}`,
-        },
-      });
+    const response = await this.authorizedFetch(`/api/files/${fileId}/download`, { method: 'GET' });
 
-      if (!response.ok) {
-        throw new Error('下载失败');
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      
-      // 清理
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('下载文件时出错:', error);
-      throw error;
+    if (!response.ok) {
+      throw new Error('下载失败');
     }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+
+    // 清理
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   }
 
   /**
    * 删除文件
    */
   async deleteFile(fileId: string): Promise<void> {
-    const response = await fetch(`/api/files/${fileId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${this.getAuthToken()}`,
-      },
-    });
+    const response = await this.authorizedFetch(`/api/files/${fileId}`, { method: 'DELETE' });
 
     if (!response.ok) {
       throw new Error('删除失败');
@@ -183,12 +167,7 @@ class FileService {
    * 获取用户的文件列表
    */
   async getUserFiles(): Promise<FileInfo[]> {
-    const response = await fetch('/api/user/files', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${this.getAuthToken()}`,
-      },
-    });
+    const response = await this.authorizedFetch('/api/user/files');
 
     if (!response.ok) {
       throw new Error('获取文件列表失败');
@@ -198,45 +177,14 @@ class FileService {
   }
 
   /**
-   * 根据文件名推断文件类型
+   * 获取团队文件
    */
-  private getFileType(fileName: string): FileInfo['type'] {
-    const extension = fileName.split('.').pop()?.toLowerCase() || '';
-    
-    const typeMap: Record<string, FileInfo['type']> = {
-      // 文档
-      'doc': 'document',
-      'docx': 'document',
-      'pdf': 'document',
-      'txt': 'document',
-      'md': 'document',
-      
-      // 图片
-      'jpg': 'image',
-      'jpeg': 'image',
-      'png': 'image',
-      'gif': 'image',
-      'bmp': 'image',
-      'svg': 'image',
-      
-      // 音频
-      'mp3': 'audio',
-      'wav': 'audio',
-      'flac': 'audio',
-      'aac': 'audio',
-      
-      // 视频
-      'mp4': 'video',
-      'avi': 'video',
-      'mov': 'video',
-      'wmv': 'video',
-      
-      // 链接
-      'url': 'link',
-      'lnk': 'link',
-    };
-
-    return typeMap[extension] || 'file';
+  async getTeamFiles(teamId: string): Promise<FileInfo[]> {
+    const response = await this.authorizedFetch(`/api/groups/${teamId}/files`);
+    if (!response.ok) {
+      throw new Error('获取团队文件失败');
+    }
+    return await response.json();
   }
 
   /**

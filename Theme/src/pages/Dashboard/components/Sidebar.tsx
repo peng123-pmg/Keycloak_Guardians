@@ -92,13 +92,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
 
   return (
     <aside className={styles.sidebar}>
-      {/* Logo区域 */}
       <div className={styles.logoSection}>
         <div className={styles.logoIcon}>■</div>
         <h1 className={styles.logoText}>Mysystem</h1>
       </div>
 
-      {/* 导航菜单 */}
       <nav className={styles.menu}>
         {menuData.map(item => renderMenuItem(item))}
       </nav>

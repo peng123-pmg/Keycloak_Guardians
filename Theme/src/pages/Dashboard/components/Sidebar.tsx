@@ -56,7 +56,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
   const renderMenuItem = (item: MenuItem, level: number = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedMenus.includes(item.id);
-    const isActive = activeMenu === item.id;
+    // 修改激活状态判断逻辑，使"创建团队"能正确高亮
+    const isActive = activeMenu === item.id || 
+                    (item.id === 'create-team' && activeMenu === 'create-team');
 
     return (
       <div key={item.id} className={styles.menuItemWrapper}>

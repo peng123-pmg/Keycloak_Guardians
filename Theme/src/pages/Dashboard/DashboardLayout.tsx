@@ -18,6 +18,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ keycloak, chil
   const getActiveMenu = () => {
     const path = location.pathname;
     if (path.startsWith("/personal-files")) return "my-files";
+    if (path.startsWith("/team-management/create")) return "create-team"; // 添加对创建团队路径的判断
     if (path.startsWith("/team-management/created-team")) return "my-teams";
     if (path.startsWith("/team-management/joined-team")) return "my-teams";
     if (path.startsWith("/team-management")) return "my-teams";
@@ -36,6 +37,9 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ keycloak, chil
     switch (menu) {
       case "my-files":
         navigate("/personal-files");
+        break;
+      case "create-team":
+        navigate("/team-management/create");
         break;
       case "my-teams":
         navigate("/team-management/my-teams");

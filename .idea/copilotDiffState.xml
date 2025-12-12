@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/keycloak-server/src/main/resources/db/migration/V7__align_file_owner_to_local_id.sql">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/keycloak-server/src/main/resources/db/migration/V7__align_file_owner_to_local_id.sql" />
+              <option name="originalContent" value="ALTER TABLE files&#10;    ADD COLUMN owner_local_id BIGINT UNSIGNED NULL AFTER owner_realm,&#10;    ADD INDEX idx_files_owner_local_id (owner_local_id),&#10;    ADD CONSTRAINT fk_files_owner_local_id FOREIGN KEY (owner_local_id) REFERENCES users(id) ON DELETE SET NULL;&#10;&#10;UPDATE files f&#10;JOIN users u ON f.owner_id = u.keycloak_user_id&#10;SET f.owner_local_id = u.id&#10;WHERE f.owner_local_id IS NULL;&#10;" />
+              <option name="updatedContent" value="ALTER TABLE files&#10;    ADD COLUMN owner_local_id BIGINT UNSIGNED NULL AFTER owner_realm,&#10;    ADD INDEX idx_files_owner_local_id (owner_local_id),&#10;    ADD CONSTRAINT fk_files_owner_local_id FOREIGN KEY (owner_local_id) REFERENCES users(id) ON DELETE SET NULL;&#10;&#10;UPDATE files f&#10;JOIN users u ON f.owner_id = u.keycloak_user_id&#10;SET f.owner_local_id = u.id&#10;WHERE f.owner_local_id IS NULL;&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

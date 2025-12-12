@@ -153,17 +153,45 @@
   color: #333333;
   text-align: center;
   word-break: break-word;
-  margin-bottom: 1rem;
+  flex-grow: 1;
   max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cardFileMeta {
+  font-size: 0.8rem;
+  color: #666;
+  display: flex;
+  flex-direction: column; /* 垂直排列 */
+  gap: 0.2rem;
+  text-align: left;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.cardFileMeta span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
 }
 
 /* 右下角操作按钮 */
 .cardActions {
-  position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
   display: flex;
   gap: 0.5rem;
+  flex-shrink: 0; /* 防止按钮收缩 */
 }
 
 .cardActionBtn {
@@ -183,6 +211,115 @@
   transform: scale(1.1);
 }
 
+/* ========== 加载与错误状态 ========== */
+.loadingState,
+.errorState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.errorState {
+  color: #e74c3c;
+}
+
+.emptyPlaceholder {
+  color: #999;
+  font-style: italic;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+/* ========== 上传/选择文件区域 ========== */
+.uploadContainer {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.uploadTabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.uploadTabs button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  border-bottom: 2px solid transparent;
+}
+
+.uploadTabs button.activeTab {
+  color: #2A82E4;
+  border-bottom-color: #2A82E4;
+  font-weight: 600;
+}
+
+.personalFilesPicker {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.personalFileItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.personalFileItem:hover {
+  background: #e9f2fc;
+}
+
+/* ========== 邀请成员行 ========== */
+.inviteMemberRow {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 1.5rem;
+}
+
+.inviteInput {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.inviteButton {
+  padding: 0.75rem 1.5rem;
+  background: #2A82E4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.inviteButton:hover {
+  background: #1e6bc9;
+}
+
+.inviteError {
+  color: #e74c3c;
+  font-size: 0.9rem;
+}
+
 /* ========== 我的组员区块 - 自动填充剩余空间 ========== */
 .membersSection {
   width: 100%;
@@ -191,6 +328,8 @@
   border-radius: 0;
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .membersSectionHeader {
@@ -198,6 +337,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+  flex-shrink: 0;
 }
 
 .membersTitle {
@@ -235,6 +375,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  overflow-y: auto; /* 允许列表滚动 */
+  flex-grow: 1;
 }
 
 .memberItem {
@@ -246,6 +388,7 @@
   background: rgba(223, 228, 235, 0.5);
   border-radius: 8px;
   transition: background 0.2s;
+  flex-shrink: 0; /* 防止列表项收缩 */
 }
 
 .memberItem:hover {
@@ -286,6 +429,33 @@
   color: #e74c3c;
   transform: scale(1.2);
 }
+
+/* 特殊卡片：添加文件 */
+.addCard {
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px dashed #a0c7f0;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.addCard:hover {
+  background: rgba(255, 255, 255, 0.4);
+  border-color: #fff;
+}
+
+.addCardIcon {
+  font-size: 3rem;
+  color: #fff;
+  line-height: 1;
+}
+
+.addCardText {
+  margin-top: 0.5rem;
+  color: #fff;
+  font-weight: 500;
+}
+
 
 /* ========== 响应式调整 ========== */
 @media (max-width: 1200px) {

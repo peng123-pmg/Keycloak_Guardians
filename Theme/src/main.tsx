@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from "react";
+import { StrictMode, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import Keycloak from "keycloak-js";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -72,8 +72,14 @@ const keycloak = new Keycloak({
 function KeycloakProvider({ children }: { children: React.ReactNode }) {
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const hasInitializedRef = useRef(false);
 
     useEffect(() => {
+        if (hasInitializedRef.current) {
+            return;
+        }
+        hasInitializedRef.current = true;
+
         keycloak
             .init({
                 checkLoginIframe: false,

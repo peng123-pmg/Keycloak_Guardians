@@ -11,8 +11,8 @@ html {
   /* 基础字体大小：16px，并根据视窗宽度动态调整 */
   font-size: calc(14px + 0.390625vw); /* 在1024px宽度时约为18px，在1920px时约为21.5px */
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 /* 针对不同屏幕尺寸的字体调整 */
@@ -36,22 +36,20 @@ html {
 
 body {
   width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
   font-family: var(--font-family);
   font-size: var(--font-size-base);
   color: var(--text-primary);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #e6efff 0%, #f5f7fb 100%);
 }
 
 #root {
   width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
   position: relative;
 }
 

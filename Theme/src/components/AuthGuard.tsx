@@ -15,6 +15,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ keycloak, children }) => {
           if (refreshed) {
             sessionStorage.setItem("kc_token", keycloak.token ?? "");
             sessionStorage.setItem("kc_refresh_token", keycloak.refreshToken ?? "");
+            keycloak.clearToken();
           }
         })
         .catch(() => {
@@ -28,4 +29,3 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({ keycloak, children }) => {
 
   return <>{children}</>;
 };
-

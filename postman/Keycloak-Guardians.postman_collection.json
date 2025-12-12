@@ -479,6 +479,158 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "删除共享文件（仅创建者）",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/groups/files/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"files",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "下载文件（通用，含团队共享）",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/files/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"files",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "小组成员列表",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/groups/1/members",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"1",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "邀请成员加入小组",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"alice\",\r\n  \"role\": \"MEMBER\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/groups/1/members",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"1",
+						"members"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "删除小组（仅创建者）",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/groups/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"groups",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

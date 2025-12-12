@@ -37,8 +37,6 @@ export const PersonalFilesPage: React.FC = () => {
       
       // 上传文件
       const uploadedFiles = await fileService.uploadFiles(selectedFiles);
-      
-      // 更新文件列表
       setFiles(prevFiles => [...uploadedFiles, ...prevFiles]);
     } catch (err) {
       console.error('上传文件失败:', err);
@@ -51,7 +49,7 @@ export const PersonalFilesPage: React.FC = () => {
   // 下载文件
   const handleDownload = async (file: FileInfo) => {
     try {
-      await fileService.downloadFile(file.id, file.name);
+      await fileService.downloadFile(Number(file.id), file.name);
     } catch (err) {
       console.error('下载文件失败:', err);
       setError('下载文件失败: ' + (err instanceof Error ? err.message : '未知错误'));
@@ -61,7 +59,7 @@ export const PersonalFilesPage: React.FC = () => {
   // 删除文件
   const handleDelete = async (fileId: string) => {
     try {
-      await fileService.deleteFile(fileId);
+      await fileService.deleteFile(Number(fileId));
       // 从列表中移除文件
       setFiles(prevFiles => prevFiles.filter(file => file.id !== fileId));
     } catch (err) {
@@ -112,7 +110,7 @@ export const PersonalFilesPage: React.FC = () => {
       {/* 文件列表区域 */}
       <div className={styles.filesSection}>
         <h2>我的文件 ({files.length})</h2>
-        
+
         {loading ? (
           <div className={styles.loading}>加载中...</div>
         ) : files.length === 0 ? (
@@ -143,8 +141,8 @@ export const PersonalFilesPage: React.FC = () => {
                     </span>
                   </div>
                   <div className={styles.fileActions}>
-                    <button 
-                      className={styles.iconBtn} 
+                    <button
+                      className={styles.iconBtn}
                       title="下载"
                       onClick={() => handleDownload(file)}
                     >
@@ -167,3 +165,4 @@ export const PersonalFilesPage: React.FC = () => {
     </div>
   );
 };
+

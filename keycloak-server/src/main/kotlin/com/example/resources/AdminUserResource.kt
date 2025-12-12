@@ -78,11 +78,11 @@ class AdminUserResource @Inject constructor(
             request.firstName?.let { user.firstName = it }
             request.lastName?.let { user.lastName = it }
 
-            // 创建凭证（密码）- 使用随机密码并要求用户在首次登录时更改
+            // 创建凭证（密码）- 默认使用用户名作为初始密码，便于首登
             val credential = CredentialRepresentation()
             credential.type = CredentialRepresentation.PASSWORD
-            credential.value = generateRandomPassword()
-            credential.isTemporary = true
+            credential.value = request.username
+            credential.isTemporary = false
 
             user.credentials = listOf(credential)
 
@@ -137,7 +137,7 @@ class AdminUserResource @Inject constructor(
                             "enabled" to request.enabled,
                             "roles" to rolesToAssign
                         ),
-                        "note" to "用户初始密码已生成，首次登录时需要修改密码"
+                        "note" to "默认密码与用户名相同，请尽快登录并修改"
                     ))
                     .build()
             } else {
@@ -204,30 +204,6 @@ class AdminUserResource @Inject constructor(
         return errors
     }
 
-    // 生成随机密码
-    private fun generateRandomPassword(): String {
-        val upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        val lower = "abcdefghijklmnopqrstuvwxyz"
-        val digits = "0123456789"
-        val special = "!@#$%"
-
-        val password = StringBuilder()
-
-        // 确保密码包含每种类型至少一个字符
-        password.append(upper.random())
-        password.append(lower.random())
-        password.append(digits.random())
-        password.append(special.random())
-
-        // 添加剩余字符
-        val allChars = upper + lower + digits + special
-        repeat(8) {
-            password.append(allChars.random())
-        }
-
-        // 打乱顺序
-        return password.toString().toList().shuffled().joinToString("")
-    }
 
     @GET
     @Path("/users")

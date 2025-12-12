@@ -79,7 +79,7 @@ json
 }
   错误提示：
   - `error: 权限不足，需要管理员角色`
-  - `error: 用户尚未同步，请重新登录`（当前 token 对应用户尚未写入 `iamkc.users`，重新发起请求即��自动写入）
+  - `error: 用户尚未同步，请重新登录`（当前 token 对应用户尚未写入 `iamkc.users`，重新发起请求即可自动写入）
 
 3. 用户管理
 3.1 创建用户
@@ -391,6 +391,53 @@ json
   updatedAt: 更新时间
   total: 总小组数
 
+  5.5 删除团队共享文件（仅小组创建者）
+    基本信息
+    请求路径：http://localhost:8081/api/groups/files/{fileId}
+    请求方式：DELETE
+    接口描述：仅小组创建者可删除共享文件记录；若该文件无其他共享，将软删除物理文件记录
+    请求参数
+    Authorization: Bearer <access_token>
+    路径参数：fileId - 共享的文件ID
+    响应
+    成功：`{"message": "文件删除成功"}`
+    失败：403（非创建者）、404（不存在或无访问权）
+
+  5.6 下载团队文件（复用通用下载接口）
+    基本信息
+    请求路径：http://localhost:8081/api/files/{id}
+    请求方式：GET
+    接口描述：复用个人下载接口，若请求者是共享所在小组成员且文件未删除则可下载
+    请求参数
+    Authorization: Bearer <access_token>
+    路径参数：id - 文件ID
+    响应：文件二进制流，`Content-Disposition` 附原始文件名
+
+  5.7 获取小组成员列表
+    基本信息
+    请求路径：http://localhost:8081/api/groups/{groupId}/members
+    请求方式：GET
+    鉴权：小组成员
+    返回字段：id, userId, username, displayName, email, role, joinedAt
+
+  5.8 邀请成员加入小组
+    基本信息
+    请求路径：http://localhost:8081/api/groups/{groupId}/members
+    请求方式：POST
+    鉴权：有邀请权限成员（ADMIN/OWNER）
+    请求体
+  json
+  {
+    "username": "alice",   // 或 userId
+    "role": "MEMBER"       // 可选，默认 MEMBER
+  }
+
+  5.9 删除小组（仅创建者）
+    基本信息
+    请求路径：http://localhost:8081/api/groups/{groupId}
+    请求方式：DELETE
+    描述：创建者可删除小组，成员状态置为 INACTIVE
+
 
 ## 数据库结构附录
 - `files`：文件元信息和生命周期状态
@@ -409,3 +456,4 @@ json
 ## 配置说明
 - 运行参数在 `keycloak-server/src/main/resources/application.properties`：默认 Keycloak OIDC（`http://localhost:8080/realms/guardians`）、HTTP 端口 8081、MySQL `iamkc` 数据源、CORS 允许运行。需要变更时直接修改对应属性并重启。
 - 用户同步开关：`user.sync.enabled=true`；批量触发可使用 `POST /api/users/bootstrap`（管理员）。
+

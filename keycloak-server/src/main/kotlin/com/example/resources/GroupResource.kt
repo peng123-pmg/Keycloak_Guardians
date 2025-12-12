@@ -2,7 +2,9 @@ package com.example.resources
 
 import com.example.models.requests.CreateGroupRequest
 import com.example.models.requests.ShareFileToGroupRequest
+import com.example.models.requests.InviteMemberRequest
 import com.example.models.responses.GroupFilesResponse
+import com.example.models.responses.GroupMemberResponse
 import com.example.services.GroupService
 import com.example.services.UserService
 import jakarta.ws.rs.*
@@ -12,6 +14,9 @@ import org.eclipse.microprofile.jwt.JsonWebToken
 import jakarta.inject.Inject
 import jakarta.annotation.security.RolesAllowed
 import jakarta.enterprise.context.ApplicationScoped
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.logging.Level
 import java.util.logging.Logger
 
 @Path("/api/groups")
@@ -54,16 +59,18 @@ class GroupResource @Inject constructor(
 
             logger.info("小组创建成功: name=${request.name}, creator=$username")
 
-            Response.status(Response.Status.CREATED)
-                .entity(mapOf(
-                    "message" to "小组创建成功",
-                    "group" to mapOf(
-                        "id" to group.id,
-                        "name" to group.name,
-                        "description" to group.description
-                    )
-                ))
-                .build()
+            val responseBody = mapOf(
+                "message" to if (group.created) "小组创建成功" else "小组已存在，返回现有信息",
+                "group" to mapOf(
+                    "id" to group.group.id,
+                    "name" to group.group.name,
+                    "description" to group.group.description,
+                    "created" to group.created
+                )
+            )
+
+            val status = if (group.created) Response.Status.CREATED else Response.Status.OK
+            Response.status(status).entity(responseBody).build()
         } catch (e: IllegalArgumentException) {
             logger.warning("创建小组失败: ${e.message}")
             Response.status(Response.Status.BAD_REQUEST)
@@ -186,6 +193,71 @@ class GroupResource @Inject constructor(
     }
 
     @GET
+    @Path("/files/{fileId}")
+    @RolesAllowed("user", "admin")
+    fun downloadGroupFile(@PathParam("fileId") fileId: Long): Response {
+        return try {
+            val keycloakUserId = jwt.getClaim<String>("sub")
+                ?: return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(mapOf("error" to "无效的token"))
+                    .build()
+
+            val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
+            val email = jwt.getClaim<String>("email")
+            val localUserId = userService.getOrCreateLocalUserId(keycloakUserId, username, email)
+
+            val (filePath, originalName) = groupService.getSharedFile(localUserId, fileId)
+            val bytes = Files.readAllBytes(filePath)
+            val mimeType = Files.probeContentType(filePath) ?: "application/octet-stream"
+
+            Response.ok(bytes)
+                .header("Content-Disposition", "attachment; filename=\"$originalName\"")
+                .type(mimeType)
+                .build()
+        } catch (e: SecurityException) {
+            logger.warning("下载团队文件失败: 权限不足 - fileId=$fileId")
+            Response.status(Response.Status.FORBIDDEN)
+                .entity(mapOf("error" to "文件不存在或无权访问"))
+                .build()
+        } catch (e: Exception) {
+            logger.severe("下载团队文件失败: ${e.javaClass.simpleName} - fileId=$fileId")
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(mapOf("error" to "下载文件失败"))
+                .build()
+        }
+    }
+
+    @DELETE
+    @Path("/files/{fileId}")
+    @RolesAllowed("user", "admin")
+    fun deleteGroupFile(@PathParam("fileId") fileId: Long): Response {
+        return try {
+            val keycloakUserId = jwt.getClaim<String>("sub")
+                ?: return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(mapOf("error" to "无效的token"))
+                    .build()
+
+            val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
+            val email = jwt.getClaim<String>("email")
+            val localUserId = userService.getOrCreateLocalUserId(keycloakUserId, username, email)
+
+            groupService.deleteGroupFile(localUserId, fileId)
+            Response.ok(mapOf("message" to "文件删除成功"))
+                .build()
+        } catch (e: SecurityException) {
+            logger.warning("删除团队文件失败: 权限不足 - fileId=$fileId")
+            Response.status(Response.Status.FORBIDDEN)
+                .entity(mapOf("error" to "文件不存在或无权访问"))
+                .build()
+        } catch (e: Exception) {
+            logger.log(Level.SEVERE, "删除团队文件失败: ${e.javaClass.simpleName} - fileId=$fileId", e)
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(mapOf("error" to "删除文件失败"))
+                .build()
+        }
+    }
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("user", "admin")
     fun getUserGroups(): Response {
@@ -264,5 +336,129 @@ class GroupResource @Inject constructor(
                 .entity(mapOf("error" to "获取小组详情失败"))
                 .build()
         }
+    }
+
+    @DELETE
+    @Path("/{groupId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user", "admin")
+    fun deleteGroup(@PathParam("groupId") groupId: Long): Response {
+        return try {
+            val keycloakUserId = jwt.getClaim<String>("sub")
+                ?: return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(mapOf("error" to "无效的token"))
+                    .build()
+
+            val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
+            val email = jwt.getClaim<String>("email")
+
+            val localUserId = userService.getOrCreateLocalUserId(keycloakUserId, username, email)
+            groupService.deleteGroup(groupId, localUserId)
+
+            Response.ok(mapOf(
+                "message" to "小组已删除",
+                "groupId" to groupId
+            )).build()
+        } catch (e: SecurityException) {
+            logger.warning("删除小组失败: 权限不足 - groupId=$groupId")
+            Response.status(Response.Status.FORBIDDEN)
+                .entity(mapOf("error" to "仅小组创建者可删除该小组"))
+                .build()
+        } catch (e: IllegalArgumentException) {
+            logger.warning("删除小组失败: 小组不存在 - groupId=$groupId")
+            Response.status(Response.Status.NOT_FOUND)
+                .entity(mapOf("error" to "小组不存在或已删除"))
+                .build()
+        } catch (e: Exception) {
+            logger.severe("删除小组失败: ${e.javaClass.simpleName}")
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(mapOf("error" to "删除小组失败"))
+                .build()
+        }
+    }
+
+    @GET
+    @Path("/{groupId}/members")
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user", "admin")
+    fun listGroupMembers(@PathParam("groupId") groupId: Long): Response {
+        return try {
+            val localUserId = resolveLocalUserId()
+            val members = groupService.getGroupMembers(groupId, localUserId)
+            Response.ok(members.map {
+                GroupMemberResponse(
+                    id = it.id,
+                    userId = it.userId,
+                    username = it.username,
+                    displayName = it.displayName,
+                    email = it.email,
+                    role = it.role,
+                    joinedAt = it.joinedAt
+                )
+            }).build()
+        } catch (e: SecurityException) {
+            Response.status(Response.Status.FORBIDDEN)
+                .entity(mapOf("error" to (e.message ?: "无权限")))
+                .build()
+        } catch (e: Exception) {
+            logger.severe("获取成员失败: ${e.message}")
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(mapOf("error" to "获取成员列表失败"))
+                .build()
+        }
+    }
+
+    @POST
+    @Path("/{groupId}/members")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @RolesAllowed("user", "admin")
+    fun inviteMember(
+        @PathParam("groupId") groupId: Long,
+        request: InviteMemberRequest
+    ): Response {
+        return try {
+            val localUserId = resolveLocalUserId()
+            val targetUserId = resolveTargetUserId(request)
+                ?: return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(mapOf("error" to "请提供有效的用户ID或用户名"))
+                    .build()
+
+            groupService.inviteUserToGroup(groupId, localUserId, targetUserId, request.role ?: "MEMBER")
+            Response.ok(mapOf("message" to "已邀请用户加入小组")).build()
+        } catch (e: SecurityException) {
+            Response.status(Response.Status.FORBIDDEN)
+                .entity(mapOf("error" to (e.message ?: "无权限")))
+                .build()
+        } catch (e: IllegalStateException) {
+            Response.status(Response.Status.BAD_REQUEST)
+                .entity(mapOf("error" to e.message))
+                .build()
+        } catch (e: Exception) {
+            logger.severe("邀请成员失败: ${e.message}")
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(mapOf("error" to "邀请成员失败"))
+                .build()
+        }
+    }
+
+    private fun resolveTargetUserId(request: InviteMemberRequest): Long? {
+        val userId = request.userId
+        if (userId != null && userId > 0) {
+            return userId
+        }
+        val username = request.username?.trim().orEmpty()
+        if (username.isNotEmpty()) {
+            return userService.findUserIdByUsername(username)
+        }
+        return null
+    }
+
+    private fun resolveLocalUserId(): Long {
+        val keycloakUserId = jwt.getClaim<String>("sub")
+            ?: throw SecurityException("无效的token")
+        val username = jwt.getClaim<String>("preferred_username") ?: jwt.name ?: keycloakUserId
+        val email = jwt.getClaim<String>("email")
+        return userService.getOrCreateLocalUserId(keycloakUserId, username, email)
     }
 }

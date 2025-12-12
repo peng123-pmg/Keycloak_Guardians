@@ -7,6 +7,7 @@ data class FileResponse(
     val fileName: String,
     val originalName: String,
     val mimeType: String,
+    val category: String,
     val sizeBytes: Long,
     val ownerId: String,
     val checksum: String?,

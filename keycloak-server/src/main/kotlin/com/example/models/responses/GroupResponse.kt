@@ -13,7 +13,9 @@ data class GroupResponse(
     val createdBy: Long?,
     val memberCount: Long = 0,
     val createdAt: OffsetDateTime,
-    val updatedAt: OffsetDateTime
+    val updatedAt: OffsetDateTime,
+    val membershipRole: String? = null,
+    val isOwner: Boolean = false
 )
 
 data class GroupListResponse(

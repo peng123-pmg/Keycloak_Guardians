@@ -73,21 +73,14 @@
      - Header：`Authorization: Bearer <access_token>`
 
 ## 典型接口
-- `GET /api/users/me`：返回当前登录用户的基本信息和角色
-- `GET /api/user/stats`：返回所有用户的统计信息
-- `POST /api/admin/users`：创建一个用户
-  - Header：
-    - `Authorization: Bearer <access_token>`
-    - `Contene-Type: application/json
-  - Body选择raw输入(例)：
-  {
-  "username": "testuser",
-  "email": "test@example.com",
-  "firstName": "Test",
-  "lastName": "User",
-  "enabled": true,
-  "roles": ["user"]
-  }
+- `GET /api/users/me`：当前用户信息
+- `GET /api/user/stats`：全局统计（admin）
+- `POST /api/admin/users`：创建用户（admin）
+- 文件：`POST /api/files` 上传，`GET /api/files` 列表，`GET /api/files/{id}` 下载
+- 小组与共享：
+  - `POST /api/groups` 创建；`GET /api/groups` 我的组；`GET /api/groups/{groupId}` 详情；`DELETE /api/groups/{groupId}` 删除（仅创建者）
+  - `POST /api/groups/{groupId}/files` 共享文件；`GET /api/groups/files` 组内文件；`DELETE /api/groups/files/{fileId}` 删除共享（仅创建者）
+  - `GET /api/groups/{groupId}/members` 成员列表；`POST /api/groups/{groupId}/members` 邀请成员
 
 ## 常见问题
 - 若 roles 字段为空，请检查 Keycloak realm 的 protocol mappers 配置，确保 access_token 中包含角色信息

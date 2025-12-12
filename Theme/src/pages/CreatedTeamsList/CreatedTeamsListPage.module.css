@@ -109,10 +109,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: clamp(35px, 4.5vh, 45px);
-  padding: 0 clamp(20px, 3vw, 40px);
-  margin-bottom: clamp(2px, 0.3vh, 3px);
-  background: rgba(200, 180, 220, 0.5);
+  gap: clamp(0.5rem, 1vw, 1rem);
+  height: clamp(40px, 5vh, 52px);
+  padding: 0 clamp(24px, 3vw, 48px);
+  margin-bottom: clamp(4px, 0.6vh, 6px);
+  background: rgba(200, 180, 220, 0.35);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   transition: background 0.2s;
   cursor: pointer;
   flex-shrink: 0;
@@ -128,14 +131,41 @@
   background: rgba(200, 180, 220, 0.7);
 }
 
+.teamMainLine {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.2vw, 1.5rem);
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 600;
+  color: #222;
+}
+
+.teamCode {
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: #444;
+}
+
+.teamName {
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 600;
+  color: #111;
+}
+
 /* 占位符项 - 空白行，淡紫色背景，不可点击，不显示悬停效果 */
 .placeholderItem {
   cursor: default;
-  background: rgba(200, 180, 220, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 .placeholderItem:hover {
-  background: rgba(200, 180, 220, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.placeholderLine {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* 底部粉色区块项 - 作为列表中的最后一行 */
@@ -148,21 +178,12 @@
   background: rgba(242, 191, 191, 0.5);
 }
 
-/* 团队名称 - 黑体 regular，响应式字号，#333333 */
-.teamName {
-  font-family: '黑体', 'SimHei', sans-serif;
-  font-size: clamp(14px, 1.8vw, 20px);
-  font-weight: 400;
-  color: #333333;
-  line-height: 1;
-}
-
 /* 删除按钮 - 响应式字号，#999999 */
 .deleteBtn {
   background: transparent;
   border: none;
-  font-size: clamp(12px, 1.5vw, 16px);
-  color: #999999;
+  font-size: clamp(14px, 2vw, 18px);
+  color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   padding: clamp(2px, 0.5vh, 4px);
   opacity: 0.8;

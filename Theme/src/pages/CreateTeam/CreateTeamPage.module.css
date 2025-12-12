@@ -1,234 +1,174 @@
-/* 页面容器 - 固定画布内 */
+/* 页面容器 - 适配背景与滚动 */
 .pageContainer {
   width: 100%;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-  background: transparent;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 卡片容器 - 响应式尺寸 */
-.cardContainer {
-  width: 757px;
-  height: 757px;
-  background: rgba(85, 154, 234, 0.5); /* 5A9BE6 50% */
-  position: relative;
+  min-height: 100vh;
+  padding: clamp(2rem, 4vh, 3.5rem) clamp(1rem, 2vw, 2.5rem);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  box-sizing: border-box;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  gap: clamp(1.5rem, 2vh, 2rem);
 }
 
-/* 表单组 */
-.formGroup {
-  margin-bottom: 30px;
-  padding: 0 15px;
+.heroPanel {
+  background: linear-gradient(135deg, rgba(90, 155, 230, 0.65), rgba(255, 173, 214, 0.4));
+  border-radius: 20px;
+  padding: clamp(1.5rem, 3vh, 2.5rem) clamp(1.75rem, 3vw, 3rem);
+  color: #fff;
+  box-shadow: 0 15px 35px rgba(32, 76, 138, 0.2);
 }
 
-.formGroup:last-child {
-  margin-bottom: 0;
+.pageTitle {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  margin: 0 0 0.25rem;
+  font-weight: 800;
 }
 
-/* 表单标签 - 黑体 bold */
-.formLabel {
-  display: block;
-  margin-bottom: 10px;
-  font-family: '黑体', 'SimHei', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  color: #000000;
-  text-align: left;
+.pageSubtitle {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  opacity: 0.9;
 }
 
-/* 输入框 - 响应式宽度 */
-.formInput {
-  width: 400px;
-  height: 50px;
-  background: #FFFFFF;
-  border: 1px solid #CCCCCC;
-  border-radius: 4px;
-  padding: 0 16px;
-  font-family: '思源黑体', 'Source Han Sans', sans-serif;
-  font-size: 16px;
-  color: #333333;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-.formInput:focus {
-  border-color: #2A82E4;
-  box-shadow: 0 0 0 2px rgba(42, 130, 228, 0.2);
-}
-
-.formInput::placeholder {
-  color: #999999;
-  font-family: '思源黑体', 'Source Han Sans', sans-serif;
-}
-
-/* 错误状态 */
-.formInput.error {
-  border-color: #ff4d4f;
-  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
-}
-
-.errorMessage {
-  color: #ff4d4f;
-  font-size: 14px;
-  margin-top: 8px;
-  display: block;
-}
-
-/* 下拉选择框 - 响应式宽度 */
-.formSelect {
-  width: 400px;
-  height: 50px;
-  background: #FFFFFF;
-  border: 1px solid #CCCCCC;
-  border-radius: 4px;
-  padding: 0 16px;
-  font-family: '思源黑体', 'Source Han Sans', sans-serif;
-  font-size: 16px;
-  color: #333333;
-  outline: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-.formSelect:focus {
-  border-color: #2A82E4;
-  box-shadow: 0 0 0 2px rgba(42, 130, 228, 0.2);
-}
-
-/* 按钮容器 */
-.buttonContainer {
+.formCard {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 24px;
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  box-shadow: 0 20px 45px rgba(28, 49, 93, 0.08);
   display: flex;
-  justify-content: center;
-  margin-top: 120px;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2vh, 1.75rem);
 }
 
-/* 创建按钮 */
-.submitBtn {
-  width: 270px;
-  height: 85px;
-  background: #2A82E4; /* 2A82E4 */
-  border: none;
-  border-radius: 8px;
-  font-family: '黑体', 'SimHei', sans-serif;
-  font-size: 36px;
+.toast {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #FFFFFF;
+}
+
+.toastSuccess {
+  background: rgba(56, 213, 137, 0.1);
+  color: #1f9d63;
+  border: 1px solid rgba(56, 213, 137, 0.4);
+}
+
+.toastError {
+  background: rgba(255, 77, 79, 0.1);
+  color: #cf3237;
+  border: 1px solid rgba(255, 77, 79, 0.35);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.95rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.label span {
+  color: #ff4d4f;
+  margin-left: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.input:focus {
+  border-color: #2a82e4;
+  box-shadow: 0 0 0 3px rgba(42, 130, 228, 0.15);
+  outline: none;
+}
+
+.inputError {
+  border-color: #ff6264;
+  box-shadow: 0 0 0 2px rgba(255, 98, 100, 0.2);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.errorText {
+  font-size: 0.85rem;
+  color: #ff4d4f;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.submitBtn,
+.resetBtn {
+  min-width: 160px;
+  border: none;
+  border-radius: 14px;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(42, 130, 228, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.submitBtn:hover {
-  background: #1E6EC8;
-  box-shadow: 0 6px 16px rgba(42, 130, 228, 0.4);
+.submitBtn {
+  background: linear-gradient(135deg, #2a82e4, #6ba8ff);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(42, 130, 228, 0.25);
 }
 
-.submitBtn:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(42, 130, 228, 0.3);
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-/* ==================== 响应式设计 ==================== */
-@media (max-width: 1200px) {
-  .cardContainer {
-    width: 85%;
-    height: auto;
-    min-height: 757px;
-  }
+.resetBtn {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
 
-  .formGroup {
-    padding: 0 10px;
-  }
-
-  .formInput,
-  .formSelect {
-    width: 350px;
-    height: 44px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-
-  .submitBtn {
-    width: 240px;
-    height: 54px;
-    font-size: 22px;
-    margin-top: 100px;
-  }
+.submitBtn:hover:not(:disabled),
+.resetBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
-  .cardContainer {
-    width: 95%;
-    height: auto;
-    min-height: auto;
-    padding: 1rem;
+  .formGrid {
+    grid-template-columns: 1fr;
   }
 
-  .formGroup {
-    margin-bottom: 24px;
-    padding: 0;
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .formLabel {
-    font-size: 18px;
-  }
-
-  .formInput,
-  .formSelect {
+  .submitBtn,
+  .resetBtn {
     width: 100%;
-    height: 40px;
-    font-size: 14px;
-    padding: 0 12px;
-  }
-
-  .submitBtn {
-    width: 100%;
-    max-width: 192px;
-    height: 48px;
-    font-size: 18px;
-    margin-top: 80px;
-  }
-}
-
-@media (max-width: 480px) {
-  .pageContainer {
-    padding: 1rem;
-  }
-
-  .cardContainer {
-    width: 100%;
-    height: auto;
-    min-height: auto;
-  }
-
-  .formLabel {
-    font-size: 16px;
-  }
-
-  .formInput,
-  .formSelect {
-    height: 36px;
-    font-size: 13px;
-    padding: 0 10px;
-  }
-
-  .submitBtn {
-    width: 100%;
-    max-width: 160px;
-    height: 44px;
-    font-size: 16px;
-    margin-top: 70px;
   }
 }

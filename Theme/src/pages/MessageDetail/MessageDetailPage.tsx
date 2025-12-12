@@ -66,7 +66,10 @@ const MessageDetailPage: React.FC = () => {
 
         {/* 内容区域 */}
         <div className={styles.contentBox}>
-          <p className={styles.messageContent}></p>
+          <div className={styles.messageMeta}>
+            <span className={styles.messageType}>{message.type}</span>
+          </div>
+          <p className={styles.messageContent}>{message.content}</p>
         </div>
       </div>
     </div>

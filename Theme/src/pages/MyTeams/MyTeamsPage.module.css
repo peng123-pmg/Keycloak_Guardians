@@ -200,7 +200,8 @@
 }
 
 .downloadButton,
-.deleteButton {
+.deleteButton,
+.shareButton {
   background: transparent;
   border: none;
   font-size: clamp(1.25rem, 1.5vw, 1.5rem);
@@ -209,14 +210,62 @@
   padding: clamp(0.2rem, 0.25vw, 0.25rem);
 }
 
-.downloadButton:hover {
-  transform: scale(1.3);
-  color: #2A82E4;
+.shareButton {
+  color: #2a82e4;
 }
 
-.deleteButton:hover {
-  transform: scale(1.3);
-  filter: brightness(1.2);
+.membersSection {
+  margin-top: clamp(2rem, 3vh, 3rem);
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: clamp(0.6rem, 1vw, 1rem);
+  padding: clamp(1rem, 2vh, 1.5rem);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.inviteControls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.inviteInput {
+  min-width: 160px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
+  padding: 0.4rem 0.75rem;
+}
+
+.inviteButton {
+  background: #2a82e4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+}
+
+.membersList {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.memberRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255,255,255,0.65);
+  border-radius: 10px;
+}
+
+.memberName {
+  font-weight: 600;
+}
+
+.memberMeta {
+  font-size: 0.85rem;
+  color: #666;
 }
 
 /* ==================== 我加入的区块 ==================== */
@@ -254,37 +303,33 @@
 
 .teamInfo {
   display: flex;
-  gap: clamp(1rem, 2.5vw, 3rem);
-  align-items: center;
-  flex: 1;
-  flex-wrap: wrap;
-}
-
-.teamName,
-.teamNumber,
-.teamRole,
-.teamPermission {
-  font-family: 'Source Han Sans CN', sans-serif;
-  font-size: clamp(0.8rem, 1vw, 1rem);
-  color: #333333;
+  flex-direction: column;
+  gap: clamp(0.25rem, 0.4vh, 0.35rem);
+  align-items: flex-start;
 }
 
 .teamName {
   min-width: clamp(4rem, 5vw, 5rem);
-  font-weight: 500;
+  font-weight: 600;
+  color: #111;
+}
+
+.teamMetaLine {
+  font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+  color: #555;
+  display: flex;
+  gap: clamp(0.5rem, 1vw, 1rem);
 }
 
 .teamNumber {
   min-width: clamp(6rem, 8vw, 8rem);
   color: #666666;
+  transition: color 0.2s ease, font-weight 0.2s ease;
 }
 
-.teamRole {
-  min-width: clamp(3.5rem, 4vw, 4rem);
-}
-
+.teamRole,
 .teamPermission {
-  min-width: clamp(3.5rem, 4vw, 4rem);
+  min-width: auto;
 }
 
 .deleteTeamButton {
@@ -294,10 +339,17 @@
   cursor: pointer;
   transition: transform 0.2s ease;
   flex-shrink: 0;
+  color: #666;
 }
 
 .deleteTeamButton:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
+  color: #ff4d4f;
+}
+
+.activeTeam {
+  color: #2A82E4;
+  font-weight: 600;
 }
 
 /* ==================== 响应式设计（仅处理极端情况） ==================== */
@@ -332,6 +384,15 @@
 
   .teamRow {
     padding: clamp(0.75rem, 1vh, 1rem);
+  }
+
+  .inviteControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fileActions {
+    flex-wrap: wrap;
   }
 }
 

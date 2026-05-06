@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: guardians-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: iamkc
+      MYSQL_USER: iamkc
+      MYSQL_PASSWORD: iamkc
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0
+    container_name: guardians-keycloak
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak-server/src/main/resources/realm-import.json:/opt/keycloak/data/import/realm-import.json:ro
+
+  backend:
+    build:
+      context: ./keycloak-server
+    container_name: guardians-backend
+    environment:
+      QUARKUS_OIDC_AUTH_SERVER_URL: http://keycloak:8080/realms/guardians
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_ADMIN_USERNAME: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      MYSQL_JDBC_URL: jdbc:mysql://mysql:3306/iamkc?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+      MYSQL_USERNAME: iamkc
+      MYSQL_PASSWORD: iamkc
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - keycloak
+
+  frontend:
+    build:
+      context: ./Theme
+    container_name: guardians-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
